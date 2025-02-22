@@ -15,8 +15,9 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
 
     const preloadVideo = async (src: string) => {
       try {
+        // Load partial content for both videos
         const response = await fetch(src, {
-          headers: { Range: 'bytes=0-1000000' } // Request first 1MB chunk
+          headers: { Range: 'bytes=0-1000000' }
         });
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -30,7 +31,7 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
           receivedLength += value.length;
           const videoProgress = (receivedLength / contentLength) * 100;
           totalProgress = ((loadedVideos * 100) + videoProgress) / videos.length;
-          setProgress(Math.min(totalProgress, 99)); // Cap at 99% until fully loaded
+          setProgress(Math.min(totalProgress, 99));
         }
 
         loadedVideos++;
@@ -40,7 +41,6 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
         }
       } catch (error) {
         console.error('Error preloading video:', error);
-        // Fallback to basic loading if preload fails
         loadedVideos++;
         if (loadedVideos === videos.length) {
           setProgress(100);
