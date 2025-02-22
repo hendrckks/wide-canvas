@@ -42,7 +42,7 @@ const Gallery = () => {
   ];
 
   return (
-    <div className="relative min-h-[400vh] h-full transparent">
+    <div className="relative min-h-[380vh] h-full transparent">
       {images.map((src, index) => {
         return (
           <motion.div
@@ -52,17 +52,17 @@ const Gallery = () => {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.3, delay: index * 0.1, ease: "easeOut" }}
             style={{ y: transforms[index] }}
-            className={`absolute ${
+            className={`sm:absolute ${
               index === 0
-                ? "left-1/2 -translate-x-1/2 top-[10%]"
+                ? "sm:left-1/2 sm:-translate-x-1/2 sm:top-[10%]"
                 : index === 1
-                ? "left-[10%] top-[30%]"
+                ? "sm:left-[10%] sm:top-[35%]"
                 : index === 2
-                ? "right-[8%] top-[38%]"
+                ? "sm:right-[8%] sm:top-[38%]"
                 : index === 3
-                ? "left-[20%] top-[50%]"
-                : "right-[15%] top-[70%]"
-            }`}
+                ? "sm:left-[20%] sm:top-[59%]"
+                : "sm:left-1/2 sm:-translate-x-1/2 sm:top-[85%]"
+            } mb-16`}
           >
             <motion.div
               className="group relative cursor-pointer"
@@ -72,7 +72,7 @@ const Gallery = () => {
               <motion.img
                 src={src.src}
                 alt={src.title}
-                className="w-[300px] sm:w-[350px] lg:w-[400px] h-[250px] sm:h-[300px] lg:h-[350px] object-cover rounded-sm mb-2"
+                className="w-[300px] sm:w-[350px] lg:w-[400px] h-[250px] sm:h-[300px] lg:h-[350px] object-cover rounded-sm p-2 mb-2"
                 style={{
                   width:
                     index === 0 ? "500px" : index === 2 ? "450px" : "500px",
@@ -104,10 +104,10 @@ const Gallery = () => {
                   <ArrowUpRight className="w-6 h-6" />
                 </motion.div>
               </div>
-              <motion.div className="absolute -top-1 -left-1 w-4 h-4 border-l border-t border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <motion.div className="absolute -top-1 -right-1 w-4 h-4 border-r border-t border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <motion.div className="absolute -bottom-1 -left-1 w-4 h-4 border-l border-b border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <motion.div className="absolute -bottom-1 -right-1 w-4 h-4 border-r border-b border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <motion.div className="absolute -top-1 -left-1 w-4 h-4 border-l-1 border-t-1 border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <motion.div className="absolute -top-1 -right-1 w-4 h-4 border-r-1 border-t-1 border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <motion.div className="absolute -bottom-1 -left-1 w-4 h-4 border-l-1 border-b-1 border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <motion.div className="absolute -bottom-1 -right-1 w-4 h-4 border-r-1 border-b-1 border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </motion.div>
           </motion.div>
         );

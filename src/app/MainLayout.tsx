@@ -3,13 +3,11 @@ import Header from "../components/Header";
 
 const MainLayout = () => {
   return (
-    <div>
+    <div className="flex flex-col">
       <Header />
-      <div className="flex flex-col">
-        <main className="flex-1">
-          <Outlet />
-        </main>
-      </div>
+      <main className="flex-1">
+        <Outlet />
+      </main>
     </div>
   );
 };
