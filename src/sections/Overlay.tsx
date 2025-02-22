@@ -17,10 +17,7 @@ const Overlay = () => {
         transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
         className="text-6xl font-medium text-[#141414] text-center tracking-tighter mb-10"
       >
-        Wait...
-        <span className="text-white/75 backdrop-blur-lg">
-          There's more!
-        </span>
+        Wait... There's more!
       </motion.h2>
       <div className="flex flex-col">
         {[
@@ -79,7 +76,7 @@ const Overlay = () => {
                     transition={{ duration: 0.4, delay: index * 0.1 + 0.1 }}
                     src={course.titleImage}
                     alt={course.title}
-                    className="h-8 object-contain"
+                    className="h-9 object-contain"
                   />
                 </div>
                 <motion.p
@@ -109,7 +106,7 @@ const Overlay = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.4, delay: index * 0.2 + 0.2 }}
-                className="text-xs flex items-center px-6 py-3 rounded-full border text-white bg-black border-[#141414]/40 hover:border-black relative overflow-hidden group transition-colors duration-200 cursor-pointer w-fit"
+                className="text-xs flex items-center px-6 py-3 rounded-full border text-white bg-black border-transparent hover:border-black relative overflow-hidden group transition-colors duration-200 cursor-pointer w-fit"
                 style={{
                   isolation: "isolate",
                 }}

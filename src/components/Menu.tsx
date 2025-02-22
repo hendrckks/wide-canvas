@@ -43,15 +43,11 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
               <div className="flex items-center gap-3 sm:gap-6 md:gap-8 leading-3.5">
                 <button
                   onClick={onClose}
-                  className="text-[10px] sm:text-xs px-4 sm:px-6 md:px-8 py-1.5 sm:py-2 flex gap-1 sm:gap-2 items-center rounded-full border text-white border-white/40 relative overflow-hidden group transition-colors duration-200 hover:border-transparent cursor-pointer"
+                  className="text-[10px] sm:text-xs px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 flex gap-1 sm:gap-2 items-center rounded-full border text-white border-white/40 relative overflow-hidden group transition-colors duration-200 hover:border-transparent cursor-pointer"
                   style={{ isolation: "isolate" }}
                 >
                   <span className="relative z-10 group-hover:text-black transition-colors duration-200 flex items-center gap-1 sm:gap-2">
                     CLOSE
-                    <ArrowUpRight
-                      size={12}
-                      className="sm:w-4 sm:h-4 md:w-5 md:h-5"
-                    />
                   </span>
                   <div className="absolute inset-0 bg-[#ff6017] -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out group-hover:ease-in" />
                 </button>
@@ -92,7 +88,11 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
                       to={item.path}
                       onClick={onClose}
                       className={`text-4xl md:text-6xl lg:text-7xl tracking-tighter transition-colors duration-200 flex items-center gap-4 group
-                        ${location.pathname === item.path ? 'text-[#ff6017]' : 'text-white'}
+                        ${
+                          location.pathname === item.path
+                            ? "text-[#ff6017]"
+                            : "text-white"
+                        }
                         hover:text-white/40
                       `}
                     >
@@ -105,7 +105,7 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
             </nav>
 
             <div className="text-white/50 text-xs tracking-tight text-start mb-10">
-              © 2024 Wide Canvas. All rights reserved.
+              © 2025 Wide Canvas. All rights reserved.
             </div>
           </div>
         </motion.div>
