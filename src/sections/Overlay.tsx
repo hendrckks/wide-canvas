@@ -68,7 +68,7 @@ const Overlay = () => {
               className="w-full md:w-1/2 p-8 flex flex-col justify-between"
             >
               <div className="py-4">
-                <div className="mb-2">
+                <div className="mb-6">
                   <motion.img
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
