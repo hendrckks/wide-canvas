@@ -123,15 +123,19 @@ const Overlay = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 + 0.3 }}
-              className="w-full md:w-1/2 h-[300px] md:h-[400px] relative overflow-hidden p-8"
+              className="w-full md:w-1/2 h-[300px] md:h-[400px] relative overflow-hidden p-8 group"
             >
+              <motion.div className="absolute top-5 left-5 w-4 h-4 border-l-2 border-t-2 border-black/90" />
+              <motion.div className="absolute top-5 right-5 w-4 h-4 border-r-2 border-t-2 border-black/90" />
+              <motion.div className="absolute bottom-5 left-5 w-4 h-4 border-l-2 border-b-2 border-black/90" />
+              <motion.div className="absolute bottom-5 right-5 w-4 h-4 border-r-2 border-b-2 border-black/90" />
               <video
                 autoPlay
                 loop
                 muted
                 playsInline
                 preload="metadata"
-                className="w-full h-full object-cover transition-opacity duration-500"
+                className="w-full h-full object-cover cursor-pointer transition-all duration-500 group-hover:scale-102"
                 style={{ opacity: 0 }}
                 onLoadedData={(e) => {
                   if (e.currentTarget.readyState >= 2) {

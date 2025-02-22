@@ -86,9 +86,9 @@ const Hero = () => {
       <div className="my-8 md:my-12 w-full max-w-[90vw] md:max-w-[900px] aspect-[16/9] max-h-[675px]">
         <VideoPlayer
           ref={videoPlayerRef}
-          src="/shotfilm.mp4"
+          src="/trailer.mp4"
           thumbnail="/thumbnail.png"
-          className="w-full h-full"
+          className="w-full h-full p-2"
         />
       </div>
       <p className="text-white/80 text-xs mt-10 font-medium flex items-center">
