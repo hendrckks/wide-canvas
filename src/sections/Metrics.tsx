@@ -44,7 +44,7 @@ const Metrics = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
-        className="text-6xl font-medium text-white text-center tracking-tighter mb-12"
+        className="text-6xl font-medium text-white text-center tracking-tighter mb-11"
       >
         Professional
         <span className="text-white/30 backdrop-blur-lg"> Milestones</span>
