@@ -19,7 +19,6 @@ import { motion, AnimatePresence } from "framer-motion";
 interface VideoPlayerProps {
   src: string;
   trailerSrc?: string;
-  thumbnail?: string;
   className?: string;
 }
 
@@ -28,7 +27,7 @@ interface VideoPlayerRef {
 }
 
 const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
-  ({ src, trailerSrc, thumbnail, className = "" }, ref) => {
+  ({ src, trailerSrc, className = "" }, ref) => {
     const [isPlaying, setIsPlaying] = useState(true);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -198,23 +197,6 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
           mass: 1.2,
         }}
       >
-        {!isLoaded && thumbnail && (
-          <motion.div
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="absolute inset-0 bg-gray-900"
-          >
-            <motion.img
-              src={thumbnail}
-              alt="Video thumbnail"
-              className="w-full h-full object-cover"
-              layout
-            />
-          </motion.div>
-        )}
-
         {/* Main looping video */}
         <motion.video
           ref={videoRef}

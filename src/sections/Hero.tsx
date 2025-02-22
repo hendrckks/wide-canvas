@@ -88,7 +88,6 @@ const Hero = () => {
           ref={videoPlayerRef}
           src="/shotfilm.mp4"
           trailerSrc="/trailer.mp4"
-          thumbnail="/thumbnail.png"
           className="w-full h-full p-2"
         />
       </div>
