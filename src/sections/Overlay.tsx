@@ -134,8 +134,9 @@ const Overlay = () => {
                 loop
                 muted
                 playsInline
-                preload="metadata"
-                className="w-full h-full object-cover cursor-pointer transition-all duration-500 group-hover:scale-102"
+                preload="auto"
+                // loading="lazy"
+                className="w-full h-full object-cover cursor-pointer transition-opacity duration-500 group-hover:scale-102"
                 style={{ opacity: 0 }}
                 onLoadedData={(e) => {
                   if (e.currentTarget.readyState >= 2) {
@@ -147,6 +148,8 @@ const Overlay = () => {
                 }}
               >
                 <source src="/shotfilm.mp4" type="video/mp4" />
+                <source src="/shotfilm.webm" type="video/webm" />
+                Your browser does not support the video tag.
               </video>
             </motion.div>
           </div>
