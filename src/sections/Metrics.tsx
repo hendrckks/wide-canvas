@@ -61,7 +61,9 @@ const Metrics = () => {
               delay: metric.delay,
               ease: "easeOut",
             }}
-            className={`p-8 border border-white/10 rounded-md col-span-${metric.colSpan} bg-white/4 backdrop-blur-lg`}
+            className={`p-8 border border-white/10 rounded-md ${
+              metric.colSpan === 2 ? 'col-span-2' : 'col-span-1'
+            } bg-white/4 backdrop-blur-lg`}
           >
             <h3 className="text-white/70 text-base mb-2 border-b border-b-white/20 py-3 font-medium">
               {metric.title}
