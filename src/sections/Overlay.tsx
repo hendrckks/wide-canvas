@@ -84,7 +84,7 @@ const Overlay = () => {
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.4, delay: index * 0.2 + 0.2 }}
-                  className="text-[#141414]/80 text-lg mb-6 max-w-2/3 font-medium tracking-tight leading-3.5"
+                  className="text-[#141414]/80 text-lg mb-6 max-w-2/3 font-medium tracking-tight leading-6"
                 >
                   {course.description}
                 </motion.p>

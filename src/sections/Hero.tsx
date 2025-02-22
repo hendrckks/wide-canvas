@@ -87,7 +87,7 @@ const Hero = () => {
         <VideoPlayer
           ref={videoPlayerRef}
           src="/shotfilm.mp4"
-          thumbnail="/thumbnail.jpg"
+          thumbnail="/thumbnail.png"
           className="w-full h-full"
         />
       </div>
