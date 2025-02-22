@@ -130,9 +130,14 @@ const Overlay = () => {
                 loop
                 muted
                 playsInline
-                preload="auto"
-                className="w-full h-full object-cover"
+                preload="metadata"
+                className="w-full h-full object-cover transition-opacity duration-500"
                 style={{ opacity: 0 }}
+                onLoadedData={(e) => {
+                  if (e.currentTarget.readyState >= 2) {
+                    e.currentTarget.style.opacity = '1';
+                  }
+                }}
                 onCanPlay={(e) => {
                   e.currentTarget.style.opacity = '1';
                 }}
