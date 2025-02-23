@@ -54,7 +54,7 @@ const Overlay = () => {
             key={index}
             className={`flex flex-col md:flex-row ${
               index === 0 ? "border-b" : "border-t border-b"
-            } border-[#141414]/40`}
+            } border-[#141414]`}
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
