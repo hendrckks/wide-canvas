@@ -136,7 +136,7 @@ const Overlay = () => {
                 playsInline
                 preload="auto"
                 // loading="lazy"
-                className="w-full h-full object-cover cursor-pointer transition-opacity duration-500 group-hover:scale-102"
+                className="w-full h-full object-cover cursor-pointer transition-all duration-200 ease-in group-hover:scale-102"
                 style={{ opacity: 0 }}
                 onLoadedData={(e) => {
                   if (e.currentTarget.readyState >= 2) {
