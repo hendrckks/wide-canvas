@@ -25,15 +25,32 @@ const configSchema = z.object({
   }),
 });
 
-const result = configSchema.safeParse(import.meta.env);
+const result = configSchema.safeParse({
+  VITE_FIREBASE_API_KEY: import.meta.env.VITE_FIREBASE_API_KEY,
+  VITE_FIREBASE_AUTH_DOMAIN: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  VITE_FIREBASE_PROJECT_ID: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  VITE_FIREBASE_STORAGE_BUCKET: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  VITE_FIREBASE_MESSAGING_SENDER_ID: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  VITE_FIREBASE_APP_ID: import.meta.env.VITE_FIREBASE_APP_ID,
+  VITE_FIREBASE_MEASUREMENT_ID: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+});
+
 if (!result.success) {
   console.error("Firebase configuration error:", result.error.format());
   throw new Error("Invalid Firebase configuration");
 }
 
 // Log successful configuration loading
-console.log("Firebase API Key loaded successfully:", result.data.VITE_FIREBASE_API_KEY ? "[Present]" : "[Missing]");
 console.log("Firebase configuration loaded successfully");
+console.log("Environment variables present:", {
+  API_KEY: !!result.data.VITE_FIREBASE_API_KEY,
+  AUTH_DOMAIN: !!result.data.VITE_FIREBASE_AUTH_DOMAIN,
+  PROJECT_ID: !!result.data.VITE_FIREBASE_PROJECT_ID,
+  STORAGE_BUCKET: !!result.data.VITE_FIREBASE_STORAGE_BUCKET,
+  MESSAGING_SENDER_ID: !!result.data.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  APP_ID: !!result.data.VITE_FIREBASE_APP_ID,
+  MEASUREMENT_ID: !!result.data.VITE_FIREBASE_MEASUREMENT_ID,
+});
 
 const config: FirebaseOptions = {
   apiKey: result.data.VITE_FIREBASE_API_KEY,
