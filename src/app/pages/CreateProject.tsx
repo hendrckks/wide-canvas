@@ -299,12 +299,12 @@ export default function CreateProject() {
               className="space-y-2"
             >
               <label className="text-sm font-medium text-white">Cameras</label>
-              <div className="flex gap-2">
+              <div className="flex gap-2 mt-4">
                 <Input
                   value={newCamera}
                   onChange={(e) => setNewCamera(e.target.value)}
                   placeholder="Add camera"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/50 mt-4"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/50"
                 />
                 <Button
                   type="button"
