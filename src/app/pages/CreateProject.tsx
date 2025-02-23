@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button } from "../../../.components/ui/button";
 import { Input } from "../../../.components/ui/input";
 import { Textarea } from "../../../.components/ui/textarea";
-import { Calendar } from "../../../.components/ui/calendar";
 import {
   Select,
   SelectContent,
@@ -456,11 +455,15 @@ export default function CreateProject() {
               <label className="text-sm font-medium text-white">
                 Project Date
               </label>
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={handleDateSelect}
-                className="rounded-md border border-white/10 bg-black/20 text-white mt-5"
+              <Input
+                type="date"
+                value={date?.toISOString().split('T')[0]}
+                onChange={(e) => {
+                  const selectedDate = new Date(e.target.value);
+                  handleDateSelect(selectedDate);
+                }}
+                className="bg-white/5 border-white/10 text-white mt-5 [color-scheme:dark]"
+                required
               />
             </div>
           </div>
