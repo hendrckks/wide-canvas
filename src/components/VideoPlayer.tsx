@@ -32,6 +32,7 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [progress, setProgress] = useState(0);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isPlayable, setIsPlayable] = useState(false);
     const [isMuted, setIsMuted] = useState(true);
     const [isTrailerLoading, setIsTrailerLoading] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -53,21 +54,28 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
         setIsLoaded(true);
       };
 
+      const handleCanPlay = () => {
+        setIsPlayable(true);
+      };
+
       // Add listeners to both videos
       if (mainVideo) {
         mainVideo.addEventListener("timeupdate", handleTimeUpdate);
         mainVideo.addEventListener("loadedmetadata", handleLoadedMetadata);
+        mainVideo.addEventListener("canplay", handleCanPlay);
       }
 
       if (trailerVideo) {
         trailerVideo.addEventListener("timeupdate", handleTimeUpdate);
         trailerVideo.addEventListener("loadedmetadata", handleLoadedMetadata);
+        trailerVideo.addEventListener("canplay", handleCanPlay);
       }
 
       return () => {
         if (mainVideo) {
           mainVideo.removeEventListener("timeupdate", handleTimeUpdate);
           mainVideo.removeEventListener("loadedmetadata", handleLoadedMetadata);
+          mainVideo.removeEventListener("canplay", handleCanPlay);
         }
         if (trailerVideo) {
           trailerVideo.removeEventListener("timeupdate", handleTimeUpdate);
@@ -75,6 +83,7 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
             "loadedmetadata",
             handleLoadedMetadata
           );
+          trailerVideo.removeEventListener("canplay", handleCanPlay);
         }
       };
     }, [isFullscreen]);
@@ -138,8 +147,14 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
             trailerVideoRef.current.src = trailerSrc;
             await trailerVideoRef.current.load();
           }
-          await trailerVideoRef.current.play();
-          setIsPlaying(true);
+
+          try {
+            await trailerVideoRef.current.play();
+            setIsPlaying(true);
+          } catch (error) {
+            console.error("Error playing trailer video:", error);
+          }
+
           if (videoRef.current) {
             videoRef.current.pause();
           }
@@ -153,8 +168,13 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
           videoRef.current.muted = true;
           setIsMuted(true);
           trailerVideoRef.current.pause();
-          videoRef.current.play();
-          setIsPlaying(true);
+
+          try {
+            await videoRef.current.play();
+            setIsPlaying(true);
+          } catch (error) {
+            console.error("Error playing main video:", error);
+          }
         }
       }
     };
@@ -204,7 +224,7 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
             isFullscreen ? "hidden" : ""
           }`}
           playsInline
-          preload="metadata"
+          preload="auto"
           autoPlay
           loop
           muted
@@ -221,7 +241,7 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
             !isFullscreen ? "hidden" : ""
           }`}
           playsInline
-          preload="none"
+          preload="metadata"
           layout
         >
           <source src={trailerSrc} type="video/mp4" />
@@ -244,17 +264,19 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={isLoaded ? toggleFullscreen : undefined}
+                  onClick={(isPlayable && isLoaded) ? toggleFullscreen : undefined}
                   className={`p-5 rounded-full bg-white/5 hover:${
-                    isLoaded ? "bg-white/10" : "bg-white/5"
+                    (isPlayable && isLoaded) ? "bg-white/10" : "bg-white/5"
                   } transition-colors backdrop-blur-xs absolute z-50 ${
-                    isLoaded ? "cursor-pointer" : "cursor-default"
+                    (isPlayable && isLoaded) ? "cursor-pointer" : "cursor-default"
                   } relative`}
-                  disabled={!isLoaded}
+                  disabled={!(isPlayable && isLoaded)}
                 >
                   <div
                     className={`absolute inset-0 rounded-full border-2 border-white/30 border-t-white/90 ${
-                      !isLoaded || isTrailerLoading ? "animate-spin" : "hidden"
+                      !isPlayable || !isLoaded || isTrailerLoading
+                        ? "animate-spin"
+                        : "hidden"
                     }`}
                   />
                   <PlayCircleIcon

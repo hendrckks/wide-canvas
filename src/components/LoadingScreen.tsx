@@ -11,16 +11,19 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
   useEffect(() => {
     const videos = ["/shotfilm.mp4", "/trailer.mp4"];
     const videoProgress = new Map<string, number>();
+    const videoPlayable = new Map<string, boolean>();
 
     const preloadVideo = async (src: string) => {
       try {
+        // Request a larger chunk to ensure smooth initial playback
         const response = await fetch(src, {
-          headers: { Range: 'bytes=0-2000000' }
+          headers: { Range: "bytes=0-3000000" }, // Increased from 2MB to 5MB
         });
 
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok)
+          throw new Error(`HTTP error! status: ${response.status}`);
         const reader = response.body?.getReader();
-        const contentLength = +(response.headers.get('content-length') ?? 0);
+        const contentLength = +(response.headers.get("content-length") ?? 0);
         let receivedLength = 0;
 
         while (true) {
@@ -29,25 +32,67 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
           receivedLength += value.length;
           const progress = (receivedLength / contentLength) * 100;
           videoProgress.set(src, progress);
-          
+
           // Calculate total progress as average of all video progress
-          const totalProgress = Array.from(videoProgress.values()).reduce((sum, curr) => sum + curr, 0) / videos.length;
+          const totalProgress =
+            Array.from(videoProgress.values()).reduce(
+              (sum, curr) => sum + curr,
+              0
+            ) / videos.length;
           setProgress(Math.min(totalProgress, 99));
         }
 
+        // Test if the video is playable
+        await checkPlayable(src);
         return true;
       } catch (error) {
-        console.error('Error preloading video:', error);
+        console.error("Error preloading video:", error);
         return false;
       }
     };
 
+    const checkPlayable = async (src: string) => {
+      return new Promise<void>((resolve) => {
+        const testVideo = document.createElement("video");
+        testVideo.muted = true;
+
+        const handleCanPlay = () => {
+          videoPlayable.set(src, true);
+          testVideo.removeEventListener("canplay", handleCanPlay);
+          resolve();
+        };
+
+        testVideo.addEventListener("canplay", handleCanPlay);
+        testVideo.src = src;
+
+        // Add a timeout just in case
+        setTimeout(() => {
+          if (!videoPlayable.get(src)) {
+            console.warn(
+              `Video ${src} taking too long to be playable, continuing anyway`
+            );
+            videoPlayable.set(src, true);
+            resolve();
+          }
+        }, 5000);
+      });
+    };
+
     // Load all videos in parallel
-    Promise.all(videos.map(src => preloadVideo(src)))
-      .then(() => {
+    Promise.all(videos.map((src) => preloadVideo(src))).then(() => {
+      // Check if all videos are playable
+      const allPlayable = videos.every((src) => videoPlayable.get(src));
+
+      if (allPlayable) {
+        console.log("All videos are playable!");
         setProgress(100);
         setTimeout(() => onLoadingComplete(), 500);
-      });
+      } else {
+        console.warn("Not all videos are playable, but continuing anyway");
+        setProgress(100);
+        setTimeout(() => onLoadingComplete(), 500);
+      }
+    });
 
     return () => {
       // Cleanup if needed
