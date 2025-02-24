@@ -89,7 +89,7 @@ const AlbumView = () => {
       </div>
       <motion.div
         style={{ y: contentY }}
-        className="sticky flex flex-col items-center -mt-28 top-0 z-40 w-full min-h-screen transform transition-transform duration-300 ease-out"
+        className="sticky flex flex-col mb-8 items-center -mt-28 top-0 z-40 w-full min-h-screen transform transition-transform duration-300 ease-out"
       >
         <div className="h-full mb-3">
           <h1 className="text-white font-display text-[140px] -tracking-[8px] bg-transparent font-light">
@@ -102,9 +102,9 @@ const AlbumView = () => {
               {project.description}
             </p>
           </div>
-          <div className="max-w-[600px] w-full bg-white/5 p-8 font-light rounded-sm">
-            <div className="space-y-7 py-[10px]">
-              <div className="flex justify-between items-center">
+          <div className="max-w-[600px] w-full bg-white/5 backdrop-blur-xl p-8 font-light rounded-lg border border-white/10 shadow-lg shadow-black/5">
+            <div className="space-y-7 py-[10px] relative rounded-lg">
+              <div className="flex justify-between items-center hover:bg-white/5 p-2 rounded-lg transition-all duration-300">
                 <div className="flex items-center gap-3 text-xl">
                   <Grid className="w-5 h-5" />
                   <span>Category</span>
@@ -112,7 +112,7 @@ const AlbumView = () => {
                 <span>{project.category}</span>
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center p-2 rounded-lg transition-all duration-300 z-50">
                 <div className="flex items-center gap-3 text-xl">
                   <Triangle className="w-5 h-5 " />
                   <span>Project Type</span>
@@ -120,7 +120,7 @@ const AlbumView = () => {
                 <span>{project.projectType}</span>
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center p-2 rounded-lg transition-all duration-300">
                 <div className="flex items-center gap-3 text-xl">
                   <Camera className="w-5 h-5" />
                   <span>Camera</span>
@@ -128,7 +128,7 @@ const AlbumView = () => {
                 <span>{project.camera?.join(", ")}</span>
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center p-2 rounded-lg transition-all duration-300">
                 <div className="flex items-center gap-3 text-xl">
                   <Circle className="w-5 h-5" />
                   <span>Lenses</span>
@@ -138,7 +138,7 @@ const AlbumView = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center p-2 rounded-lg transition-all duration-300">
                 <div className="flex items-center gap-3 text-xl">
                   <Computer className="w-5 h-5" />
                   <span>Other Devices</span>
@@ -146,7 +146,7 @@ const AlbumView = () => {
                 <span>{project?.otherDevices?.join(", ") || "N/A"}</span>
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center p-2 rounded-lg transition-all duration-300">
                 <div className="flex items-center gap-3 text-xl">
                   <MapPin className="w-5 h-5" />
                   <span>Location</span>
@@ -154,7 +154,7 @@ const AlbumView = () => {
                 <span>{project.location}</span>
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center p-2 rounded-lg transition-all duration-300">
                 <div className="flex items-center gap-3 text-xl">
                   <Clock className="w-5 h-5" />
                   <span>Time</span>
@@ -169,7 +169,7 @@ const AlbumView = () => {
                 </span>
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center p-2 rounded-lg transition-all duration-300">
                 <div className="flex items-center gap-3 text-xl">
                   <User className="w-5 h-5" />
                   <span>Client</span>
@@ -177,7 +177,7 @@ const AlbumView = () => {
                 <span>{project?.client || "N/A"}</span>
               </div>
               <div
-                className="p-4 text-center items-center justify-center gap-6 border border-white/40 flex relative overflow-hidden group transition-colors duration-200 hover:border-transparent cursor-pointer"
+                className="p-4 text-center items-center justify-center gap-6 border border-white/20 flex relative overflow-hidden group transition-all duration-200 hover:border-transparent cursor-pointer backdrop-blur-md bg-white/5 rounded-md hover:bg-[#ff6017]/10"
                 style={{ isolation: "isolate" }}
               >
                 <span className="relative z-10 group-hover:text-black transition-colors duration-200 flex items-center gap-2">
@@ -189,7 +189,7 @@ const AlbumView = () => {
           </div>
         </div>
       </motion.div>
-      <div className="w-full min-h-screen bg-black px-14 py-20">
+      <div className="w-full min-h-screen bg-black px-14 py-28">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-w-[1800px] mx-auto">
           {project?.images.map((image, index) => (
             <motion.div
