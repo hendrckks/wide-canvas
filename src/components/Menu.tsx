@@ -13,6 +13,7 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
     { title: "ABOUT", path: "/about" },
     { title: "PORTFOLIO", path: "/works" },
     { title: "CONTACT", path: "/contact" },
+    { title: "FAQ", path: "/faq" },
   ];
 
   const handleWatchTrailer = (e: React.MouseEvent<HTMLButtonElement>) => {

@@ -1,6 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import Menu from "./Menu";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -43,9 +44,12 @@ const Header = () => {
         !isVisible ? "-translate-y-full" : "translate-y-0"
       }`}
     >
-      <h1 className="text-base sm:text-lg md:text-xl text-white font-semibold italic">
+      {/* <h1 className="text-base sm:text-lg md:text-xl text-white font-semibold italic">
         WIDE. CANVAS.
-      </h1>
+      </h1> */}
+      <Link to="/">
+        <img src="/wc1.png" className="h-6" />
+      </Link>
       <div className="flex items-center gap-3 sm:gap-6 md:gap-8 leading-3.5">
         <button
           onClick={() => setIsMenuOpen(true)}

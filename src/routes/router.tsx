@@ -7,6 +7,7 @@ import FAQ from "../sections/FAQ";
 import AlbumView from "../app/pages/AlbumView";
 import Works from "../app/pages/Works";
 import { AnimatePresence } from "framer-motion";
+import AboutSection from "../sections/AboutSection";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: "/works",
         element: <Works />,
+      },
+      {
+        path: "/about",
+        element: <AboutSection />,
       },
     ],
   },
