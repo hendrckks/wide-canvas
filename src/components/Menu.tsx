@@ -38,9 +38,9 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
         >
           <div className="mx-auto px-3 sm:px-4 md:px-6 lg:px-8 fixed top-0 left-0 z-50 py-3 sm:py-4 h-screen w-screen flex flex-col justify-between bg-black">
             <div className="flex justify-between items-center w-full">
-              <h1 className="text-base sm:text-lg md:text-xl text-white font-semibold italic">
-                WIDE. CANVAS.
-              </h1>
+              <Link to="/">
+                <img src="/wc1.png" className="h-6" />
+              </Link>
               <div className="flex items-center gap-3 sm:gap-6 md:gap-8 leading-3.5">
                 <button
                   onClick={onClose}
