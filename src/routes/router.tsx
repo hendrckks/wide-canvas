@@ -3,6 +3,9 @@ import MainLayout from "../app/MainLayout";
 import Home from "../app/pages/Home";
 import Contact from "../app/pages/Contact";
 import CreateProject from "../app/pages/CreateProject";
+import FAQ from "../sections/FAQ";
+import AlbumView from "../app/pages/AlbumView";
+import Works from "../app/pages/Works";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +23,18 @@ export const router = createBrowserRouter([
       {
         path: "/add-project" ,
         element: <CreateProject />,
+      },
+      {
+        path: "/faq" ,
+        element: <FAQ />,
+      },
+      {
+        path: "/project/:slug",
+        element: <AlbumView />,
+      },
+      {
+        path: "/works",
+        element: <Works />,
       },
     ],
   },

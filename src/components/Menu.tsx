@@ -11,7 +11,7 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
   const menuItems = [
     { title: "HOME", path: "/" },
     { title: "ABOUT", path: "/about" },
-    { title: "PORTFOLIO", path: "/portfolio" },
+    { title: "PORTFOLIO", path: "/works" },
     { title: "CONTACT", path: "/contact" },
   ];
 

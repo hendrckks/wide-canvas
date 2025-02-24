@@ -3,10 +3,12 @@ import { ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getProjects } from "../lib/firebase/firestore";
 import { Project } from "../lib/types/project";
+import { useNavigate } from "react-router-dom";
 
 const Gallery = () => {
   const { scrollY } = useScroll();
   const [projects, setProjects] = useState<Project[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -70,6 +72,22 @@ const Gallery = () => {
               className="group relative cursor-pointer"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
+              onClick={() => navigate(`/project/${project.slug}`)}
+              onMouseEnter={async () => {
+                try {
+                  const projectsMap = await getProjects();
+                  const hoveredProject = Array.from(projectsMap.values()).find(p => p.slug === project.slug);
+                  if (hoveredProject) {
+                    // Prefetch all project images
+                    hoveredProject.images.forEach(image => {
+                      const img = new Image();
+                      img.src = image.url;
+                    });
+                  }
+                } catch (error) {
+                  console.error('Error prefetching project:', error);
+                }
+              }}
             >
               <motion.img
                 src={primaryImage.url}

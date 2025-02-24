@@ -32,7 +32,7 @@ const Albums = () => {
       },
       {
         root: null,
-        threshold: [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], // Create many threshold points for smooth animation
+        threshold: [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 0], // Create many threshold points for smooth animation
         rootMargin: "0px",
       }
     );
