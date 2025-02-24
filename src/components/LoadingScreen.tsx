@@ -17,7 +17,7 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
       try {
         // Load partial content for both videos
         const response = await fetch(src, {
-          headers: { Range: 'bytes=0-1000000' }
+          headers: { Range: 'bytes=0-2000000' }
         });
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
