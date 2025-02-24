@@ -7,7 +7,7 @@ import FAQ from "../app/pages/FAQ";
 import AlbumView from "../app/pages/AlbumView";
 import Works from "../app/pages/Works";
 import { AnimatePresence } from "framer-motion";
-import AboutSection from "../sections/AboutSection";
+import AboutSection from "../app/pages/AboutSection";
 
 export const router = createBrowserRouter([
   {

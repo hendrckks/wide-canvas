@@ -37,6 +37,19 @@ export default function AboutSection() {
             <p>POST-PRODUCTION</p>
           </div>
         </section>
+        <section className="grid grid-cols-2 md:grid-cols-[200px,1fr] gap-16 mb-24">
+          <h2 className="text-sm font-medium">
+            COMPANIES I HAVE WORKED <br />
+            WITH / FOR
+          </h2>
+          <div className="space-y-2 text-sm font-semibold">
+            <p>JHR AFRICA</p>
+            <p>SPRITE KENYA</p>
+            <p>GOGLA</p>
+            <p>SHAMELESS PODCAST</p>
+            <p>RIDGEWAYS BAPTIST</p>
+          </div>
+        </section>
 
         {/* Experience Section */}
         <section className="grid grid-cols-2 md:grid-cols-[200px,1fr] gap-16 items-end">
