@@ -25,12 +25,19 @@ const AlbumView = () => {
   const contentY = useTransform(scrollY, [0, 1000], [0, -400]);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "instant",
+    });
+
     const fetchProject = async () => {
       if (!slug) return;
       try {
         setIsLoading(true);
         const projects = await getProjects();
-        const foundProject = Array.from(projects.values()).find(p => p.slug === slug);
+        const foundProject = Array.from(projects.values()).find(
+          (p) => p.slug === slug
+        );
         if (foundProject) {
           setProject(foundProject);
         }
@@ -44,11 +51,22 @@ const AlbumView = () => {
   }, [slug]);
 
   if (isLoading) {
-    return <LoadingScreen onLoadingComplete={() => {}} />;
+    return (
+      <LoadingScreen
+        onLoadingComplete={() => {
+          window.scrollTo({
+            top: 0,
+            behavior: "instant",
+          });
+        }}
+      />
+    );
   }
 
   if (!project) {
-    return <div className="text-white text-center py-20">Project not found</div>;
+    return (
+      <div className="text-white text-center py-20">Project not found</div>
+    );
   }
 
   return (
@@ -116,9 +134,7 @@ const AlbumView = () => {
                   <span>Lenses</span>
                 </div>
                 <div className="text-right">
-                  <span>
-                    {project.lenses?.join(", ")}
-                  </span>
+                  <span>{project.lenses?.join(", ")}</span>
                 </div>
               </div>
 
@@ -144,10 +160,12 @@ const AlbumView = () => {
                   <span>Time</span>
                 </div>
                 <span>
-                  {project.time ? new Date(project.time).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long"
-                  }) : ""}
+                  {project.time
+                    ? new Date(project.time).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                      })
+                    : ""}
                 </span>
               </div>
 
@@ -180,14 +198,21 @@ const AlbumView = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`relative overflow-hidden group ${index === 0 ? 'md:col-span-2 md:row-span-2' : index === 3 ? 'lg:col-span-2' : ''}`}
+              className={`relative overflow-hidden group ${
+                index === 0
+                  ? "md:col-span-2 md:row-span-2"
+                  : index === 3
+                  ? "lg:col-span-2"
+                  : ""
+              }`}
             >
               <motion.img
                 src={image.url}
                 alt={`Album image ${index + 1}`}
                 className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                 style={{
-                  height: index === 0 ? '800px' : index === 3 ? '400px' : '400px'
+                  height:
+                    index === 0 ? "800px" : index === 3 ? "400px" : "400px",
                 }}
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
