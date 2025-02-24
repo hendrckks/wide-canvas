@@ -10,12 +10,10 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
 
   useEffect(() => {
     const videos = ["/shotfilm.mp4", "/trailer.mp4"];
-    let totalProgress = 0;
-    let loadedVideos = 0;
+    const videoProgress = new Map<string, number>();
 
     const preloadVideo = async (src: string) => {
       try {
-        // Load partial content for both videos
         const response = await fetch(src, {
           headers: { Range: 'bytes=0-2000000' }
         });
@@ -29,27 +27,27 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
           const { done, value } = await reader!.read();
           if (done) break;
           receivedLength += value.length;
-          const videoProgress = (receivedLength / contentLength) * 100;
-          totalProgress = ((loadedVideos * 100) + videoProgress) / videos.length;
+          const progress = (receivedLength / contentLength) * 100;
+          videoProgress.set(src, progress);
+          
+          // Calculate total progress as average of all video progress
+          const totalProgress = Array.from(videoProgress.values()).reduce((sum, curr) => sum + curr, 0) / videos.length;
           setProgress(Math.min(totalProgress, 99));
         }
 
-        loadedVideos++;
-        if (loadedVideos === videos.length) {
-          setProgress(100);
-          setTimeout(() => onLoadingComplete(), 500);
-        }
+        return true;
       } catch (error) {
         console.error('Error preloading video:', error);
-        loadedVideos++;
-        if (loadedVideos === videos.length) {
-          setProgress(100);
-          setTimeout(() => onLoadingComplete(), 500);
-        }
+        return false;
       }
     };
 
-    videos.forEach(src => preloadVideo(src));
+    // Load all videos in parallel
+    Promise.all(videos.map(src => preloadVideo(src)))
+      .then(() => {
+        setProgress(100);
+        setTimeout(() => onLoadingComplete(), 500);
+      });
 
     return () => {
       // Cleanup if needed
