@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 
 const Overlay = () => {
   return (
@@ -15,38 +14,55 @@ const Overlay = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
-        className="text-6xl font-medium text-[#141414] text-center tracking-tighter mb-10"
+        className="text-6xl font-medium text-[#141414] text-center tracking-tighter mt-16 mb-16"
       >
-        Wait... There's more!
+        <motion.span
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
+        >
+          What You Get When
+        </motion.span>
+        <br />
+        <motion.span
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
+          className="text-[#141414]/95 backdrop-blur-lg"
+        >
+          You Work with Me
+        </motion.span>
       </motion.h2>
       <div className="flex flex-col">
         {[
           {
             title: "MASTER THE BASICS™",
-            titleImage: "/master2.png",
+            titleImage: "/hqm.png",
             description:
-              "Essential fundamentals of photography and cinematography for beginners.",
+              "Professional shooting and meticulous editing for stunning, high-resolution results.",
             duration: "42 VIDEOS (12 HOURS)",
           },
           {
             title: "ADVANCED TECHNIQUES™",
-            titleImage: "/advanced.png",
+            titleImage: "/creative.png",
             description:
-              "Deep dive into professional lighting, composition, and advanced camera operations.",
+              "Expert guidance on styling, poses, and mood to bring your vision to life.",
             duration: "56 VIDEOS (15 HOURS)",
           },
           {
             title: "POST-PRODUCTION PRO™",
-            titleImage: "/master1.png",
+            titleImage: "/PC.png",
             description:
-              "Expert-level editing, color grading, and visual effects mastery.",
+              "In-depth discussion to align vision and create your perfect aesthetic.",
             duration: "64 VIDEOS (18 HOURS)",
           },
           {
             title: "BUSINESS OF FILM™",
-            titleImage: "/advanced.png",
+            titleImage: "/behind.png",
             description:
-              "Complete guide to building a successful photography and film business.",
+              "Optional footage capturing the creative process and artistry of every shoot.",
             duration: "48 VIDEOS (14 HOURS)",
           },
         ].map((course, index) => (
@@ -84,7 +100,7 @@ const Overlay = () => {
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.4, delay: index * 0.2 + 0.2 }}
-                  className="text-[#141414]/80 text-lg mb-6 max-w-2/3 font-medium tracking-tight leading-6"
+                  className="text-[#141414] font-clash text-lg mb-6 max-w-2/3 font-medium tracking-tight leading-6"
                 >
                   {course.description}
                 </motion.p>
@@ -101,22 +117,6 @@ const Overlay = () => {
                   <span className="text-[#141414]/60">{course.duration}</span>
                 </motion.div>
               </div>
-              <motion.button
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.4, delay: index * 0.2 + 0.2 }}
-                className="text-xs flex items-center px-6 py-3 rounded-full border text-white bg-black border-transparent hover:border-black relative overflow-hidden group transition-colors duration-200 cursor-pointer w-fit"
-                style={{
-                  isolation: "isolate",
-                }}
-              >
-                <span className="relative z-10 group-hover:text-black transition-colors duration-200 flex items-center gap-1 sm:gap-2">
-                  EXPLORE
-                  <ArrowRight size={16} />
-                </span>
-                <div className="absolute inset-0 bg-white -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out group-hover:ease-in" />
-              </motion.button>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}

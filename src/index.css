@@ -32,8 +32,8 @@
 }
 
 @theme {
-  --font-display: "ClashDisplay", sans-serif;
-  --font-clash: "Libre Franklin", "sans-serif";
+  --font-clash: "ClashDisplay", sans-serif;
+  --font-display: "Libre Franklin", "sans-serif";
 }
 
 :root {

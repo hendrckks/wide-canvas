@@ -70,7 +70,7 @@ const AlbumView = () => {
   }
 
   return (
-    <div className="relative min-h-[200vh] font-display bg-black text-white overflow-hidden">
+    <div className="relative min-h-[200vh] font-clash bg-black text-white overflow-hidden">
       <div className="sticky pt-20 pb-5 px-14 top-0 z-10 w-full h-full flex items-center justify-center">
         <motion.div
           className="w-full h-[65vh] overflow-hidden"
@@ -92,13 +92,13 @@ const AlbumView = () => {
         className="sticky flex flex-col mb-8 items-center -mt-28 top-0 z-40 w-full min-h-screen transform transition-transform duration-300 ease-out"
       >
         <div className="h-full mb-3">
-          <h1 className="text-white font-display text-[140px] -tracking-[8px] bg-transparent font-light">
+          <h1 className="text-white font-clash text-[140px] -tracking-[8px] bg-transparent font-light">
             {project.name}
           </h1>
         </div>
         <div className="bg-black flex-col h-screen backdrop-blur-sm flex items-center w-screen">
           <div className="mt-28 max-w-3xl w-full px-6">
-            <p className="text-4xl text-white font-display tracking-tight text-center leading-12 font-light mb-20">
+            <p className="text-4xl text-white font-clash tracking-tight text-center leading-12 font-light mb-20">
               {project.description}
             </p>
           </div>
