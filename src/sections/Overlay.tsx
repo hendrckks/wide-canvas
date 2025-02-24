@@ -104,7 +104,7 @@ const Overlay = () => {
                 >
                   {course.description}
                 </motion.p>
-                <motion.div
+                {/* <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true, amount: 0.3 }}
@@ -115,7 +115,7 @@ const Overlay = () => {
                     COURSE {(index + 1).toString().padStart(2, "0")}
                   </span>
                   <span className="text-[#141414]/60">{course.duration}</span>
-                </motion.div>
+                </motion.div> */}
               </div>
             </motion.div>
             <motion.div
@@ -140,11 +140,11 @@ const Overlay = () => {
                 style={{ opacity: 0 }}
                 onLoadedData={(e) => {
                   if (e.currentTarget.readyState >= 2) {
-                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.opacity = "1";
                   }
                 }}
                 onCanPlay={(e) => {
-                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.opacity = "1";
                 }}
               >
                 <source src="/shotfilm.mp4" type="video/mp4" />

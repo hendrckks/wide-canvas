@@ -28,13 +28,13 @@ const Contact = () => {
             Let's talk
           </motion.h2>
           <motion.a
-            href="mailto:info@aodfilm.com"
+            href="mailto:info@emailfilm.com"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
             className="text-4xl sm:text-6xl lg:text-7xl font-medium tracking-tighter underline underline-offset-4 text-white/50 hover:text-[#ff7738] transition-colors duration-300 inline-block"
           >
-            info@aodfilm.com
+            info@emailfilm.com
           </motion.a>
         </div>
       </motion.div>
