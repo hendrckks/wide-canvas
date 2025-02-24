@@ -3,7 +3,7 @@ import MainLayout from "../app/MainLayout";
 import Home from "../app/pages/Home";
 import Contact from "../app/pages/Contact";
 import CreateProject from "../app/pages/CreateProject";
-import FAQ from "../sections/FAQ";
+import FAQ from "../app/pages/FAQ";
 import AlbumView from "../app/pages/AlbumView";
 import Works from "../app/pages/Works";
 import { AnimatePresence } from "framer-motion";

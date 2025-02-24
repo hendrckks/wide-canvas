@@ -9,25 +9,37 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
-    question: "What is AOD?",
-    answer:
-      "Art of Documentary is an online film academy of over 5000+ filmmakers from around the world who are passionate about telling untold stories and building profitable film careers. When a filmmaker joins any of the AOD™ courses, they not only get access to dozens of hours of focused and practical teaching videos that can be watched at leisure, but they receive lifetime access to our private and highly active global Facebook group where job postings, work collabs, and rough cut reviews are posted daily. AOD™ members also get access to our exclusive monthly industry calls where we bring in experts from around the industry to teach and do Q&A live on Zoom.",
+    question: "What services do you offer?",
+    answer: "We specialize in documentary filmmaking, commercial videography, and creative photography. Our services include concept development, filming, editing, color grading, and final delivery in multiple formats. We also offer drone cinematography and specialized underwater filming for unique perspectives."
   },
   {
-    question: "Who can join AOD?",
-    answer:
-      "Anyone passionate about documentary filmmaking can join AOD. Whether you're a complete beginner or an experienced filmmaker looking to enhance your skills, our courses are designed to accommodate all skill levels.",
+    question: "What is your typical project timeline?",
+    answer: "Project timelines vary depending on scope and complexity. A typical documentary project takes 4-8 weeks from initial concept to final delivery. Commercial projects usually take 2-4 weeks. We'll provide a detailed timeline during our initial consultation and keep you updated throughout the process."
   },
   {
-    question: "Can I share my account?",
-    answer:
-      "No, AOD accounts are for individual use only. Each subscription is tied to a single user to ensure the best learning experience and maintain the quality of our community.",
+    question: "What equipment do you use?",
+    answer: "We use professional-grade equipment including RED and Blackmagic cinema cameras, premium lenses, DJI drones, professional lighting kits, and state-of-the-art stabilization systems. For audio, we use industry-standard microphones and recorders to ensure the highest quality sound capture."
   },
   {
-    question: "Can I take multiple courses at once?",
-    answer:
-      "Yes, you can enroll in multiple courses simultaneously. Our platform is designed to let you learn at your own pace and take as many courses as you'd like.",
+    question: "Do you travel for projects?",
+    answer: "Yes, we are available for both local and international projects. We have experience filming in various locations and conditions across Kenya and beyond. Travel costs will be included in the project quote when applicable."
   },
+  {
+    question: "How do you handle pricing?",
+    answer: "Our pricing is project-based and depends on factors like duration, location, equipment needs, and crew size. We provide detailed quotes after understanding your specific requirements. We offer flexible payment plans and are transparent about all costs involved."
+  },
+  {
+    question: "What is your post-production process?",
+    answer: "Our post-production process includes professional editing, color grading, sound design, and motion graphics if needed. We provide two rounds of revisions to ensure the final product meets your vision. All projects are delivered in multiple formats optimized for your intended use."
+  },
+  {
+    question: "Can I see examples of your previous work?",
+    answer: "Yes, you can view our portfolio on our website's Works section. We have a diverse range of projects including documentaries, commercials, and creative films. We're happy to provide specific examples relevant to your project during our consultation."
+  },
+  {
+    question: "How do we get started?",
+    answer: "The first step is to schedule a consultation through our contact page. During this meeting, we'll discuss your vision, requirements, timeline, and budget. After understanding your needs, we'll provide a detailed proposal including scope of work, timeline, and pricing."
+  }
 ];
 
 const FAQ = () => {
@@ -150,7 +162,7 @@ const FAQ = () => {
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <p className="pb-6 text-white/60 text-sm leading-relaxed tracking-tight">
+                <p className="pb-6 text-white/60 text-sm leading-relaxed tracking-tight max-w-2xl w-full">
                   {item.answer}
                 </p>
               </motion.div>

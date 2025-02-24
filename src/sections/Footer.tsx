@@ -86,7 +86,7 @@ const Footer = () => {
       </section>
 
       <img src="/end.png" className="h-[40vh] mb-8" />
-      <p className="font-semibold text-sm text-white/90 max-w-xl text-center mb-16">
+      <p className="font-semibold text-sm text-white/80 max-w-xl text-center -mt-10 mb-16">
         Any resemblance between the media showcased here and real life is purely
         coincidental… unless reality got a little too inspired.{" "}
         <br className="my-6" />
