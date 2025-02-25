@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight,
+  ArrowUpRight,
   Camera,
   Circle,
   Clock,
@@ -10,8 +11,8 @@ import {
   Triangle,
   User,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { getProjects } from "../../lib/firebase/firestore";
 import { Project } from "../../lib/types/project";
 import LoadingScreen from "../../components/LoadingScreen";
@@ -23,6 +24,61 @@ const AlbumView = () => {
   const { scrollY } = useScroll();
   const imageY = useTransform(scrollY, [0, 1000], [0, 10]);
   const contentY = useTransform(scrollY, [0, 1000], [0, -400]);
+  const [otherProjects, setOtherProjects] = useState<Project[]>([]);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchOtherProjects = async () => {
+      try {
+        const projectsMap = await getProjects();
+        const projectsArray = Array.from(projectsMap.values());
+        const filteredProjects = projectsArray.filter((p) => p.slug !== slug);
+
+        // Prefetch and cache images
+        filteredProjects.forEach((project) => {
+          const primaryImage =
+            project.images.find((img) => img.isPrimary) || project.images[0];
+          if (primaryImage?.url) {
+            const img = new Image();
+            img.src = primaryImage.url;
+          }
+        });
+
+        setOtherProjects(filteredProjects);
+      } catch (error) {
+        console.error("Error fetching other projects:", error);
+      }
+    };
+
+    fetchOtherProjects();
+  }, [slug]);
+
+  useEffect(() => {
+    let animationFrameId: number;
+    const scrollContainer = scrollContainerRef.current;
+
+    const autoScroll = () => {
+      if (scrollContainer && isAutoScrolling) {
+        scrollContainer.scrollLeft += 1;
+
+        if (
+          scrollContainer.scrollLeft >=
+          scrollContainer.scrollWidth - scrollContainer.clientWidth
+        ) {
+          scrollContainer.scrollLeft = 0;
+        }
+      }
+      animationFrameId = requestAnimationFrame(autoScroll);
+    };
+
+    animationFrameId = requestAnimationFrame(autoScroll);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [isAutoScrolling]);
 
   // Always scroll to top when component mounts or slug changes
   useEffect(() => {
@@ -73,6 +129,15 @@ const AlbumView = () => {
       <div className="text-white text-center py-20">Project not found</div>
     );
   }
+
+  const handleNavigateToProject = (slug: string) => {
+    // Force scroll to top before navigation
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Use setTimeout to ensure scroll happens before navigation
+    setTimeout(() => {
+      navigate(`/project/${slug}`);
+    }, 250);
+  };
 
   return (
     <div className="relative min-h-[200vh] font-clash bg-black text-white overflow-hidden">
@@ -226,6 +291,100 @@ const AlbumView = () => {
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </motion.div>
           ))}
+        </div>
+      </div>
+      <div className="w-full bg-black py-20">
+        <div className="max-w-[1800px] mx-auto px-14">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl italic text-[#ff6017] tracking-tighter mb-10 text-center">
+            Other Selected Works
+          </h2>
+          <div
+            ref={scrollContainerRef}
+            className="flex gap-6 overflow-x-hidden"
+            onMouseEnter={() => setIsAutoScrolling(false)}
+            onMouseLeave={() => setIsAutoScrolling(true)}
+          >
+            {otherProjects.map((project, index) => {
+              const primaryImage =
+                project.images.find((img) => img.isPrimary) ||
+                project.images[0];
+              return (
+                <motion.div
+                  key={project.slug}
+                  className="flex-shrink-0 mt-10"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: index * 0.1,
+                    ease: "easeOut",
+                  }}
+                >
+                  <motion.div
+                    className="group relative cursor-pointer"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.3 }}
+                    onClick={() => handleNavigateToProject(project.slug)}
+                    onMouseEnter={async () => {
+                      try {
+                        const projectsMap = await getProjects();
+                        const hoveredProject = Array.from(
+                          projectsMap.values()
+                        ).find((p) => p.slug === project.slug);
+                        if (hoveredProject) {
+                          hoveredProject.images.forEach((image) => {
+                            const img = new Image();
+                            img.src = image.url;
+                          });
+                        }
+                      } catch (error) {
+                        console.error("Error prefetching project:", error);
+                      }
+                    }}
+                  >
+                    <motion.img
+                      src={primaryImage.url}
+                      alt={project.name}
+                      className="w-[400px] h-[350px] object-cover rounded-sm p-2 mb-2"
+                    />
+                    <div className="px-2 mb-2">
+                      <div className="flex gap-2 flex-wrap">
+                        <motion.span
+                          className="px-2 py-1 bg-white/10 backdrop-blur-sm rounded-xl text-white text-sm tracking-tight mt-2"
+                          initial={{ opacity: 1 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {project.category}
+                        </motion.span>
+                        <motion.span
+                          className="px-2 py-1 bg-white/10 backdrop-blur-sm rounded-xl text-white text-sm tracking-tight mt-2"
+                          initial={{ opacity: 1 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {project.projectType}
+                        </motion.span>
+                      </div>
+                      <motion.div
+                        className="flex items-center justify-between text-white"
+                        initial={{ opacity: 1 }}
+                        animate={{ opacity: 1 }}
+                      >
+                        <h3 className="text-xl tracking-tighter mb-2 mt-2">
+                          {project.name}
+                        </h3>
+                        <ArrowUpRight className="w-5 h-5" />
+                      </motion.div>
+                    </div>
+                    <motion.div className="absolute -top-1 -left-1 w-4 h-4 border-l-1 border-t-1 border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <motion.div className="absolute -top-1 -right-1 w-4 h-4 border-r-1 border-t-1 border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <motion.div className="absolute -bottom-1 -left-1 w-4 h-4 border-l-1 border-b-1 border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <motion.div className="absolute -bottom-1 -right-1 w-4 h-4 border-r-1 border-b-1 border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
