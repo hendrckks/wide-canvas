@@ -64,11 +64,11 @@ const Gallery = () => {
   // Handle navigation with scroll reset
   const handleNavigateToProject = (slug: string) => {
     // Force scroll to top before navigation
-    window.scrollTo({ top: 0, behavior: "instant" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
     // Use setTimeout to ensure scroll happens before navigation
     setTimeout(() => {
       navigate(`/project/${slug}`);
-    }, 200);
+    }, 150);
   };
 
   return (
