@@ -24,12 +24,15 @@ const AlbumView = () => {
   const imageY = useTransform(scrollY, [0, 1000], [0, 10]);
   const contentY = useTransform(scrollY, [0, 1000], [0, -400]);
 
+  // Always scroll to top when component mounts or slug changes
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: "instant",
+      behavior: "smooth",
     });
+  }, [slug]);
 
+  useEffect(() => {
     const fetchProject = async () => {
       if (!slug) return;
       try {
@@ -54,6 +57,8 @@ const AlbumView = () => {
     return (
       <LoadingScreen
         onLoadingComplete={() => {
+          // This isn't needed anymore since we're already scrolling at the component mount
+          // but keeping it for backwards compatibility
           window.scrollTo({
             top: 0,
             behavior: "instant",

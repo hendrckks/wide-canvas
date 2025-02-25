@@ -16,10 +16,11 @@ const Gallery = () => {
         const projectsMap = await getProjects();
         const projectsArray = Array.from(projectsMap.values());
         const projects = projectsArray.slice(0, 5);
-        
+
         // Prefetch and cache images
-        projects.forEach(project => {
-          const primaryImage = project.images.find(img => img.isPrimary) || project.images[0];
+        projects.forEach((project) => {
+          const primaryImage =
+            project.images.find((img) => img.isPrimary) || project.images[0];
           if (primaryImage?.url) {
             const img = new Image();
             img.src = primaryImage.url;
@@ -36,18 +37,45 @@ const Gallery = () => {
   }, []);
 
   // Pre-calculate transform values for each image
-  const transform1 = useTransform(scrollY, [0, 1000], [0, -50], { clamp: false });
-  const transform2 = useTransform(scrollY, [500, 1500], [0, -50], { clamp: false });
-  const transform3 = useTransform(scrollY, [1000, 2000], [0, -50], { clamp: false });
-  const transform4 = useTransform(scrollY, [1500, 2500], [0, -50], { clamp: false });
-  const transform5 = useTransform(scrollY, [2000, 3000], [0, -50], { clamp: false });
+  const transform1 = useTransform(scrollY, [0, 1000], [0, -50], {
+    clamp: false,
+  });
+  const transform2 = useTransform(scrollY, [500, 1500], [0, -50], {
+    clamp: false,
+  });
+  const transform3 = useTransform(scrollY, [1000, 2000], [0, -50], {
+    clamp: false,
+  });
+  const transform4 = useTransform(scrollY, [1500, 2500], [0, -50], {
+    clamp: false,
+  });
+  const transform5 = useTransform(scrollY, [2000, 3000], [0, -50], {
+    clamp: false,
+  });
 
-  const transforms = [transform1, transform2, transform3, transform4, transform5];
+  const transforms = [
+    transform1,
+    transform2,
+    transform3,
+    transform4,
+    transform5,
+  ];
+
+  // Handle navigation with scroll reset
+  const handleNavigateToProject = (slug: string) => {
+    // Force scroll to top before navigation
+    window.scrollTo({ top: 0, behavior: "instant" });
+    // Use setTimeout to ensure scroll happens before navigation
+    setTimeout(() => {
+      navigate(`/project/${slug}`);
+    }, 100);
+  };
 
   return (
     <div className="relative min-h-[380vh] h-full transparent">
       {projects.map((project, index) => {
-        const primaryImage = project.images.find((img) => img.isPrimary) || project.images[0];
+        const primaryImage =
+          project.images.find((img) => img.isPrimary) || project.images[0];
         return (
           <motion.div
             key={index}
@@ -72,20 +100,22 @@ const Gallery = () => {
               className="group relative cursor-pointer"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
-              onClick={() => navigate(`/project/${project.slug}`)}
+              onClick={() => handleNavigateToProject(project.slug)}
               onMouseEnter={async () => {
                 try {
                   const projectsMap = await getProjects();
-                  const hoveredProject = Array.from(projectsMap.values()).find(p => p.slug === project.slug);
+                  const hoveredProject = Array.from(projectsMap.values()).find(
+                    (p) => p.slug === project.slug
+                  );
                   if (hoveredProject) {
                     // Prefetch all project images
-                    hoveredProject.images.forEach(image => {
+                    hoveredProject.images.forEach((image) => {
                       const img = new Image();
                       img.src = image.url;
                     });
                   }
                 } catch (error) {
-                  console.error('Error prefetching project:', error);
+                  console.error("Error prefetching project:", error);
                 }
               }}
             >
