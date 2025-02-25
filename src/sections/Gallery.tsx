@@ -68,7 +68,7 @@ const Gallery = () => {
     // Use setTimeout to ensure scroll happens before navigation
     setTimeout(() => {
       navigate(`/project/${slug}`);
-    }, 100);
+    }, 0);
   };
 
   return (
