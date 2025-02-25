@@ -94,8 +94,9 @@ const Footer = () => {
         something, just ask—filmmakers appreciate a good collaboration more than
         a good lawsuit.
       </p>
-      <div className="text-white/80 text-xs tracking-tight text-start">
-        © 2025 Wide Canvas. All rights reserved.
+      <div className="text-[#808080] text-xs tracking-tight font-medium text-center">
+        © 2025 Wide Canvas | Live to Put Memories
+        <br /> in a Wide Canvas. | All rights reserved.
       </div>
     </div>
   );
