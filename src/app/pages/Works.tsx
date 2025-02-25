@@ -66,7 +66,7 @@ const Works = () => {
     // Use setTimeout to ensure scroll happens before navigation
     setTimeout(() => {
       navigate(`/project/${slug}`);
-    }, 150);
+    }, 50);
   };
 
   return (
