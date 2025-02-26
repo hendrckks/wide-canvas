@@ -70,7 +70,7 @@ const Works = () => {
   };
 
   return (
-    <div className="relative h-full bg-black">
+    <div className="relative h-full dark:bg-black/5 bg-white/95 dark:backdrop-blur-none backdrop-blur-sm">
       <motion.div
         ref={headerRef}
         initial={{ opacity: 0, y: 30 }}
@@ -86,7 +86,7 @@ const Works = () => {
           <div className="flex-1 flex items-center justify-center">
             Selected Works
           </div>
-          <p className="text-white/80 text-xs font-medium flex items-center absolute bottom-10 tracking-normal">
+          <p className="dark:text-white/80 text-black text-xs font-medium flex items-center absolute bottom-10 tracking-normal">
             [
             <motion.span
               animate={{
@@ -106,9 +106,9 @@ const Works = () => {
       </motion.div>
       <div
         ref={projectsRef}
-        className="relative z-10 bg-black/90 backdrop-blur-sm py-20 px-4 sm:px-5 md:px-5 lg:px-5 -mt-screen"
+        className="relative z-10 dark:bg-black/90 bg-white backdrop-blur-sm py-20 px-4 sm:px-5 md:px-5 lg:px-5 -mt-screen"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {projects.map((project, index) => {
             const primaryImage =
               project.images.find((img) => img.isPrimary) || project.images[0];
@@ -155,14 +155,14 @@ const Works = () => {
                   <div className="px-2 mb-2">
                     <div className="flex gap-2 flex-wrap">
                       <motion.span
-                        className="px-2 py-1 bg-white/10 backdrop-blur-sm rounded-xl text-white text-sm tracking-tight mt-2"
+                        className="px-2 py-1 dark:bg-white/10 bg-black/10 backdrop-blur-sm rounded-xl text-sm tracking-tight mt-2"
                         initial={{ opacity: 1 }}
                         animate={{ opacity: 1 }}
                       >
                         {project.category}
                       </motion.span>
                       <motion.span
-                        className="px-2 py-1 bg-white/10 backdrop-blur-sm rounded-xl text-white text-sm tracking-tight mt-2"
+                        className="px-2 py-1 dark:bg-white/10 bg-black/10 backdrop-blur-sm rounded-xl text-sm tracking-tight mt-2"
                         initial={{ opacity: 1 }}
                         animate={{ opacity: 1 }}
                       >
@@ -170,7 +170,7 @@ const Works = () => {
                       </motion.span>
                     </div>
                     <motion.div
-                      className="flex items-center justify-between text-white"
+                      className="flex items-center justify-between dark:text-white text-black"
                       initial={{ opacity: 1 }}
                       animate={{ opacity: 1 }}
                     >
@@ -180,10 +180,10 @@ const Works = () => {
                       <ArrowUpRight className="w-6 h-6" />
                     </motion.div>
                   </div>
-                  <motion.div className="absolute -top-1 -left-1 w-4 h-4 border-l-1 border-t-1 border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <motion.div className="absolute -top-1 -right-1 w-4 h-4 border-r-1 border-t-1 border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <motion.div className="absolute -bottom-1 -left-1 w-4 h-4 border-l-1 border-b-1 border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <motion.div className="absolute -bottom-1 -right-1 w-4 h-4 border-r-1 border-b-1 border-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <motion.div className="absolute -top-1 -left-1 w-4 h-4 border-l-1 border-t-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <motion.div className="absolute -top-1 -right-1 w-4 h-4 border-r-1 border-t-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <motion.div className="absolute -bottom-1 -left-1 w-4 h-4 border-l-1 border-b-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <motion.div className="absolute -bottom-1 -right-1 w-4 h-4 border-r-1 border-b-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </motion.div>
               </motion.div>
             );

@@ -264,11 +264,13 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={(isPlayable && isLoaded) ? toggleFullscreen : undefined}
+                  onClick={
+                    isPlayable && isLoaded ? toggleFullscreen : undefined
+                  }
                   className={`p-5 rounded-full bg-white/5 hover:${
-                    (isPlayable && isLoaded) ? "bg-white/10" : "bg-white/5"
+                    isPlayable && isLoaded ? "bg-white/10" : "bg-white/5"
                   } transition-colors backdrop-blur-xs absolute z-50 ${
-                    (isPlayable && isLoaded) ? "cursor-pointer" : "cursor-default"
+                    isPlayable && isLoaded ? "cursor-pointer" : "cursor-default"
                   } relative`}
                   disabled={!(isPlayable && isLoaded)}
                 >
@@ -285,10 +287,10 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
                   />
                 </motion.button>
               </div>
-              <motion.div className="absolute top-0 left-0 w-4 h-4 border-l border-t border-white/90" />
-              <motion.div className="absolute top-0 right-0 w-4 h-4 border-r border-t border-white/90" />
-              <motion.div className="absolute bottom-0 left-0 w-4 h-4 border-l border-b border-white/90" />
-              <motion.div className="absolute bottom-0 right-0 w-4 h-4 border-r border-b border-white/90" />
+              <motion.div className="absolute top-0 left-0 w-4 h-4 border-l border-t dark:border-white/90 border-black" />
+              <motion.div className="absolute top-0 right-0 w-4 h-4 border-r border-t dark:border-white/90 border-black" />
+              <motion.div className="absolute bottom-0 left-0 w-4 h-4 border-l border-b dark:border-white/90 border-black" />
+              <motion.div className="absolute bottom-0 right-0 w-4 h-4 border-r border-b dark:border-white/90 border-black" />
             </motion.div>
           )}
         </AnimatePresence>

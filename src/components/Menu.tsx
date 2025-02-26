@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
+import { useTheme } from "../contexts/ThemeContext";
 
 interface MenuProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface MenuProps {
 }
 
 const Menu = ({ isOpen, onClose }: MenuProps) => {
+  const { theme } = useTheme();
   const menuItems = [
     { title: "HOME", path: "/" },
     { title: "ABOUT", path: "/about" },
@@ -36,15 +38,15 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="fixed inset-0 w-screen bg-black z-50"
         >
-          <div className="mx-auto px-3 sm:px-4 md:px-6 lg:px-8 fixed top-0 left-0 z-50 py-3 sm:py-4 h-screen w-screen flex flex-col justify-between bg-black">
+          <div className="mx-auto px-3 sm:px-4 md:px-6 lg:px-8 fixed top-0 left-0 z-50 py-3 sm:py-4 h-screen w-screen flex flex-col justify-between dark:bg-black bg-white">
             <div className="flex justify-between items-center w-full">
               <Link to="/">
-                <img src="/wc1.png" className="h-6" />
+                <img src={theme === "dark" ? "/wc1.png" : "/WCBLACK.png"} className="h-6" />
               </Link>
               <div className="flex items-center gap-3 sm:gap-6 md:gap-8 leading-3.5">
                 <button
                   onClick={onClose}
-                  className="text-[10px] sm:text-xs px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 flex gap-1 sm:gap-2 items-center rounded-full border text-white border-white/40 relative overflow-hidden group transition-colors duration-200 hover:border-transparent cursor-pointer"
+                  className="text-[10px] sm:text-xs px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 flex gap-1 sm:gap-2 items-center rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-colors duration-200 cursor-pointer"
                   style={{ isolation: "isolate" }}
                 >
                   <span className="relative z-10 group-hover:text-black transition-colors duration-200 flex items-center gap-1 sm:gap-2">
@@ -54,7 +56,7 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
                 </button>
                 <button
                   onClick={handleWatchTrailer}
-                  className="text-[10px] sm:text-xs px-4 sm:px-6 md:px-8 py-1.5 sm:py-2 flex gap-1 sm:gap-2 items-center rounded-full border text-white border-white/40 relative overflow-hidden group transition-colors duration-200 hover:border-black cursor-pointer"
+                  className="text-[10px] sm:text-xs px-4 sm:px-6 md:px-8 py-1.5 sm:py-2 flex gap-1 sm:gap-2 items-center rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-colors duration-200 cursor-pointer"
                   style={{
                     isolation: "isolate",
                   }}
@@ -92,9 +94,9 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
                         ${
                           location.pathname === item.path
                             ? "text-[#ff6017]"
-                            : "text-white"
+                            : "dark:text-white text-black/80"
                         }
-                        hover:text-white/40
+                        dark:hover:text-white/40 hover:text-black/40
                       `}
                     >
                       {item.title}
@@ -105,8 +107,9 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
               </motion.ul>
             </nav>
 
-            <div className="text-white/50 text-xs tracking-tight text-start mb-10">
-              © 2025 Wide Canvas. All rights reserved.
+            <div className="text-[#808080] text-xs tracking-tight font-medium text-start">
+              © 2025 Wide Canvas | Live to Put Memories
+              <br /> in a Wide Canvas. | All rights reserved.
             </div>
           </div>
         </motion.div>

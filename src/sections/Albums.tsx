@@ -45,7 +45,7 @@ const Albums = () => {
   }, []);
 
   return (
-    <div className="relative h-full bg-black">
+    <div className="relative h-full dark:bg-black bg-white ">
       <motion.div
         ref={albumsRef}
         initial={{ opacity: 0, y: 30 }}
@@ -58,7 +58,7 @@ const Albums = () => {
         }}
       >
         <div className="flex flex-col items-center justify-center h-full">
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex items-center dark:font-normal font-medium justify-center">
             Albums
           </div>
           <p className="text-white/80 text-xs font-medium flex items-center absolute bottom-10 tracking-normal">

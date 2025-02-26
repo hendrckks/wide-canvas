@@ -5,27 +5,35 @@
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
-  font-family: 'ClashDisplay';
-  src: url('/fonts/ClashDisplay/ClashDisplay-Regular.woff2') format('woff2'),
-       url('/fonts/ClashDisplay/ClashDisplay-Regular.woff') format('woff');
+  font-family: "ClashDisplay";
+  src: url("/fonts/ClashDisplay/ClashDisplay-Regular.woff2") format("woff2"),
+    url("/fonts/ClashDisplay/ClashDisplay-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sentient";
+  src: url("/Sentient-Italic.woff2") format("woff2"),
+    url("/Sentient-Italic.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'ClashDisplay';
-  src: url('/fonts/ClashDisplay/ClashDisplay-Medium.woff2') format('woff2'),
-       url('/fonts/ClashDisplay/ClashDisplay-Medium.woff') format('woff');
+  font-family: "ClashDisplay";
+  src: url("/fonts/ClashDisplay/ClashDisplay-Medium.woff2") format("woff2"),
+    url("/fonts/ClashDisplay/ClashDisplay-Medium.woff") format("woff");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'ClashDisplay';
-  src: url('/fonts/ClashDisplay/ClashDisplay-Bold.woff2') format('woff2'),
-       url('/fonts/ClashDisplay/ClashDisplay-Bold.woff') format('woff');
+  font-family: "ClashDisplay";
+  src: url("/fonts/ClashDisplay/ClashDisplay-Bold.woff2") format("woff2"),
+    url("/fonts/ClashDisplay/ClashDisplay-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -34,6 +42,7 @@
 @theme {
   --font-clash: "ClashDisplay", sans-serif;
   --font-display: "Libre Franklin", "sans-serif";
+  --font-sentient: "Sentient", "sans-serif";
 }
 
 :root {

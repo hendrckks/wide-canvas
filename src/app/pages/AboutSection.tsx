@@ -1,6 +1,6 @@
 export default function AboutSection() {
   return (
-    <main className="min-h-screen bg-black p-20 text-white">
+    <main className="min-h-screen dark:bg-black bg-white p-20 dark:text-white text-black">
       {/* Hero Section with Video Background */}
 
       {/* About Section */}

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useTheme } from "../contexts/ThemeContext";
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
@@ -7,6 +8,7 @@ interface LoadingScreenProps {
 
 const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
   const [progress, setProgress] = useState(0);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const videos = ["/shotfilm.mp4", "/trailer.mp4"];
@@ -105,17 +107,17 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
       exit={{ opacity: 1, scaleY: 0 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       style={{ transformOrigin: "bottom" }}
-      className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center"
+      className={`fixed inset-0 ${theme === "dark" ? "bg-black" : "bg-white"} z-50 flex flex-col items-center justify-center`}
     >
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-4xl md:text-6xl text-white font-medium italic mb-8"
+        className={`text-4xl md:text-6xl ${theme === "dark" ? "text-white" : "text-black"} font-medium italic mb-8`}
       >
-        WIDE CANVAS
+        ~WIDECANVAS~
       </motion.h1>
-      <div className="w-48 h-[2px] bg-white/20 relative overflow-hidden">
+      <div className={`w-48 h-[2px] ${theme === "dark" ? "bg-white/20" : "bg-black/20"} relative overflow-hidden`}>
         <motion.div
           className="absolute inset-0 bg-[#ff6017]"
           initial={{ scaleX: 0 }}
@@ -128,7 +130,7 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-white/60 text-sm mt-4"
+        className={`${theme === "dark" ? "text-white/60" : "text-black/60"} text-sm mt-4`}
       >
         {Math.round(progress)}%
       </motion.p>
