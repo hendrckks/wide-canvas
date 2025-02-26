@@ -96,7 +96,16 @@ const Hero = () => {
           Professional photography and cinematography studio based in Kenya
         </motion.p>
       </motion.div>
-      <div className="mt-6 md:mt-9 flex flex-col sm:flex-row gap-4 sm:gap-8 leading-3.5 px-4 md:px-0">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.8,
+          delay: 1.2,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className="mt-6 md:mt-9 flex flex-col sm:flex-row gap-4 sm:gap-8 leading-3.5 px-4 md:px-0"
+      >
         <Link
           to="/contact"
           className="text-xs flex items-center px-6 sm:px-8 py-2 font-medium rounded-full border text-white dark:bg-transparent bg-black hover:text-black dark:border-white/40 border-black/40 relative overflow-hidden group transition-colors duration-200 hover:border-transparent cursor-pointer w-full sm:w-auto"
@@ -117,15 +126,24 @@ const Hero = () => {
             <ArrowUpRight size={16} className="sm:w-5 sm:h-5" />
           </span>
         </button>
-      </div>
-      <div className="my-8 md:my-12 w-full max-w-[90vw] md:max-w-[900px] aspect-[16/9] max-h-[675px]">
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.8,
+          delay: 1.4,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className="my-8 md:my-12 w-full max-w-[90vw] md:max-w-[900px] aspect-[16/9] max-h-[675px]"
+      >
         <VideoPlayer
           ref={videoPlayerRef}
           src="/shotfilm.mp4"
           trailerSrc="/trailer.mp4"
           className="w-full h-full p-2"
         />
-      </div>
+      </motion.div>
       <p className="text-white/80 text-xs mt-10 font-medium flex items-center">
         [
         <motion.span

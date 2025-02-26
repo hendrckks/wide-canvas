@@ -14,7 +14,7 @@ const Overlay = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
-        className="text-6xl font-medium text-[#141414] text-center tracking-tighter mt-16 mb-16"
+        className="text-6xl font-medium text-[#141414] text-center tracking-tighter mb-16"
       >
         <motion.span
           initial={{ opacity: 0, y: 30 }}
@@ -92,7 +92,7 @@ const Overlay = () => {
                     transition={{ duration: 0.4, delay: index * 0.1 + 0.1 }}
                     src={course.titleImage}
                     alt={course.title}
-                    className="h-9 object-contain"
+                    className="h-9 object-cover"
                   />
                 </div>
                 <motion.p
