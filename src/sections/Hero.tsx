@@ -22,50 +22,80 @@ const Hero = () => {
       className="h-full py-28 md:py-32 flex flex-col justify-center items-center text-center dark:text-white text-black text-4xl sm:text-6xl lg:text-[85px] dark:bg-black bg-white"
     >
       <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
+        className="flex flex-col items-center"
       >
-        <motion.p className="max-w-[90vw] md:max-w-[75vw] line-clamp-6 leading-tight md:leading-[62px] tracking-tighter px-4 md:px-0">
-          <motion.span
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-[90vw] md:max-w-[75vw] line-clamp-6 leading-tight md:leading-[62px] tracking-tighter px-4 md:px-0"
+        >
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.2,
+              ease: [0.22, 1, 0.36, 1],
+            }}
           >
-            We’re not just here to <br />
+            We're not just here to <br />
             make
             <span className="font-sentient italic ml-4 text-8xl tracking-tighter font-light">
               memories
             </span>
-          </motion.span>
-          <br />
-          <motion.span
+          </motion.div>
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.4,
+              ease: [0.22, 1, 0.36, 1],
+            }}
           >
-            we’re here to put them <br />
-          </motion.span>
-          on a
-          <br />
-          <motion.span
+            we're here to put them <br />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.8,
+                delay: 0.6,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              on a
+            </motion.div>
+          </motion.div>
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.8,
+              ease: [0.22, 1, 0.36, 1],
+            }}
             className="text-[#ff6017] italic"
           >
             ~ Widecanvas ~
-          </motion.span>
+          </motion.div>
+        </motion.div>
+        <motion.p
+          className="text-base sm:text-lg mb-2 dark:text-white/80 text-black/80 font-medium mt-6 md:mt-9 h-fit px-4 md:px-0"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.8,
+            delay: 1,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
+          Professional photography and cinematography studio based in Kenya
         </motion.p>
       </motion.div>
-      <motion.p
-        className="text-base sm:text-lg mb-2 dark:text-white/80 text-black/80 font-medium mt-6 md:mt-9 h-fit px-4 md:px-0"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.8 }}
-      >
-        Professional photography and cinematography studio based in Kenya
-      </motion.p>
       <div className="mt-6 md:mt-9 flex flex-col sm:flex-row gap-4 sm:gap-8 leading-3.5 px-4 md:px-0">
         <Link
           to="/contact"
