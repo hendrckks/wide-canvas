@@ -63,7 +63,7 @@ const Metrics = () => {
             }}
             className={`p-8 border dark:border-white/10 border-black/20 rounded-md ${
               metric.colSpan === 2 ? 'col-span-2' : 'col-span-1'
-            } bg-white/4 backdrop-blur-lg`}
+            } dark:bg-white/4 bg-black/4 backdrop-blur-lg`}
           >
             <h3 className="dark:text-white/70 text-black/80 text-base mb-2 border-b dark:border-b-white/20 border-b-black/20 py-3 font-medium">
               {metric.title}

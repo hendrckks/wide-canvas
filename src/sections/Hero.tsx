@@ -45,8 +45,8 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             we’re here to put them <br />
-            on a
           </motion.span>
+          on a
           <br />
           <motion.span
             initial={{ opacity: 0, y: 20 }}
