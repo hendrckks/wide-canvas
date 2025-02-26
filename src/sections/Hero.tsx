@@ -49,7 +49,7 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="text-[#ff6017] italic"
           >
-            ~ Wide Canvas ~
+            ~ Widecanvas ~
           </motion.span>
         </motion.p>
       </motion.div>
