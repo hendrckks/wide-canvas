@@ -12,7 +12,7 @@ const Footer = () => {
           href="mailto:info@aodfilm.com"
           className="text-black p-3 bg-white hover:bg-[#ff6017] transition-colors duration-200 font-semibold"
         >
-          info@aodfilm.com
+          info@emailfilm.com
         </a>
         <div className="flex justify-center space-x-4 mt-4">
           <Link
