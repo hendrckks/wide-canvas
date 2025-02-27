@@ -89,7 +89,7 @@ const Hero = () => {
               delay: 1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="text-[#ff6017] text-[85px] leading-20 tracking-tighter italic"
+            className="text-[#ff6017] text-[80px] leading-16 tracking-tighter italic"
           >
             ~ Widecanvas ~
           </motion.div>
