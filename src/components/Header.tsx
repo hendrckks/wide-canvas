@@ -58,7 +58,7 @@ const Header = () => {
       <div className="flex items-center gap-3 sm:gap-4 md:gap-4 leading-3.5">
         <button
           onClick={() => setIsMenuOpen(true)}
-          className="text-[10px] sm:text-xs flex items-center px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 font-medium rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-colors duration-200 cursor-pointer"
+          className="text-[10px] sm:text-xs shadow-md  hover:scale-[1.05] flex items-center px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 font-medium rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-all duration-200 cursor-pointer"
           style={{
             isolation: "isolate",
           }}
@@ -70,7 +70,7 @@ const Header = () => {
         </button>
         <button
           onClick={handleWatchTrailer}
-          className="text-[10px] sm:text-xs px-4 sm:px-6 md:px-8 py-1.5 sm:py-2 flex gap-1 sm:gap-2 items-center rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 relative overflow-hidden group transition-colors duration-200 hover:border-black cursor-pointer"
+          className="text-[10px] sm:text-xs hover:scale-[1.05] shadow-md px-4 sm:px-6 md:px-8 py-1.5 sm:py-2 flex gap-1 sm:gap-2 items-center rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 relative overflow-hidden group transition-all duration-200 hover:border-black cursor-pointer"
           style={{
             isolation: "isolate",
           }}
@@ -83,7 +83,7 @@ const Header = () => {
         </button>
         <button
           onClick={toggleTheme}
-          className="text-[10px] sm:text-xs flex items-center px-3 sm:px-4 md:px-4 py-1.5 sm:py-2 font-medium rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-colors duration-200 cursor-pointer"
+          className="text-[10px] sm:text-xs hover:scale-[1.04] shadow-md flex items-center px-3 sm:px-4 md:px-4 py-1.5 sm:py-2 font-medium rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-all duration-200 cursor-pointer"
           style={{ isolation: "isolate" }}
         >
           <span className="relative z-10 group-hover:text-black transition-colors duration-200 flex items-center gap-1">

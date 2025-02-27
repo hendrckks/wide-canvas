@@ -19,7 +19,7 @@ const Hero = () => {
   return (
     <div
       id="hero"
-      className="h-full py-28 md:py-32 flex flex-col justify-center items-center text-center dark:text-white text-black text-4xl sm:text-6xl lg:text-[85px] dark:bg-black bg-white"
+      className="h-full py-28 md:py-32 flex flex-col justify-center items-center text-center dark:text-white text-black text-4xl sm:text-6xl lg:text-[70px] dark:bg-black bg-white"
     >
       <motion.div
         initial={{ opacity: 0 }}
@@ -31,7 +31,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-[90vw] md:max-w-[75vw] line-clamp-6 leading-tight md:leading-[62px] tracking-tighter px-4 md:px-0"
+          className="max-w-[90vw] md:max-w-[75vw] line-clamp-6 leading-tight md:leading-[58px] tracking-tighter px-4 md:px-0"
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -42,11 +42,7 @@ const Hero = () => {
               ease: [0.22, 1, 0.36, 1],
             }}
           >
-            We're not just here to <br />
-            make
-            <span className="font-sentient italic ml-4 text-8xl tracking-tighter font-light">
-              memories
-            </span>
+            We're not just here to
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -56,6 +52,21 @@ const Hero = () => {
               delay: 0.4,
               ease: [0.22, 1, 0.36, 1],
             }}
+            className="font-sentient italic text-[80px] tracking-tighter font-light"
+          >
+            <span className="font-display text-[70px] font-normal mr-4 not-italic">
+              make
+            </span>
+            memories
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.6,
+              ease: [0.22, 1, 0.36, 1],
+            }}
           >
             we're here to put them <br />
             <motion.div
@@ -63,7 +74,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.8,
-                delay: 0.6,
+                delay: 0.8,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
@@ -75,21 +86,21 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.8,
-              delay: 0.8,
+              delay: 1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="text-[#ff6017] italic"
+            className="text-[#ff6017] text-[85px] leading-20 tracking-tighter italic"
           >
             ~ Widecanvas ~
           </motion.div>
         </motion.div>
         <motion.p
-          className="text-base sm:text-lg mb-2 dark:text-white/80 text-black/80 font-medium mt-6 md:mt-9 h-fit px-4 md:px-0"
+          className="text-base sm:text-lg mb-2 dark:text-white/80 text-black/80 font-medium mt-4 md:mt-5 h-fit px-4 md:px-0"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
             duration: 0.8,
-            delay: 1,
+            delay: 1.2,
             ease: [0.22, 1, 0.36, 1],
           }}
         >
@@ -101,14 +112,14 @@ const Hero = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{
           duration: 0.8,
-          delay: 1.2,
+          delay: 1.4,
           ease: [0.22, 1, 0.36, 1],
         }}
         className="mt-6 md:mt-9 flex flex-col sm:flex-row gap-4 sm:gap-8 leading-3.5 px-4 md:px-0"
       >
         <Link
           to="/contact"
-          className="text-xs flex items-center px-6 sm:px-8 py-2 font-medium rounded-full border text-white dark:bg-transparent bg-black hover:text-black dark:border-white/40 border-black/40 relative overflow-hidden group transition-colors duration-200 hover:border-transparent cursor-pointer w-full sm:w-auto"
+          className="text-xs shadow-xl hover:scale-[1.05] transform transition-all duration-200 flex items-center px-6 sm:px-8 py-2 font-medium rounded-full border text-white dark:bg-transparent bg-black hover:text-black dark:border-white/40 border-black/40 relative overflow-hidden group hover:border-transparent cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
           style={{
             isolation: "isolate",
           }}
@@ -119,12 +130,14 @@ const Hero = () => {
         </Link>
         <button
           onClick={handleWatchTrailer}
-          className="text-xs px-6 sm:px-8 py-2 flex gap-2 items-center justify-center rounded-full border dark:hover:border-white/80 border-black/80 dark:hover:bg-transparent hover:bg-black hover:text-white transition-colors duration-200 bg-white text-black cursor-pointer w-full sm:w-auto"
+          className="text-xs shadow-lg hover:scale-[1.05] transform transition-all duration-200 px-6 sm:px-8 py-2 flex gap-2 items-center justify-center rounded-full border dark:hover:border-white/80 border-black/80 relative overflow-hidden group hover:border-transparent bg-white text-black cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
+          style={{ isolation: "isolate" }}
         >
-          WATCH TRAILER
-          <span>
+          <span className="relative z-10 group-hover:text-white transition-colors duration-200 flex items-center gap-2">
+            WATCH TRAILER
             <ArrowUpRight size={16} className="sm:w-5 sm:h-5" />
           </span>
+          <div className="absolute inset-0 bg-black -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out group-hover:ease-in"></div>
         </button>
       </motion.div>
       <motion.div
@@ -132,7 +145,7 @@ const Hero = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{
           duration: 0.8,
-          delay: 1.4,
+          delay: 1.6,
           ease: [0.22, 1, 0.36, 1],
         }}
         className="my-8 md:my-12 w-full max-w-[90vw] md:max-w-[900px] aspect-[16/9] max-h-[675px]"
