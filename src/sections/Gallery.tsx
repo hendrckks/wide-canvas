@@ -82,18 +82,18 @@ const Gallery = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.3, delay: index * 0.1, ease: "easeOut" }}
+            transition={{ duration: 0.3, delay: index * 0.05, ease: "easeOut" }}
             style={{ y: transforms[index] }}
             className={`sm:absolute ${
               index === 0
                 ? "sm:left-1/2 sm:-translate-x-1/2 sm:top-[10%]"
                 : index === 1
-                ? "sm:left-[10%] sm:top-[35%]"
+                ? "sm:left-[8%] sm:top-[32%]"
                 : index === 2
                 ? "sm:right-[8%] sm:top-[38%]"
                 : index === 3
                 ? "sm:left-[20%] sm:top-[59%]"
-                : "sm:left-1/2 sm:-translate-x-1/2 sm:top-[85%]"
+                : "sm:left-1/2 sm:-translate-x-1/2 sm:top-[80%]"
             } mb-16`}
           >
             <motion.div
