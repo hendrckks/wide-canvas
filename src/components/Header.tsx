@@ -55,7 +55,7 @@ const Header = () => {
       <div className="flex items-center gap-2 sm:gap-3 md:gap-4 leading-3.5">
         <button
           onClick={() => setIsMenuOpen(true)}
-          className="text-[9px] sm:text-[10px] md:text-xs shadow-md hover:scale-[1.05] flex items-center px-3 sm:px-3 md:px-5 py-1.5 md:py-2 font-medium rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-all duration-200 cursor-pointer"
+          className="text-xs shadow-xl text-center hover:scale-[1.05] transform transition-all duration-350 flex items-center justify-center px-3 sm:px-4 md:px-6 py-2 font-medium rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group duration-200 cursor-pointer min-w-[70px] sm:min-w-[80px]"
           style={{
             isolation: "isolate",
           }}
@@ -67,20 +67,20 @@ const Header = () => {
         </button>
         <button
           onClick={handleWatchTrailer}
-          className="text-[9px] sm:text-[10px] md:text-xs hover:scale-[1.05] shadow-md px-3 sm:px-4 md:px-8 py-1.5 md:py-2 flex gap-1 sm:gap-2 items-center rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 relative overflow-hidden group transition-all duration-200 hover:border-black cursor-pointer"
+          className="text-xs shadow-lg hover:shadow-xl hover:scale-[1.05] transform transition-all duration-250 px-4 sm:px-5 md:px-8 py-2 flex gap-1 sm:gap-2 items-center justify-center rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 relative overflow-hidden group duration-200 hover:border-black cursor-pointer min-w-[120px] sm:min-w-[140px]"
           style={{
             isolation: "isolate",
           }}
         >
-          <span className="relative z-10 group-hover:text-black transition-colors duration-200 flex items-center gap-1 sm:gap-2">
+          <span className="relative z-10 group-hover:text-black transition-colors duration-200 flex items-center gap-1 sm:gap-2 whitespace-nowrap">
             WATCH TRAILER
-            <ArrowUpRight size={8} className="sm:w-3 sm:h-3 md:w-4 md:h-4" />
+            <ArrowUpRight size={10} className="w-4 h-4 sm:w-3 sm:h-3 md:w-4 md:h-4" />
           </span>
           <div className="absolute inset-0 bg-[#ff6017] -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out group-hover:ease-in"></div>
         </button>
         <button
           onClick={toggleTheme}
-          className="text-[9px] sm:text-[10px] md:text-xs hover:scale-[1.04] shadow-md flex items-center px-2 sm:px-3 md:px-4 py-1.5 md:py-2 font-medium rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-all duration-200 cursor-pointer"
+          className="hidden sm:flex text-[9px] sm:text-[10px] md:text-xs hover:scale-[1.04] shadow-md items-center px-3 sm:px-4 md:px-5 py-1.5 md:py-2 font-medium rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-all duration-200 cursor-pointer min-w-[70px] sm:min-w-[80px]"
           style={{ isolation: "isolate" }}
         >
           <span className="relative z-10 group-hover:text-black transition-colors duration-200 flex items-center gap-1">
