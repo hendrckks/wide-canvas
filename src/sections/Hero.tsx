@@ -95,7 +95,7 @@ const Hero = () => {
           </motion.div>
         </motion.div>
         <motion.p
-          className="text-base sm:text-lg mb-2 dark:text-white/80 text-black/80 font-medium mt-4 md:mt-5 h-fit px-4 md:px-0"
+          className="text-base sm:text-lg mb-2 dark:text-white/80 text-black/80 font-medium mt-4 md:mt-8 h-fit px-4 md:px-0"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
