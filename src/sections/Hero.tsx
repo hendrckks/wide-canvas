@@ -31,7 +31,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-[90vw] md:max-w-[75vw] line-clamp-6 leading-tight md:leading-[58px] tracking-tighter px-4 md:px-0"
+          className="max-w-[90vw] md:max-w-[75vw] line-clamp-6 leading-tight md:leading-[60px] tracking-tighter px-4 md:px-0"
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
