@@ -119,24 +119,25 @@ const Hero = () => {
       >
         <Link
           to="/contact"
-          className="text-xs shadow-xl hover:scale-[1.05] transform transition-all duration-200 flex items-center px-6 sm:px-8 py-2 font-medium rounded-full border text-white dark:bg-transparent bg-black hover:text-black dark:border-white/40 border-black/40 relative overflow-hidden group hover:border-transparent cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
+          className="text-xs shadow-xl hover:shadow-xl hover:scale-[1.05] transform transition-all duration-350 flex items-center px-6 sm:px-8 py-2 font-medium rounded-full border text-white dark:bg-transparent bg-black hover:text-black dark:border-white/40 border-black/40 relative overflow-hidden group hover:border-transparent cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
           style={{
             isolation: "isolate",
           }}
         >
           LET'S CREATE
-          <span className="relative z-10 group-hover:text-black transition-colors duration-200"></span>
+          <span className="relative z-10 group-hover:text-black transition-colors duration-250"></span>
           <div className="absolute inset-0 bg-[#ff6017] -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out group-hover:ease-in"></div>
         </Link>
         <button
           onClick={handleWatchTrailer}
-          className="text-xs shadow-lg hover:scale-[1.05] transform transition-all duration-200 px-6 sm:px-8 py-2 flex gap-2 items-center justify-center rounded-full border dark:hover:border-white/80 border-black/80 relative overflow-hidden group hover:border-transparent bg-white text-black cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
+          className="text-xs shadow-lg hover:shadow-xl hover:scale-[1.05] transform transition-all duration-250 px-6 sm:px-8 py-2 flex gap-2 items-center justify-center rounded-full border dark:hover:border-white/80 border-black/80 relative overflow-hidden group hover:border-transparent bg-white text-black cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
           style={{ isolation: "isolate" }}
         >
-          <span className="relative z-10 group-hover:text-white transition-colors duration-200 flex items-center gap-2">
+          <span className="relative z-10 group-hover:text-white transition-colors duration-350 flex items-center gap-2">
             WATCH TRAILER
             <ArrowUpRight size={16} className="sm:w-5 sm:h-5" />
           </span>
+          <span className="relative z-10 group-hover:text-black transition-colors duration-250"></span>
           <div className="absolute inset-0 bg-black -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out group-hover:ease-in"></div>
         </button>
       </motion.div>
