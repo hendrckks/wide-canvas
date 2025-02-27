@@ -83,13 +83,13 @@ const FAQ = () => {
         style={{
           filter: `blur(${blurAmount}px)`,
         }}
-        className="sticky top-0 h-screen flex flex-col items-center justify-between py-20 text-6xl sm:text-7xl md:text-8xl lg:text-7xl italic text-[#ff6017] tracking-tighter z-10 dark:bg-black/5 bg-white/95 dark:backdrop-blur-none backdrop-blur-sm"
+        className="sticky top-0 h-screen flex flex-col items-center justify-between py-12 sm:py-16 md:py-20 text-4xl sm:text-6xl md:text-6xl lg:text-7xl italic text-[#ff6017] tracking-tighter z-10 dark:bg-black/5 bg-white/95 dark:backdrop-blur-none backdrop-blur-sm"
       >
-        <div className="flex flex-col items-center justify-center h-full">
-          <div className="flex-1 flex items-center justify-center">
-            Frequently Asked questions
+        <div className="flex flex-col items-center justify-center h-full px-4 sm:px-6">
+          <div className="flex-1 flex items-center justify-center text-center">
+            Frequently Asked Questions
           </div>
-          <p className="dark:text-white/80 text-black text-xs font-medium flex items-center absolute bottom-10 tracking-normal">
+          <p className="dark:text-white/80 text-black text-[10px] sm:text-xs font-medium flex items-center absolute bottom-8 sm:bottom-10 tracking-normal">
             [
             <motion.span
               animate={{
@@ -101,7 +101,7 @@ const FAQ = () => {
                 ease: "easeInOut",
               }}
             >
-              <ArrowDown size={16} />
+              <ArrowDown size={12} className="sm:w-4 sm:h-4" />
             </motion.span>
             KEEP SCROLLING ]
           </p>
@@ -110,7 +110,7 @@ const FAQ = () => {
 
       <div
         ref={questionsRef}
-        className="relative z-20 dark:bg-black bg-white dark:text-white text-black py-20 px-4 sm:px-6 md:px-8 lg:px-10"
+        className="relative z-20 dark:bg-black bg-white dark:text-white text-black py-12 sm:py-16 md:py-20 px-3 sm:px-4 md:px-6 lg:px-10"
       >
         <div className="max-w-5xl mx-auto">
           {faqData.map((item, index) => (
@@ -124,17 +124,17 @@ const FAQ = () => {
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full py-4 flex justify-between items-center text-left focus:outline-none group relative overflow-hidden"
+                className="w-full py-3 sm:py-4 flex justify-between items-center text-left focus:outline-none group relative overflow-hidden"
               >
-                <span className="text-xl sm:text-xl font-medium tracking-tight relative z-10">
+                <span className="text-lg sm:text-xl font-medium tracking-tight relative z-10 pr-2">
                   {item.question}
                 </span>
-                <div className="flex items-center gap-2 cursor-pointer relative z-10">
+                <div className="flex items-center gap-1 sm:gap-2 cursor-pointer relative z-10 flex-shrink-0">
                   <motion.span
                     initial={{ opacity: 0 }}
                     animate={{ opacity: openIndex === index ? 1 : 0 }}
                     transition={{ duration: 0.2 }}
-                    className="dark:text-white/60 text-black/60 text-sm dark:font-light font-normal"
+                    className="dark:text-white/60 text-black/60 text-xs sm:text-sm dark:font-light font-normal hidden sm:inline"
                   >
                     [ Show Less ]
                   </motion.span>
@@ -162,7 +162,7 @@ const FAQ = () => {
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <p className="pb-6 dark:text-white/60 text-black/60 text-sm leading-relaxed tracking-tight max-w-2xl w-full">
+                <p className="pb-4 sm:pb-6 dark:text-white/60 text-black/60 text-xs sm:text-sm leading-relaxed tracking-tight max-w-2xl w-full px-1">
                   {item.answer}
                 </p>
               </motion.div>

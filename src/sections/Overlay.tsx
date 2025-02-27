@@ -7,14 +7,14 @@ const Overlay = () => {
         position: "relative",
         zIndex: 30,
       }}
-      className="w-full h-full bg-[#ff7738] py-20 px-10"
+      className="w-full h-full bg-[#ff7738] py-10 sm:py-16 md:py-20 px-4 sm:px-6 md:px-10"
     >
       <motion.h2
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
-        className="text-6xl font-medium text-[#141414] text-center tracking-tighter mb-16"
+        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-[#141414] text-center tracking-tighter mb-8 sm:mb-12 md:mb-16"
       >
         <motion.span
           initial={{ opacity: 0, y: 30 }}
@@ -81,9 +81,9 @@ const Overlay = () => {
                 delay: index * 0.2,
                 ease: "easeOut",
               }}
-              className="w-full md:w-1/2 p-8 flex flex-col justify-between"
+              className="w-full md:w-1/2 sm:p-6 md:p-8 flex flex-col justify-between"
             >
-              <div className="py-4">
+              <div className="py-2 sm:py-3 md:py-4">
                 <div className="mb-2">
                   <motion.img
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -92,7 +92,7 @@ const Overlay = () => {
                     transition={{ duration: 0.4, delay: index * 0.1 + 0.1 }}
                     src={course.titleImage}
                     alt={course.title}
-                    className="h-9 object-cover"
+                    className="h-6 sm:h-7 md:h-9 object-cover"
                   />
                 </div>
                 <motion.p
@@ -100,7 +100,7 @@ const Overlay = () => {
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.4, delay: index * 0.2 + 0.2 }}
-                  className="text-[#141414] font-clash text-lg mb-6 max-w-2/3 font-medium tracking-tight leading-6"
+                  className="text-[#141414] font-clash text-base sm:text-lg mb-4 sm:mb-5 md:mb-6 max-w-2/3 font-medium tracking-tight leading-5 sm:leading-6"
                 >
                   {course.description}
                 </motion.p>
@@ -123,7 +123,7 @@ const Overlay = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 + 0.3 }}
-              className="w-full md:w-1/2 h-[300px] md:h-[400px] relative overflow-hidden p-8 group"
+              className="w-full md:w-1/2 h-[200px] sm:h-[250px] md:h-[300px] lg:h-[400px] relative overflow-hidden sm:p-6 md:p-8 group md:mb-0 mb-4"
             >
               <motion.div className="absolute top-5 left-5 w-4 h-4 border-l-2 border-t-2 border-black/90" />
               <motion.div className="absolute top-5 right-5 w-4 h-4 border-r-2 border-t-2 border-black/90" />

@@ -42,7 +42,7 @@ const Footer = () => {
         </div>
       </div>
       <p className="font-semibold text-lg mb-12">End credits</p>
-      <section className="grid grid-cols-2 gap-6 mb-10 max-w-xl">
+      <section className="grid grid-cols-2 gap-6 px-auto mb-10 max-w-xl">
         <h2 className="text-sm font-semibold">Media Curated by</h2>
         <div className="space-y-12">
           <p className="text-sm leading-relaxed font-semibold">WIDE CANVAS</p>
@@ -50,7 +50,7 @@ const Footer = () => {
       </section>
 
       {/* Film Categories Section */}
-      <section className="grid grid-cols-2 gap-4 mb-10 max-w-xl">
+      <section className="grid grid-cols-2 gap-4  mb-10 max-w-xl">
         <h2 className="text-sm w-fit font-semibold">
           Media Categories Featured
         </h2>
@@ -86,7 +86,7 @@ const Footer = () => {
       </section>
 
       <img src="/end.png" className="h-[40vh] mb-8" />
-      <p className="font-semibold text-sm text-white/80 max-w-xl text-center -mt-10 mb-16">
+      <p className="font-semibold text-sm text-white/80 max-w-xl text-center md:mx-0 mx-2 -mt-10 md:mb-16 mb-6">
         Any resemblance between the media showcased here and real life is purely
         coincidental… unless reality got a little too inspired.{" "}
         <br className="my-6" />
@@ -94,7 +94,7 @@ const Footer = () => {
         something, just ask—filmmakers appreciate a good collaboration more than
         a good lawsuit.
       </p>
-      <img src="/WIDELARGE2.png" className="max-h-48 h-full mb-12" />
+      <img src="/WIDELARGE2.png" className="max-h-48 h-full md:mb-12 mb-8" />
       <div className="text-[#808080] text-xs tracking-tight font-medium text-center">
         © 2025 Wide Canvas | Live to Put Memories
         <br /> in a Wide Canvas. | All rights reserved.

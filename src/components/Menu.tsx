@@ -38,15 +38,15 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="fixed inset-0 w-screen bg-black z-50"
         >
-          <div className="mx-auto px-3 sm:px-4 md:px-6 lg:px-8 fixed top-0 left-0 z-50 py-3 sm:py-4 h-screen w-screen flex flex-col justify-between dark:bg-black bg-white">
+          <div className="mx-auto px-3 sm:px-4 md:px-6 lg:px-8 fixed top-0 left-0 z-50 py-4 h-screen w-screen flex flex-col justify-between dark:bg-black bg-white">
             <div className="flex justify-between items-center w-full">
               <Link to="/">
-                <img src={theme === "dark" ? "/wc1.webp" : "/WCBLACK.webp"} className="h-6" />
+                <img src={theme === "dark" ? "/wc1.webp" : "/WCBLACK.webp"} className="h-5 sm:h-6" />
               </Link>
-              <div className="flex items-center gap-3 sm:gap-6 md:gap-8 leading-3.5">
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 leading-3.5">
                 <button
                   onClick={onClose}
-                  className="text-[10px] sm:text-xs px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 flex gap-1 sm:gap-2 items-center rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-colors duration-200 cursor-pointer"
+                  className="text-[9px] sm:text-[10px] md:text-xs px-3 md:px-5 py-1.5 md:py-2 flex gap-1 sm:gap-2 items-center rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-colors duration-200 cursor-pointer"
                   style={{ isolation: "isolate" }}
                 >
                   <span className="relative z-10 group-hover:text-black transition-colors duration-200 flex items-center gap-1 sm:gap-2">
@@ -56,7 +56,7 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
                 </button>
                 <button
                   onClick={handleWatchTrailer}
-                  className="text-[10px] sm:text-xs px-4 sm:px-6 md:px-8 py-1.5 sm:py-2 flex gap-1 sm:gap-2 items-center rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-colors duration-200 cursor-pointer"
+                  className="text-[9px] sm:text-[10px] md:text-xs px-3 sm:px-4 md:px-8 py-1.5 md:py-2 flex gap-1 sm:gap-2 items-center rounded-full border dark:text-white text-black dark:border-white/40 border-black/40 hover:border-black relative overflow-hidden group transition-colors duration-200 cursor-pointer"
                   style={{
                     isolation: "isolate",
                   }}
@@ -64,8 +64,8 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
                   <span className="relative z-10 group-hover:text-black transition-colors duration-200 flex items-center gap-1 sm:gap-2">
                     WATCH TRAILER
                     <ArrowUpRight
-                      size={12}
-                      className="sm:w-4 sm:h-4 md:w-4 md:h-4"
+                      size={8}
+                      className="sm:w-3 sm:h-3 md:w-4 md:h-4"
                     />
                   </span>
                   <div className="absolute inset-0 bg-[#ff6017] -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out group-hover:ease-in"></div>
@@ -90,7 +90,7 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
                     <Link
                       to={item.path}
                       onClick={onClose}
-                      className={`text-4xl md:text-6xl lg:text-7xl tracking-tighter transition-colors duration-200 flex items-center gap-4 group
+                      className={`text-5xl md:text-6xl lg:text-7xl tracking-tighter transition-colors duration-200 flex items-center gap-2 sm:gap-4 group
                         ${
                           location.pathname === item.path
                             ? "text-[#ff6017]"
@@ -100,14 +100,14 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
                       `}
                     >
                       {item.title}
-                      <ArrowUpRight className="w-8 h-8 md:w-12 md:h-12 opacity-0 group-hover:opacity-100 transition-opacity duration-200 mb-5" />
+                      <ArrowUpRight className="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12 opacity-0 group-hover:opacity-100 transition-opacity duration-200 mb-3 sm:mb-5" />
                     </Link>
                   </motion.li>
                 ))}
               </motion.ul>
             </nav>
 
-            <div className="text-[#808080] text-xs tracking-tight font-medium text-start">
+            <div className="text-[#808080] text-[10px] sm:text-xs tracking-tight font-medium text-start">
               © 2025 Wide Canvas | Live to Put Memories
               <br /> in a Wide Canvas. | All rights reserved.
             </div>

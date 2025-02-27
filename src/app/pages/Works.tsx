@@ -80,13 +80,13 @@ const Works = () => {
         style={{
           filter: `blur(${blurAmount}px)`,
         }}
-        className="sticky top-0 h-screen flex flex-col items-center justify-between py-20 text-6xl sm:text-7xl md:text-8xl lg:text-7xl italic text-[#ff6017] tracking-tighter z-0 bg-black/5"
+        className="sticky top-0 h-screen flex flex-col items-center justify-between py-12 sm:py-16 md:py-20 text-4xl sm:text-6xl md:text-7xl lg:text-8xl italic text-[#ff6017] tracking-tighter z-0 bg-black/5"
       >
-        <div className="flex flex-col items-center justify-center h-full">
-          <div className="flex-1 flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center h-full px-4 sm:px-6">
+          <div className="flex-1 flex items-center justify-center text-center">
             Selected Works
           </div>
-          <p className="dark:text-white/80 text-black text-xs font-medium flex items-center absolute bottom-10 tracking-normal">
+          <p className="dark:text-white/80 text-black text-[10px] sm:text-xs font-medium flex items-center absolute bottom-8 sm:bottom-10 tracking-normal">
             [
             <motion.span
               animate={{
@@ -98,7 +98,7 @@ const Works = () => {
                 ease: "easeInOut",
               }}
             >
-              <ArrowDown size={16} />
+              <ArrowDown size={12} className="sm:w-4 sm:h-4" />
             </motion.span>
             KEEP SCROLLING ]
           </p>
@@ -106,9 +106,9 @@ const Works = () => {
       </motion.div>
       <div
         ref={projectsRef}
-        className="relative z-10 dark:bg-black/90 bg-white backdrop-blur-sm py-20 px-4 sm:px-5 md:px-5 lg:px-5 -mt-screen"
+        className="relative z-10 dark:bg-black/90 bg-white backdrop-blur-sm py-12 sm:py-16 md:py-20 px-3 sm:px-4 md:px-5 lg:px-6 -mt-screen"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
           {projects.map((project, index) => {
             const primaryImage =
               project.images.find((img) => img.isPrimary) || project.images[0];
@@ -150,19 +150,19 @@ const Works = () => {
                   <motion.img
                     src={primaryImage.url}
                     alt={project.name}
-                    className="w-full h-[400px] object-cover rounded-sm p-2 mb-2"
+                    className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] object-cover rounded-sm p-2 mb-2"
                   />
                   <div className="px-2 mb-2">
-                    <div className="flex gap-2 flex-wrap">
+                    <div className="flex gap-1.5 sm:gap-2 flex-wrap">
                       <motion.span
-                        className="px-2 py-1 dark:bg-white/10 bg-black/10 backdrop-blur-sm rounded-xl text-sm tracking-tight mt-2"
+                        className="px-2 py-1 dark:bg-white/10 bg-black/10 backdrop-blur-sm rounded-xl text-xs sm:text-sm tracking-tight mt-2"
                         initial={{ opacity: 1 }}
                         animate={{ opacity: 1 }}
                       >
                         {project.category}
                       </motion.span>
                       <motion.span
-                        className="px-2 py-1 dark:bg-white/10 bg-black/10 backdrop-blur-sm rounded-xl text-sm tracking-tight mt-2"
+                        className="px-2 py-1 dark:bg-white/10 bg-black/10 backdrop-blur-sm rounded-xl text-xs sm:text-sm tracking-tight mt-2"
                         initial={{ opacity: 1 }}
                         animate={{ opacity: 1 }}
                       >
@@ -174,16 +174,16 @@ const Works = () => {
                       initial={{ opacity: 1 }}
                       animate={{ opacity: 1 }}
                     >
-                      <h3 className="text-2xl tracking-tighter mb-2 mt-2">
+                      <h3 className="text-xl sm:text-2xl tracking-tighter mb-2 mt-2">
                         {project.name}
                       </h3>
-                      <ArrowUpRight className="w-6 h-6" />
+                      <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
                     </motion.div>
                   </div>
-                  <motion.div className="absolute -top-1 -left-1 w-4 h-4 border-l-1 border-t-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <motion.div className="absolute -top-1 -right-1 w-4 h-4 border-r-1 border-t-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <motion.div className="absolute -bottom-1 -left-1 w-4 h-4 border-l-1 border-b-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <motion.div className="absolute -bottom-1 -right-1 w-4 h-4 border-r-1 border-b-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <motion.div className="absolute -top-1 -left-1 w-3 h-3 sm:w-4 sm:h-4 border-l-1 border-t-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <motion.div className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 border-r-1 border-t-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <motion.div className="absolute -bottom-1 -left-1 w-3 h-3 sm:w-4 sm:h-4 border-l-1 border-b-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <motion.div className="absolute -bottom-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 border-r-1 border-b-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </motion.div>
               </motion.div>
             );

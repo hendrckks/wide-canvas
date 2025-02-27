@@ -19,7 +19,7 @@ const Hero = () => {
   return (
     <div
       id="hero"
-      className="h-full py-28 md:py-32 flex flex-col justify-center items-center text-center dark:text-white text-black text-4xl sm:text-6xl lg:text-[74px] dark:bg-black bg-white"
+      className="h-full py-20 sm:py-24 md:py-28 lg:py-32 flex flex-col justify-center items-center text-center dark:text-white text-black text-4xl sm:text-5xl md:text-5xl lg:text-[74px] dark:bg-black bg-white"
     >
       <motion.div
         initial={{ opacity: 0 }}
@@ -31,7 +31,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-[90vw] md:max-w-[75vw] line-clamp-6 leading-tight md:leading-[60px] tracking-tighter px-4 md:px-0"
+          className="max-w-[95vw] sm:max-w-[90vw] md:max-w-[75vw] line-clamp-6 leading-[40px] sm:leading-relaxed md:leading-[60px] tracking-tighter px-3 sm:px-4 md:px-0"
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -52,9 +52,9 @@ const Hero = () => {
               delay: 0.4,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="font-sentient italic text-[82px] tracking-tighter font-light"
+            className="font-sentient italic text-[42px] sm:text-[60px] md:text-[70px] lg:text-[82px] tracking-tighter font-light"
           >
-            <span className="font-display text-[74px] font-normal mr-4 not-italic">
+            <span className="font-display text-[38px] sm:text-5xl md:text-[64px] lg:text-[74px] font-normal mr-2 sm:mr-4 not-italic">
               make
             </span>
             memories
@@ -89,13 +89,13 @@ const Hero = () => {
               delay: 1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="text-[#ff6017] font-clash text-[80px] leading-16 tracking-tighter italic"
+            className="text-[#ff6017] font-clash text-[40px] sm:text-[60px] md:text-[70px] lg:text-[80px] leading-10 lg:leading-16 tracking-tighter italic"
           >
             ~ Widecanvas ~
           </motion.div>
         </motion.div>
         <motion.p
-          className="text-base sm:text-lg mb-2 dark:text-white/80 text-black/80 font-medium mt-4 md:mt-8 h-fit px-4 md:px-0"
+          className="text-sm sm:text-base md:text-lg mb-2 dark:text-white/80 text-black/80 font-medium mt-3 sm:mt-4 md:mt-8 h-fit px-3 sm:px-4 md:px-0"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
@@ -115,11 +115,11 @@ const Hero = () => {
           delay: 1.4,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="mt-6 md:mt-9 flex flex-col sm:flex-row gap-4 sm:gap-8 leading-3.5 px-4 md:px-0"
+        className="mt-6 md:mt-9 flex gap-2 sm:gap-8 leading-3.5 px-4 md:px-0"
       >
         <Link
           to="/contact"
-          className="text-xs shadow-xl hover:shadow-xl hover:scale-[1.05] transform transition-all duration-350 flex items-center px-6 sm:px-8 py-2 font-medium rounded-full border text-white dark:bg-transparent bg-black hover:text-black dark:border-white/40 border-black/40 relative overflow-hidden group hover:border-transparent cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
+          className="text-xs shadow-xl text-center hover:shadow-xl hover:scale-[1.05] transform transition-all duration-350 flex items-center justify-center px-2 sm:px-8 py-2 font-medium rounded-full border text-white dark:bg-transparent bg-black hover:text-black dark:border-white/40 border-black/40 relative overflow-hidden group hover:border-transparent cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
           style={{
             isolation: "isolate",
           }}
@@ -130,12 +130,12 @@ const Hero = () => {
         </Link>
         <button
           onClick={handleWatchTrailer}
-          className="text-xs shadow-lg hover:shadow-xl hover:scale-[1.05] transform transition-all duration-250 px-6 sm:px-8 py-2 flex gap-2 items-center justify-center rounded-full border dark:hover:border-white/80 border-black/80 relative overflow-hidden group hover:border-transparent bg-white text-black cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
+          className="text-xs shadow-lg hover:shadow-xl hover:scale-[1.05] transform transition-all duration-250 px-4 sm:px-8 py-2 flex gap-1 sm:gap-2 items-center justify-center rounded-full border dark:hover:border-white/80 border-black/80 relative overflow-hidden group hover:border-transparent bg-white text-black cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
           style={{ isolation: "isolate" }}
         >
-          <span className="relative z-10 group-hover:text-white transition-colors duration-350 flex items-center gap-2">
+          <span className="relative z-10 group-hover:text-white w-full transition-colors duration-350 flex items-center justify-center gap-1 sm:gap-2 whitespace-nowrap">
             WATCH TRAILER
-            <ArrowUpRight size={16} className="sm:w-5 sm:h-5" />
+            <ArrowUpRight size={10} className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5" />
           </span>
           <span className="relative z-10 group-hover:text-black transition-colors duration-250"></span>
           <div className="absolute inset-0 bg-black -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out group-hover:ease-in"></div>
@@ -149,7 +149,7 @@ const Hero = () => {
           delay: 1.6,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="my-8 md:my-12 w-full max-w-[90vw] md:max-w-[900px] aspect-[16/9] max-h-[675px]"
+        className="my-6 sm:my-8 md:my-12 w-full max-w-[95vw] sm:max-w-[90vw] md:max-w-[900px] aspect-[16/9] max-h-[675px]"
       >
         <VideoPlayer
           ref={videoPlayerRef}
