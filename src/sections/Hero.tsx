@@ -19,7 +19,7 @@ const Hero = () => {
   return (
     <div
       id="hero"
-      className="h-full py-28 md:py-32 flex flex-col justify-center items-center text-center dark:text-white text-black text-4xl sm:text-6xl lg:text-[70px] dark:bg-black bg-white"
+      className="h-full py-28 md:py-32 flex flex-col justify-center items-center text-center dark:text-white text-black text-4xl sm:text-6xl lg:text-[74px] dark:bg-black bg-white"
     >
       <motion.div
         initial={{ opacity: 0 }}
@@ -52,9 +52,9 @@ const Hero = () => {
               delay: 0.4,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="font-sentient italic text-[80px] tracking-tighter font-light"
+            className="font-sentient italic text-[82px] tracking-tighter font-light"
           >
-            <span className="font-display text-[70px] font-normal mr-4 not-italic">
+            <span className="font-display text-[74px] font-normal mr-4 not-italic">
               make
             </span>
             memories
