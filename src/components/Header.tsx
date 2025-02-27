@@ -51,7 +51,7 @@ const Header = () => {
       </h1> */}
       <Link to="/">
         <img
-          src={theme === "dark" ? "/wc1.png" : "/WCBLACK.png"}
+          src={theme === "dark" ? "/wc1.webp" : "/WCBLACK.webp"}
           className="h-6"
         />
       </Link>
