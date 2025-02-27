@@ -38,7 +38,7 @@ const metrics = [
 
 const Metrics = () => {
   return (
-    <div className="w-full dark:bg-black bg-white md:px-8 lg:px-0 dark:text-white text-black py-5">
+    <div className="w-full dark:bg-black bg-white lg:px-8 2xl:px-0 dark:text-white text-black py-5">
       <motion.h2
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
