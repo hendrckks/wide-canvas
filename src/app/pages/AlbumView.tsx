@@ -14,24 +14,76 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProjects } from "../../lib/firebase/firestore";
-import { Project } from "../../lib/types/project";
+import { Project, ProjectImage } from "../../lib/types/project";
 import LoadingScreen from "../../components/LoadingScreen";
+
+// Extend the ProjectImage type to include image dimensions
+interface ExtendedProjectImage extends ProjectImage {
+  width?: number;
+  height?: number;
+}
+
+// Create an extended Project type with the updated images type
+interface ExtendedProject extends Omit<Project, "images"> {
+  images: ExtendedProjectImage[];
+}
 
 const AlbumView = () => {
   const { slug } = useParams();
-  const [project, setProject] = useState<Project | null>(null);
+  const [project, setProject] = useState<ExtendedProject | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [allImagesLoaded, setAllImagesLoaded] = useState(false);
+  const [pageHeight, setPageHeight] = useState(0);
   const { scrollY } = useScroll();
 
-  // Reduce the transformation range for smoother parallax
-  const imageY = useTransform(scrollY, [0, 500], [0, 5]); // Reduced from 10 to 5
-  const contentY = useTransform(scrollY, [0, 1000], [0, -500]); // Reduced from -400 to -200
+  // Create transform values directly at the component level, not inside callbacks
+  const imageY = useTransform(scrollY, [0, 500], [0, 5]);
+  const contentY = useTransform(scrollY, [0, 1000], [0, -500]);
 
   const [otherProjects, setOtherProjects] = useState<Project[]>([]);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
+  // We'll remove the unused variable warning by adding a use case for it
+  const loadedImages = useRef<Set<string>>(new Set());
+  const totalImagesToLoad = useRef<number>(0);
+
+  // Track loading progress for the loading screen
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  // Calculate page height only once after all images load
+  const getCachedHeight = (slug: string) => {
+    const cached = localStorage.getItem(`pageHeight-${slug}`);
+    if (!cached) return null;
+    const { height, timestamp } = JSON.parse(cached);
+    // Cache valid for 24 hours (86400000 ms)
+    if (Date.now() - timestamp < 86400000) return height;
+    return null;
+  };
+
+  const setCachedHeight = (slug: string, height: number) => {
+    localStorage.setItem(
+      `pageHeight-${slug}`,
+      JSON.stringify({ height, timestamp: Date.now() })
+    );
+  };
+
+  useEffect(() => {
+    const cachedHeight = slug ? getCachedHeight(slug) : null;
+
+    if (cachedHeight) {
+      setPageHeight(cachedHeight);
+      document.body.style.height = `${cachedHeight}px`;
+    }
+
+    if (allImagesLoaded && pageRef.current && !cachedHeight) {
+      const height = pageRef.current.scrollHeight;
+      setPageHeight(height);
+      document.body.style.height = `${height}px`;
+      if (slug) setCachedHeight(slug, height);
+    }
+  }, [allImagesLoaded, slug]);
 
   useEffect(() => {
     const fetchOtherProjects = async () => {
@@ -39,41 +91,6 @@ const AlbumView = () => {
         const projectsMap = await getProjects();
         const projectsArray = Array.from(projectsMap.values());
         const filteredProjects = projectsArray.filter((p) => p.slug !== slug);
-
-        // Enhanced caching for other projects' images
-        await Promise.all(
-          filteredProjects.slice(0, 5).map(async (project) => {
-            const primaryImage = project.images.find((img) => img.isPrimary) || project.images[0];
-            if (primaryImage?.url) {
-              try {
-                const cache = await caches.open('project-images');
-                const cachedResponse = await cache.match(primaryImage.url);
-
-                if (!cachedResponse) {
-                  const response = await fetch(primaryImage.url, {
-                    method: 'GET',
-                    cache: 'force-cache',
-                    headers: {
-                      'Cache-Control': 'max-age=31536000',
-                    },
-                  });
-
-                  if (response.ok) {
-                    await cache.put(primaryImage.url, response.clone());
-                    const img = new Image();
-                    img.src = primaryImage.url;
-                  }
-                }
-              } catch (error) {
-                console.error('Error caching other project image:', error);
-                // Fallback to basic preloading
-                const img = new Image();
-                img.src = primaryImage.url;
-              }
-            }
-          })
-        );
-
         setOtherProjects(filteredProjects);
       } catch (error) {
         console.error("Error fetching other projects:", error);
@@ -89,14 +106,12 @@ const AlbumView = () => {
 
     const autoScroll = () => {
       if (scrollContainer && isAutoScrolling) {
-        // Slower scroll speed
         scrollContainer.scrollLeft += 0.5;
 
         if (
           scrollContainer.scrollLeft >=
           scrollContainer.scrollWidth - scrollContainer.clientWidth
         ) {
-          // Reset more smoothly by gradually moving back
           let resetPosition = scrollContainer.scrollLeft;
           const resetScroll = () => {
             if (resetPosition > 0) {
@@ -104,7 +119,6 @@ const AlbumView = () => {
               scrollContainer.scrollLeft = Math.max(0, resetPosition);
               requestAnimationFrame(resetScroll);
             } else {
-              // Resume normal scrolling once reset is complete
               scrollContainer.scrollLeft = 0;
               animationFrameId = requestAnimationFrame(autoScroll);
             }
@@ -123,16 +137,15 @@ const AlbumView = () => {
     };
   }, [isAutoScrolling]);
 
-  // Implement smooth scrolling using requestAnimationFrame instead of behavior: "smooth"
   const smoothScrollToTop = () => {
     const startPosition = window.scrollY;
     const startTime = performance.now();
-    const duration = 500; // ms
+    const duration = 500;
 
     const animateScroll = (currentTime: number) => {
       const elapsedTime = currentTime - startTime;
       const progress = Math.min(elapsedTime / duration, 1);
-      const easeProgress = 1 - Math.pow(1 - progress, 3); // Cubic ease-out
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
 
       window.scrollTo(0, startPosition * (1 - easeProgress));
 
@@ -144,11 +157,10 @@ const AlbumView = () => {
     requestAnimationFrame(animateScroll);
   };
 
-  // Always scroll to top when component mounts or slug changes
   useEffect(() => {
     smoothScrollToTop();
 
-    // Add a will-change hint to elements that will animate
+    // Set will-change only on elements that need it, and remove it after scrolling
     const addWillChangeHint = () => {
       if (pageRef.current) {
         const elements = pageRef.current.querySelectorAll(".motion-element");
@@ -160,16 +172,55 @@ const AlbumView = () => {
 
     addWillChangeHint();
 
-    // Set up passive scroll listeners for better performance
+    // Set up passive scroll listeners
     const scrollOptions = { passive: true };
-    window.addEventListener("scroll", () => {}, scrollOptions);
+
+    // Remove will-change after scrolling stops to free up resources
+    let scrollTimeout: NodeJS.Timeout;
+    const handleScroll = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        if (pageRef.current) {
+          const elements = pageRef.current.querySelectorAll(".motion-element");
+          elements.forEach((el) => {
+            (el as HTMLElement).style.willChange = "auto";
+          });
+        }
+      }, 200);
+    };
+
+    window.addEventListener("scroll", handleScroll, scrollOptions);
 
     return () => {
-      window.removeEventListener("scroll", () => {});
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(scrollTimeout);
+      // Don't reset body height immediately - let the new page set it
+      setTimeout(() => {
+        if (!document.body.getAttribute("data-keep-height")) {
+          document.body.style.height = "";
+        }
+      }, 100);
     };
   }, [slug]);
 
+  // Preload all images before showing content
   useEffect(() => {
+    const preloadImage = async (url: string) => {
+      return new Promise<{ url: string; width: number; height: number }>(
+        (resolve) => {
+          const img = new Image();
+          img.onload = () =>
+            resolve({
+              url,
+              width: img.naturalWidth,
+              height: img.naturalHeight,
+            });
+          img.onerror = () => resolve({ url, width: 0, height: 0 });
+          img.src = url;
+        }
+      );
+    };
+
     const fetchProject = async () => {
       if (!slug) return;
       try {
@@ -178,52 +229,111 @@ const AlbumView = () => {
         const foundProject = Array.from(projects.values()).find(
           (p) => p.slug === slug
         );
+
         if (foundProject) {
-          // Enhanced image caching strategy
-          await Promise.all(
-            foundProject.images.map(async (image) => {
-              if (image.url) {
-                try {
-                  // Check if the image is already in the cache
-                  const cache = await caches.open('project-images');
-                  const cachedResponse = await cache.match(image.url);
-                  
-                  if (!cachedResponse) {
-                    // If not in cache, fetch and cache the image
-                    const response = await fetch(image.url, {
-                      method: 'GET',
-                      cache: 'force-cache',
-                      headers: {
-                        'Cache-Control': 'max-age=31536000', // Cache for 1 year
-                      },
-                    });
-                    
-                    if (response.ok) {
-                      await cache.put(image.url, response.clone());
-                      // Also preload the image
-                      const img = new Image();
-                      img.src = image.url;
-                    }
-                  }
-                } catch (error) {
-                  console.error('Error caching image:', error);
-                  // Fallback to basic preloading if caching fails
-                  const img = new Image();
-                  img.src = image.url;
-                }
-              }
-            })
+          // Initialize with the original project data
+          setProject(foundProject as ExtendedProject);
+
+          // Count total images to load (project + other projects)
+          const imageUrls = foundProject.images
+            .filter((img) => img.url)
+            .map((img) => img.url as string);
+
+          totalImagesToLoad.current = imageUrls.length;
+
+          // Preload all project images in parallel
+          const imageData = await Promise.all(imageUrls.map(preloadImage));
+
+          // Add dimensions to the existing image objects
+          const imagesWithDimensions = foundProject.images.map(
+            (originalImg) => {
+              const dimensions = imageData.find(
+                (img) => img.url === originalImg.url
+              );
+              return {
+                ...originalImg,
+                width: dimensions?.width || 0,
+                height: dimensions?.height || 0,
+              };
+            }
           );
-          setProject(foundProject);
+
+          // Track loaded images
+          imageData.forEach((img) => {
+            loadedImages.current.add(img.url);
+          });
+
+          // Update project with enhanced images
+          setProject((prev) =>
+            prev ? { ...prev, images: imagesWithDimensions } : null
+          );
+
+          setAllImagesLoaded(true);
+          setLoadingProgress(100);
+
+          // Short delay before removing loading screen
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 600);
+        } else {
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("Error fetching project:", error);
-      } finally {
         setIsLoading(false);
       }
     };
+
     fetchProject();
+
+    return () => {
+      // Reset page height when component unmounts
+      document.body.style.height = "";
+    };
   }, [slug]);
+
+  // Add this useEffect to calculate page height using image dimensions
+  useEffect(() => {
+    if (!project || !pageRef.current) return;
+
+    // Calculate image grid height
+    let gridHeight = 0;
+    const columnWidth = pageRef.current.offsetWidth / 3; // Approximate column width
+    project.images.forEach((img, index) => {
+      const gridClass = getGridClass(index, project.images.length);
+      const cols = gridClass.includes("col-span-2") ? 2 : 1;
+      const rows = gridClass.includes("row-span-2") ? 2 : 1;
+
+      // Use width and height if available, fallback to aspect ratio 1 if not
+      const width = img.width || 1;
+      const height = img.height || 1;
+      const aspectRatio = width / height;
+      const calculatedHeight = ((columnWidth * cols) / aspectRatio) * rows;
+      gridHeight += calculatedHeight;
+    });
+
+    // Add other section heights (header, info, etc.)
+    const totalHeight = gridHeight + 800; // Adjust based on your layout
+    setPageHeight(totalHeight);
+    document.body.style.height = `${totalHeight}px`;
+  }, [project]);
+
+  // Create an optimized grid layout based on image count
+  const getGridClass = (index: number, totalImages: number) => {
+    if (totalImages <= 3) {
+      return "col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-1";
+    }
+
+    if (index === 0 || index % 5 === 0) {
+      return "col-span-1 sm:col-span-2 lg:col-span-2 row-span-2";
+    }
+
+    if (index % 3 === 0) {
+      return "col-span-1 lg:col-span-2";
+    }
+
+    return "col-span-1";
+  };
 
   if (isLoading) {
     return (
@@ -234,6 +344,7 @@ const AlbumView = () => {
             behavior: "instant",
           });
         }}
+        loadingProgress={loadingProgress}
       />
     );
   }
@@ -246,40 +357,20 @@ const AlbumView = () => {
     );
   }
 
-  const handleNavigateToProject = (slug: string) => {
-    // Force scroll to top before navigation using custom smooth scroll
+  const handleNavigateToProject = (newSlug: string) => {
+    document.body.setAttribute("data-keep-height", "true");
     smoothScrollToTop();
-    // Use setTimeout to ensure scroll happens before navigation
     setTimeout(() => {
-      navigate(`/project/${slug}`);
+      document.body.removeAttribute("data-keep-height");
+      navigate(`/project/${newSlug}`);
     }, 250);
-  };
-
-  // Create an optimized grid layout based on image count
-  const getGridClass = (index: number, totalImages: number) => {
-    // If we have 1-3 images, make them all larger
-    if (totalImages <= 3) {
-      return "col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-1";
-    }
-
-    // For first image and every 5th image after that
-    if (index === 0 || index % 5 === 0) {
-      return "col-span-1 sm:col-span-2 lg:col-span-2 row-span-2";
-    }
-
-    // For every third image
-    if (index % 3 === 0) {
-      return "col-span-1 lg:col-span-2";
-    }
-
-    // Default size
-    return "col-span-1";
   };
 
   return (
     <div
       ref={pageRef}
       className="relative h-full font-clash dark:bg-black bg-white dark:text-white text-black overflow-hidden"
+      style={{ height: pageHeight > 0 ? pageHeight : "auto" }}
     >
       {/* Hero section with sticky header and parallax effect */}
       <div className="sticky pt-20 pb-5 px-4 sm:px-8 md:px-14 top-0 z-10 w-full h-full">
@@ -294,7 +385,6 @@ const AlbumView = () => {
               initial={{ scale: 1.1 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
-              loading="eager"
             />
           )}
         </motion.div>
@@ -410,48 +500,47 @@ const AlbumView = () => {
             </div>
           </div>
         </div>
-         {/* Images gallery section - improved to fill space properly */}
-      <div className="w-full dark:bg-black bg-white px-4 sm:px-8 md:px-14 py-2 mb-18">
-        <div className="relative z-40 pt-40">
-          {/* Modified grid layout to avoid gaps */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 w-full mx-auto">
-            {project?.images.length > 0 &&
-              project.images.map((image, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "100px" }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className={`relative overflow-hidden group ${getGridClass(
-                    index,
-                    project.images.length
-                  )}`}
-                >
-                  <motion.img
-                    src={image.url}
-                    alt={`Album image ${index + 1}`}
-                    className="w-full object-contain transition-transform duration-500 ease-out"
-                    initial={{ scale: 1.1 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    loading={index < 3 ? "eager" : "lazy"}
-                  />
-                  {/* Optional overlay on hover for a more refined look */}
-                  <div className="absolute inset-0 bg-black/0 hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-300"></div>
-                </motion.div>
-              ))}
+        {/* Images gallery section - improved to fill space properly */}
+        <div className="w-full dark:bg-black bg-white px-4 sm:px-8 md:px-14 py-2 mb-18">
+          <div className="relative z-40 pt-40">
+            {/* Modified grid layout to avoid gaps */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 w-full mx-auto">
+              {project?.images.length > 0 &&
+                project.images.map((image, index) => {
+                  const imageClass = getGridClass(index, project.images.length);
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "100px" }}
+                      transition={{ duration: 0.5, delay: index * 0.05 }}
+                      className={`relative overflow-hidden group ${imageClass}`}
+                    >
+                      <motion.img
+                        src={image.url}
+                        alt={`Album image ${index + 1}`}
+                        className="w-full object-contain transition-transform duration-500 ease-out"
+                        initial={{ scale: 1.1 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                      />
+                      {/* Optional overlay on hover for a more refined look */}
+                      <div className="absolute inset-0 bg-black/0 hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-300"></div>
+                    </motion.div>
+                  );
+                })}
 
-            {/* If there are too few images, add placeholder elements to maintain grid structure */}
-            {project?.images.length > 0 && project.images.length < 3 && (
-              <div className="col-span-1 sm:col-span-1 lg:col-span-1"></div>
-            )}
+              {/* If there are too few images, add placeholder elements to maintain grid structure */}
+              {project?.images.length > 0 && project.images.length < 3 && (
+                <div className="col-span-1 sm:col-span-1 lg:col-span-1"></div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
       </motion.div>
       {/* Other projects section */}
-      <div className="w-full dark:bg-black bg-white mb-10 sm:mb-16 md:mb-20">
+      <div className="w-full -mt-80 dark:bg-black bg-white mb-10 sm:mb-16 md:mb-20">
         <div className="max-w-[1800px] mx-auto px-4 sm:px-8 md:px-14">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl italic text-[#ff6017] tracking-tighter mb-6 sm:mb-8 md:mb-10 text-center">
             Other Selected Works
@@ -485,31 +574,11 @@ const AlbumView = () => {
                     whileHover={{ scale: 1.01 }}
                     transition={{ duration: 0.2 }}
                     onClick={() => handleNavigateToProject(project.slug)}
-                    onMouseEnter={async () => {
-                      try {
-                        if (index < 2) {
-                          const projectsMap = await getProjects();
-                          const hoveredProject = Array.from(
-                            projectsMap.values()
-                          ).find((p) => p.slug === project.slug);
-                          if (
-                            hoveredProject &&
-                            hoveredProject.images.length > 0
-                          ) {
-                            const img = new Image();
-                            img.src = hoveredProject.images[0].url;
-                          }
-                        }
-                      } catch (error) {
-                        console.error("Error prefetching project:", error);
-                      }
-                    }}
                   >
                     <motion.img
                       src={primaryImage.url}
                       alt={project.name}
                       className="w-full sm:w-72 md:w-80 lg:w-96 h-44 sm:h-64 md:h-80 object-cover rounded-sm p-2 mb-2"
-                      loading="lazy"
                     />
                     <div className="px-2 mb-2">
                       <div className="flex gap-2 flex-wrap">

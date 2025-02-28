@@ -4,13 +4,27 @@ import { useTheme } from "../contexts/ThemeContext";
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
+  loadingProgress?: number; // Make this prop optional
 }
 
-const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
+const LoadingScreen = ({ onLoadingComplete, loadingProgress }: LoadingScreenProps) => {
   const [progress, setProgress] = useState(0);
   const { theme } = useTheme();
 
   useEffect(() => {
+    // If loadingProgress is provided, use it instead of calculating internally
+    if (loadingProgress !== undefined) {
+      setProgress(loadingProgress);
+      
+      // When loadingProgress reaches 100, call onLoadingComplete after a short delay
+      if (loadingProgress >= 100) {
+        setTimeout(() => {
+          onLoadingComplete();
+        }, 500);
+      }
+      return;
+    }
+    
     // Define videos to preload - this should match all videos used in your app
     const videos = ["/shotfilm.mp4", "/trailer.mp4"];
     const videoProgress = new Map<string, number>();
@@ -149,7 +163,7 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
         }
       });
     };
-  }, [onLoadingComplete]);
+  }, [onLoadingComplete, loadingProgress]);
 
   return (
     <motion.div
