@@ -142,11 +142,11 @@ const AlbumView = () => {
   // Function to get appropriate class based on index for responsive height
   const getImageHeightClass = (index: number) => {
     if (index === 0) {
-      return "h-80 sm:h-96 md:h-[500px] lg:h-[600px]";
+      return "h-80 sm:h-96 md:h-[500px] lg:h-[600px] xl:h-[700px]";
     } else if (index === 3) {
-      return "h-48 sm:h-64 md:h-80 lg:h-[400px]";
+      return "h-60 sm:h-72 md:h-96 lg:h-[450px] xl:h-[500px]";
     } else {
-      return "h-48 sm:h-64 md:h-80 lg:h-[400px]";
+      return "h-60 sm:h-72 md:h-80 lg:h-[400px] xl:h-[450px]";
     }
   };
 
@@ -283,36 +283,38 @@ const AlbumView = () => {
       </motion.div>
 
       {/* Images gallery section - completely separate from the above sections */}
-      <div className="w-full -mt-28 dark:bg-black bg-white px-4 sm:px-8 md:px-14 py-2 mb-18">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-w-[1800px] mx-auto">
-          {project?.images.map((image, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "100px" }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`relative overflow-hidden group ${
-                index === 0
-                  ? "sm:col-span-2 sm:row-span-2"
-                  : index === 3
-                  ? "lg:col-span-2"
-                  : ""
-              }`}
-            >
-              <motion.img
-                src={image.url}
-                alt={`Album image ${index + 1}`}
-                className={`w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 ${getImageHeightClass(
-                  index
-                )}`}
-                initial={{ scale: 1.2 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-              />
-              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </motion.div>
-          ))}
+      <div className="w-full dark:bg-black bg-white px-4 sm:px-8 md:px-14 py-2 mb-18">  
+        <div className="relative -mt-40 z-40">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-2 max-w-[1800px] mx-auto">
+            {project?.images.map((image, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "100px" }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative overflow-hidden group ${
+                  index === 0
+                    ? "sm:col-span-2 sm:row-span-2"
+                    : index === 3
+                    ? "lg:col-span-2"
+                    : ""
+                }`}
+              >
+                <motion.img
+                  src={image.url}
+                  alt={`Album image ${index + 1}`}
+                  className={`w-full object-cover transition-transform duration-500 ease-out ${getImageHeightClass(
+                    index
+                  )}`}
+                  initial={{ scale: 1.2 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                />
+                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
 
