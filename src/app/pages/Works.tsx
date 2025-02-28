@@ -137,7 +137,7 @@ const Works = () => {
       </motion.div>
       <div
         ref={projectsRef}
-        className="relative z-10 dark:bg-black/90 bg-white backdrop-blur-sm py-12 sm:py-16 md:py-20 px-3 sm:px-4 md:px-5 lg:px-6 -mt-screen"
+        className="relative z-10 dark:bg-black bg-white backdrop-blur-sm py-12 sm:py-16 md:py-20 px-3 sm:px-4 md:px-5 lg:px-6 -mt-screen"
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
           {isLoading
