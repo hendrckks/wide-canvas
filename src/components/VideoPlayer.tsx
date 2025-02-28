@@ -138,23 +138,39 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
         setIsTrailerLoading(true);
         await containerRef.current.requestFullscreen();
         setIsFullscreen(true);
-
+    
         if (trailerVideoRef.current && trailerSrc) {
+          // Set muted to false before attempting to play
           trailerVideoRef.current.muted = false;
           setIsMuted(false);
+    
           // Only set src if it hasn't been set yet
           if (!trailerVideoRef.current.src.includes(trailerSrc)) {
             trailerVideoRef.current.src = trailerSrc;
             await trailerVideoRef.current.load();
           }
-
+    
           try {
-            await trailerVideoRef.current.play();
-            setIsPlaying(true);
+            // Try to play unmuted first
+            try {
+              await trailerVideoRef.current.play();
+              setIsPlaying(true);
+              setIsMuted(false);
+            } catch (error) {
+              // If unmuted playback fails, try muted
+              trailerVideoRef.current.muted = true;
+              setIsMuted(true);
+              await trailerVideoRef.current.play();
+              setIsPlaying(true);
+              // After successful play, try to unmute
+              trailerVideoRef.current.muted = false;
+              setIsMuted(false);
+              console.log(error)
+            }
           } catch (error) {
             console.error("Error playing trailer video:", error);
           }
-
+    
           if (videoRef.current) {
             videoRef.current.pause();
           }
@@ -163,12 +179,12 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
       } else {
         await document.exitFullscreen();
         setIsFullscreen(false);
-
+    
         if (videoRef.current && trailerVideoRef.current) {
           videoRef.current.muted = true;
           setIsMuted(true);
           trailerVideoRef.current.pause();
-
+    
           try {
             await videoRef.current.play();
             setIsPlaying(true);
@@ -202,9 +218,7 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
     return (
       <motion.div
         ref={containerRef}
-        className={`relative overflow-hidden ${className} ${
-          isFullscreen ? "fixed inset-0 z-50 bg-black" : ""
-        }`}
+        className={`relative overflow-hidden ${className} ${isFullscreen ? "fixed inset-0 z-50 bg-black w-screen h-screen" : ""}`}
         layout
         layoutId="video-container"
         initial={{ scale: 0.95, opacity: 0 }}
@@ -226,11 +240,9 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
           )}
           <motion.video
             ref={videoRef}
-            className={`w-full h-full object-cover ${
-              isFullscreen ? "hidden" : ""
-            }`}
+            className={`w-full h-full object-cover ${isFullscreen ? "hidden" : ""}`}
             playsInline
-            preload="metadata"
+            preload="auto"
             autoPlay
             loop
             muted
@@ -244,7 +256,7 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
         </motion.div>
 
         {/* Trailer video for fullscreen */}
-        <motion.div className="relative w-full h-full">
+        <motion.div className="relative w-full h-full flex items-center justify-center">
           {isFullscreen && (!isLoaded || !isPlayable || isTrailerLoading) && (
             <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 animate-pulse rounded-lg overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skeleton-shine" />
@@ -252,12 +264,20 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
           )}
           <motion.video
             ref={trailerVideoRef}
-            className={`w-full h-full object-cover ${
-              !isFullscreen ? "hidden" : ""
-            }`}
+            autoPlay
             playsInline
+            muted
+            className={`w-full h-full object-contain ${!isFullscreen ? "hidden" : ""}`}
             preload="metadata"
-            layout
+            style={{
+              position: isFullscreen ? "fixed" : "relative",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              zIndex: isFullscreen ? 60 : "auto",
+              transform: isFullscreen ? "translateZ(1px)" : "none"
+            }}
           >
             <source src={trailerSrc} type="video/mp4" />
             Your browser does not support the video tag.
@@ -339,7 +359,7 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
                 scale: { type: "spring", stiffness: 200, damping: 25 },
                 y: { type: "spring", stiffness: 300, damping: 30 },
               }}
-              className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-all duration-500 ease-in-out"
+              className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-all duration-500 ease-in-out z-[70]"
             >
               <div className="p-4 space-y-2">
                 <motion.div

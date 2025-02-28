@@ -162,7 +162,7 @@ const Hero = () => {
       >
         <Link
           to="/contact"
-          className="text-xs shadow-xl text-center hover:shadow-xl hover:scale-[1.05] transform transition-all duration-350 flex items-center justify-center px-2 sm:px-8 py-2 font-medium rounded-full border text-white dark:bg-transparent bg-black hover:text-black dark:border-white/40 border-black/40 relative overflow-hidden group hover:border-transparent cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
+          className="text-xs shadow-xl text-center hover:shadow-3xl hover:scale-[1.1] transform transition-all duration-350 flex items-center justify-center px-2 sm:px-8 py-2 font-medium rounded-full border text-white dark:bg-transparent bg-black hover:text-black dark:border-white/40 border-black/40 relative overflow-hidden group hover:border-transparent cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
           style={{
             isolation: "isolate",
           }}
@@ -173,7 +173,7 @@ const Hero = () => {
         </Link>
         <button
           onClick={handleWatchTrailer}
-          className="text-xs shadow-lg hover:shadow-xl hover:scale-[1.05] transform transition-all duration-250 px-4 sm:px-8 py-2 flex gap-1 sm:gap-2 items-center justify-center rounded-full border dark:hover:border-white/80 border-black/80 relative overflow-hidden group hover:border-transparent bg-white text-black cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
+          className="text-xs shadow-lg hover:backdrop-blur-3xl hover:scale-[1.1] transform transition-all duration-250 px-4 sm:px-8 py-2 flex gap-1 sm:gap-2 items-center justify-center rounded-full border dark:hover:border-white/80 border-black/80 relative overflow-hidden group hover:border-transparent bg-white text-black cursor-pointer w-full sm:w-auto dark:shadow-[0_4px_8px_rgba(255,255,255,0.1)]"
           style={{ isolation: "isolate" }}
         >
           <span className="relative z-10 group-hover:text-white w-full transition-colors duration-350 flex items-center justify-center gap-1 sm:gap-2 whitespace-nowrap">

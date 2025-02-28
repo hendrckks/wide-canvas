@@ -47,7 +47,6 @@ const Metrics = () => {
       >
         Professional
         <span className="dark:text-white/30 text-black/40 backdrop-blur-lg">
-          {" "}
           Milestones
         </span>
       </motion.h2>
