@@ -533,7 +533,7 @@ const AlbumView = () => {
                 className="p-3 sm:p-4 text-center items-center justify-center gap-3 sm:gap-6 border dark:border-white/20 border-black/20 flex relative overflow-hidden group transition-all duration-200 hover:border-transparent cursor-pointer backdrop-blur-md dark:bg-white/5 bg-black/5 rounded-md hover:bg-[#ff6017]/10"
                 style={{ isolation: "isolate" }}
               >
-                <span className="relative z-10 group-hover:text-black transition-colors duration-200 flex items-center gap-2 text-sm sm:text-base">
+                <span className="relative z-10 group-hover:text-black text-black dark:text-white transition-colors duration-200 flex items-center gap-2 text-sm sm:text-base">
                   Buy Prints <ArrowRight size={16} />
                 </span>
                 <div className="absolute inset-0 bg-[#ff6017] -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out group-hover:ease-in" />
