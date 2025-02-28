@@ -3,6 +3,7 @@ import { z } from "zod";
 // Define the Category enum
 export const ProjectCategory = {
   CONCEPTUAL: "conceptual",
+  DOCUMENTARY: "documentary",
   AERIAL_AND_DRONE: "aerial and drone",
   PRODUCT: "product",
   CORPORATE: "corporate",

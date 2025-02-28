@@ -218,36 +218,66 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
         }}
       >
         {/* Main looping video */}
-        <motion.video
-          ref={videoRef}
-          className={`w-full h-full object-cover ${
-            isFullscreen ? "hidden" : ""
-          }`}
-          playsInline
-          preload="auto"
-          autoPlay
-          loop
-          muted
-          layout
-        >
-          <source src={src} type="video/mp4" />
-          Your browser does not support the video tag.
-        </motion.video>
-
+        <motion.div className="relative w-full h-full">
+          {(!isLoaded || !isPlayable) && (
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 animate-pulse rounded-lg overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skeleton-shine" />
+            </div>
+          )}
+          <motion.video
+            ref={videoRef}
+            className={`w-full h-full object-cover ${
+              isFullscreen ? "hidden" : ""
+            }`}
+            playsInline
+            preload="auto"
+            autoPlay
+            loop
+            muted
+            layout
+          >
+            <source src={src} type="video/mp4" />
+            Your browser does not support the video tag.
+          </motion.video>
+        </motion.div>
+        
         {/* Trailer video for fullscreen */}
-        <motion.video
-          ref={trailerVideoRef}
-          className={`w-full h-full object-cover ${
-            !isFullscreen ? "hidden" : ""
-          }`}
-          playsInline
-          preload="metadata"
-          layout
-        >
-          <source src={trailerSrc} type="video/mp4" />
-          Your browser does not support the video tag.
-        </motion.video>
-
+        <motion.div className="relative w-full h-full">
+          {isFullscreen && (!isLoaded || !isPlayable || isTrailerLoading) && (
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 animate-pulse rounded-lg overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skeleton-shine" />
+            </div>
+          )}
+          <motion.video
+            ref={trailerVideoRef}
+            className={`w-full h-full object-cover ${
+              !isFullscreen ? "hidden" : ""
+            }`}
+            playsInline
+            preload="metadata"
+            layout
+          >
+            <source src={trailerSrc} type="video/mp4" />
+            Your browser does not support the video tag.
+          </motion.video>
+        </motion.div>
+        
+        <style>
+          {`
+            @keyframes shine {
+              from {
+                transform: translateX(-100%);
+              }
+              to {
+                transform: translateX(100%);
+              }
+            }
+            
+            .skeleton-shine {
+              animation: shine 1.5s infinite;
+            }
+          `}
+        </style>
         <AnimatePresence>
           {!isFullscreen && (
             <motion.div
