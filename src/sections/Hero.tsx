@@ -49,6 +49,8 @@ const Hero = () => {
       }
     };
 
+    
+
     fetchVideos();
   }, []);
 

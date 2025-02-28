@@ -1,4 +1,3 @@
-import NumberFlow from "@number-flow/react";
 import { motion } from "framer-motion";
 
 const metrics = [
@@ -47,9 +46,13 @@ const Metrics = () => {
         className="text-4xl sm:text-5xl md:text-6xl font-medium text-center tracking-tighter mb-8 sm:mb-10 md:mb-11"
       >
         Professional
-        <span className="dark:text-white/30 text-black/40 backdrop-blur-lg"> Milestones</span>
+        <span className="dark:text-white/30 text-black/40 backdrop-blur-lg">
+          {" "}
+          Milestones
+        </span>
       </motion.h2>
-      <div className="container mx-auto grid grid-cols-2 shadow-lg backdrop-blur-3xl sm:grid-cols-2 md:grid-cols-3 gap-2 border dark:border-white/10 border-black/20 rounded-lg p-2">
+      <div className="container mx-auto grid grid-cols-2 shadow-sm sm:grid-cols-2 md:grid-cols-3 gap-2 border dark:border-white/10 border-black/20 rounded-lg p-2">
+        {" "}
         {metrics.map((metric, index) => (
           <motion.div
             key={index}
@@ -62,16 +65,18 @@ const Metrics = () => {
               ease: "easeOut",
             }}
             className={`p-4 sm:p-6 md:p-8 border dark:border-white/10 border-black/20 rounded-md ${
-              metric.colSpan === 2 ? 'col-span-2' : 'col-span-1'
+              metric.colSpan === 2 ? "col-span-2" : "col-span-1"
             } dark:bg-white/4 bg-black/4 backdrop-blur-xl shadow-lg`}
           >
             <h3 className="dark:text-white/70 text-black/80 text-sm sm:text-base mb-2 border-b dark:border-b-white/20 border-b-black/20 py-2 sm:py-3 font-medium">
               {metric.title}
             </h3>
             <div className="text-3xl sm:text-4xl md:text-5xl lg:text-8xl tracking-tighter dark:text-white text-black/90 font-medium italic">
-              <motion.div layout layoutRoot>
-                <NumberFlow value={metric.value} />
-                <span className="dark:text-[#ff6017] text-[#ff6017]/85 font-normal">{metric.suffix}</span>
+              <motion.div layout layoutRoot style={{ willChange: "transform" }}>
+                {metric.value}
+                <span className="dark:text-[#ff6017] text-[#ff6017]/85 font-normal">
+                  {metric.suffix}
+                </span>
               </motion.div>
             </div>
           </motion.div>

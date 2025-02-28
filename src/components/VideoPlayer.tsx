@@ -230,17 +230,19 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
               isFullscreen ? "hidden" : ""
             }`}
             playsInline
-            preload="auto"
+            preload="metadata"
             autoPlay
             loop
             muted
             layout
           >
             <source src={src} type="video/mp4" />
+            {/* Add WebM fallback for better compatibility */}
+            <source src={src.replace(".mp4", ".webm")} type="video/webm" />
             Your browser does not support the video tag.
           </motion.video>
         </motion.div>
-        
+
         {/* Trailer video for fullscreen */}
         <motion.div className="relative w-full h-full">
           {isFullscreen && (!isLoaded || !isPlayable || isTrailerLoading) && (
@@ -261,7 +263,7 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
             Your browser does not support the video tag.
           </motion.video>
         </motion.div>
-        
+
         <style>
           {`
             @keyframes shine {
