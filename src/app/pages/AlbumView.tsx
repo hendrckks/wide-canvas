@@ -284,7 +284,7 @@ const AlbumView = () => {
 
       {/* Images gallery section - completely separate from the above sections */}
       <div className="w-full -mt-28 dark:bg-black bg-white px-4 sm:px-8 md:px-14 py-2 mb-18">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1800px] mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-w-[1800px] mx-auto">
           {project?.images.map((image, index) => (
             <motion.div
               key={index}
