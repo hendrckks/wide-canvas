@@ -8,6 +8,7 @@ import AlbumView from "../app/pages/AlbumView";
 import Works from "../app/pages/Works";
 import { AnimatePresence } from "framer-motion";
 import AboutSection from "../app/pages/AboutSection";
+import VideoManager from "../app/pages/VideoManagers";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <AboutSection />,
+      },
+      {
+        path: "/add-video",
+        element: <VideoManager />,
       },
     ],
   },

@@ -1,8 +1,9 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import VideoPlayer from "../components/VideoPlayer";
-import { useRef, MouseEvent } from "react";
+import { useRef, MouseEvent, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { getLatestVideoByType } from "../lib/firebase/videoServices";
 
 interface VideoPlayerRef {
   toggleFullscreen: () => Promise<void>;
@@ -10,6 +11,46 @@ interface VideoPlayerRef {
 
 const Hero = () => {
   const videoPlayerRef = useRef<VideoPlayerRef>(null);
+  const [introVideoUrl, setIntroVideoUrl] = useState<string | null>(null);
+  const [trailerVideoUrl, setTrailerVideoUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        setIsLoading(true);
+
+        // Fetch the intro video
+        const introVideo = await getLatestVideoByType("intro");
+        if (introVideo) {
+          setIntroVideoUrl(introVideo.url);
+        } else {
+          // Fallback to local file if no video found
+          setIntroVideoUrl("/shotfilm.mp4");
+        }
+
+        // Fetch the trailer video
+        const trailerVideo = await getLatestVideoByType("trailer");
+        if (trailerVideo) {
+          setTrailerVideoUrl(trailerVideo.url);
+        } else {
+          // Fallback to local file if no video found
+          setTrailerVideoUrl("/trailer.mp4");
+        }
+      } catch (error) {
+        console.error("Error fetching videos:", error);
+        setError("Failed to load videos. Using local versions.");
+        // Fallback to local files
+        setIntroVideoUrl("/shotfilm.mp4");
+        setTrailerVideoUrl("/trailer.mp4");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchVideos();
+  }, []);
 
   const handleWatchTrailer = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -135,7 +176,10 @@ const Hero = () => {
         >
           <span className="relative z-10 group-hover:text-white w-full transition-colors duration-350 flex items-center justify-center gap-1 sm:gap-2 whitespace-nowrap">
             WATCH TRAILER
-            <ArrowUpRight size={10} className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5" />
+            <ArrowUpRight
+              size={10}
+              className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5"
+            />
           </span>
           <span className="relative z-10 group-hover:text-black transition-colors duration-250"></span>
           <div className="absolute inset-0 bg-black -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out group-hover:ease-in"></div>
@@ -151,12 +195,19 @@ const Hero = () => {
         }}
         className="my-6 sm:my-8 md:my-12 w-full max-w-[95vw] sm:max-w-[90vw] md:max-w-[900px] aspect-[16/9] max-h-[675px]"
       >
-        <VideoPlayer
-          ref={videoPlayerRef}
-          src="/shotfilm.mp4"
-          trailerSrc="/trailer.mp4"
-          className="w-full h-full p-2"
-        />
+        {isLoading ? (
+          <div className="w-full h-full flex items-center justify-center bg-black/5 dark:bg-white/5 rounded-lg">
+            <div className="animate-spin h-8 w-8 border-2 border-t-transparent border-white"></div>
+          </div>
+        ) : (
+          <VideoPlayer
+            ref={videoPlayerRef}
+            src={introVideoUrl || ""}
+            trailerSrc={trailerVideoUrl || ""}
+            className="w-full h-full p-2"
+          />
+        )}
+        {error && <p className="text-xs text-red-500 mt-2">{error}</p>}
       </motion.div>
       <p className="text-white/80 text-xs mt-10 font-medium flex items-center">
         [
