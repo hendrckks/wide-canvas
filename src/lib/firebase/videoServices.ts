@@ -12,8 +12,6 @@ import {
   getDocs,
   updateDoc,
   deleteDoc,
-  query,
-  where,
 } from "firebase/firestore";
 import { db, storage } from "./clientApp";
 

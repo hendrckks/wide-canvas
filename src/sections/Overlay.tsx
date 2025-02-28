@@ -1,6 +1,89 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { getOverlayVideos, VideoData } from "../lib/firebase/videoServices";
 
 const Overlay = () => {
+  const [overlayVideos, setOverlayVideos] = useState<
+    Record<number, VideoData | null>
+  >({
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchOverlayVideos = async () => {
+      try {
+        setLoading(true);
+        const videos = await getOverlayVideos();
+
+        // Initialize with default empty values
+        const videoMap: Record<number, VideoData | null> = {
+          1: null,
+          2: null,
+          3: null,
+          4: null,
+        };
+
+        // Fill in the videos we have
+        videos.forEach((video) => {
+          if (
+            video.overlayPosition &&
+            video.overlayPosition >= 1 &&
+            video.overlayPosition <= 4
+          ) {
+            videoMap[video.overlayPosition] = video;
+          }
+        });
+
+        setOverlayVideos(videoMap);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching overlay videos:", err);
+        setError("Failed to load overlay videos");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOverlayVideos();
+  }, []);
+
+  // Define course data array
+  const courseData = [
+    {
+      title: "MASTER THE BASICS™",
+      titleImage: "/hqm.png",
+      description:
+        "Professional shooting and meticulous editing for stunning, high-resolution results.",
+      duration: "42 VIDEOS (12 HOURS)",
+    },
+    {
+      title: "ADVANCED TECHNIQUES™",
+      titleImage: "/creative.png",
+      description:
+        "Expert guidance on styling, poses, and mood to bring your vision to life.",
+      duration: "56 VIDEOS (15 HOURS)",
+    },
+    {
+      title: "POST-PRODUCTION PRO™",
+      titleImage: "/PC.png",
+      description:
+        "In-depth discussion to align vision and create your perfect aesthetic.",
+      duration: "64 VIDEOS (18 HOURS)",
+    },
+    {
+      title: "BUSINESS OF FILM™",
+      titleImage: "/behind.png",
+      description:
+        "Optional footage capturing the creative process and artistry of every shoot.",
+      duration: "48 VIDEOS (14 HOURS)",
+    },
+  ];
+
   return (
     <motion.div
       style={{
@@ -35,37 +118,9 @@ const Overlay = () => {
           You Work with Me
         </motion.span>
       </motion.h2>
+
       <div className="flex flex-col">
-        {[
-          {
-            title: "MASTER THE BASICS™",
-            titleImage: "/hqm.png",
-            description:
-              "Professional shooting and meticulous editing for stunning, high-resolution results.",
-            duration: "42 VIDEOS (12 HOURS)",
-          },
-          {
-            title: "ADVANCED TECHNIQUES™",
-            titleImage: "/creative.png",
-            description:
-              "Expert guidance on styling, poses, and mood to bring your vision to life.",
-            duration: "56 VIDEOS (15 HOURS)",
-          },
-          {
-            title: "POST-PRODUCTION PRO™",
-            titleImage: "/PC.png",
-            description:
-              "In-depth discussion to align vision and create your perfect aesthetic.",
-            duration: "64 VIDEOS (18 HOURS)",
-          },
-          {
-            title: "BUSINESS OF FILM™",
-            titleImage: "/behind.png",
-            description:
-              "Optional footage capturing the creative process and artistry of every shoot.",
-            duration: "48 VIDEOS (14 HOURS)",
-          },
-        ].map((course, index) => (
+        {courseData.map((course, index) => (
           <div
             key={index}
             className={`flex flex-col md:flex-row ${
@@ -104,7 +159,7 @@ const Overlay = () => {
                 >
                   {course.description}
                 </motion.p>
-                {/* <motion.div
+                <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true, amount: 0.3 }}
@@ -115,7 +170,7 @@ const Overlay = () => {
                     COURSE {(index + 1).toString().padStart(2, "0")}
                   </span>
                   <span className="text-[#141414]/60">{course.duration}</span>
-                </motion.div> */}
+                </motion.div>
               </div>
             </motion.div>
             <motion.div
@@ -129,28 +184,52 @@ const Overlay = () => {
               <motion.div className="absolute top-5 right-5 w-4 h-4 border-r-2 border-t-2 border-black/90" />
               <motion.div className="absolute bottom-5 left-5 w-4 h-4 border-l-2 border-b-2 border-black/90" />
               <motion.div className="absolute bottom-5 right-5 w-4 h-4 border-r-2 border-b-2 border-black/90" />
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                // loading="lazy"
-                className="w-full h-full object-cover cursor-pointer transition-all duration-200 ease-in group-hover:scale-102"
-                style={{ opacity: 0 }}
-                onLoadedData={(e) => {
-                  if (e.currentTarget.readyState >= 2) {
+
+              {loading ? (
+                <div className="w-full h-full flex items-center justify-center bg-black/10">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+                </div>
+              ) : (
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  className="w-full h-full object-cover cursor-pointer transition-all duration-200 ease-in group-hover:scale-102"
+                  style={{ opacity: 0 }}
+                  onLoadedData={(e) => {
+                    if (e.currentTarget.readyState >= 2) {
+                      e.currentTarget.style.opacity = "1";
+                    }
+                  }}
+                  onCanPlay={(e) => {
                     e.currentTarget.style.opacity = "1";
-                  }
-                }}
-                onCanPlay={(e) => {
-                  e.currentTarget.style.opacity = "1";
-                }}
-              >
-                <source src="/shotfilm.mp4" type="video/mp4" />
-                <source src="/shotfilm.webm" type="video/webm" />
-                Your browser does not support the video tag.
-              </video>
+                  }}
+                >
+                  {/* Use Firebase video URL if available, otherwise fallback to static path */}
+                  {overlayVideos[index + 1]?.url ? (
+                    <source
+                      src={overlayVideos[index + 1]?.url || ''}
+                      type="video/mp4"
+                    />
+                  ) : (
+                    <>
+                      <source src="/shotfilm.mp4" type="video/mp4" />
+                      <source src="/shotfilm.webm" type="video/webm" />
+                    </>
+                  )}
+                  Your browser does not support the video tag.
+                </video>
+              )}
+
+              {error && !loading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                  <div className="bg-white dark:bg-gray-800 p-3 rounded-md text-sm text-red-600">
+                    Failed to load video
+                  </div>
+                </div>
+              )}
             </motion.div>
           </div>
         ))}
