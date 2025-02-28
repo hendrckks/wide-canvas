@@ -51,6 +51,7 @@ const AlbumView = () => {
 
   // Track loading progress for the loading screen
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Calculate page height only once after all images load
   const getCachedHeight = (slug: string) => {
@@ -221,10 +222,34 @@ const AlbumView = () => {
       );
     };
 
+    // Start simulating loading progress immediately
+    const startProgressSimulation = () => {
+      // Clear any existing interval
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+      
+      // Reset progress
+      setLoadingProgress(0);
+      
+      // Simulate progress up to 90% (the last 10% will be set when images are actually loaded)
+      let simulatedProgress = 0;
+      progressIntervalRef.current = setInterval(() => {
+        simulatedProgress += Math.random() * 3; // Random increment for more realistic effect
+        if (simulatedProgress > 90) {
+          clearInterval(progressIntervalRef.current!);
+          simulatedProgress = 90;
+        }
+        setLoadingProgress(Math.min(simulatedProgress, 90));
+      }, 150);
+    };
+
     const fetchProject = async () => {
       if (!slug) return;
       try {
         setIsLoading(true);
+        startProgressSimulation(); // Start progress simulation
+        
         const projects = await getProjects();
         const foundProject = Array.from(projects.values()).find(
           (p) => p.slug === slug
@@ -269,6 +294,11 @@ const AlbumView = () => {
           );
 
           setAllImagesLoaded(true);
+          
+          // Clear any existing interval and set progress to 100%
+          if (progressIntervalRef.current) {
+            clearInterval(progressIntervalRef.current);
+          }
           setLoadingProgress(100);
 
           // Short delay before removing loading screen
@@ -276,10 +306,18 @@ const AlbumView = () => {
             setIsLoading(false);
           }, 600);
         } else {
+          // Clear any existing interval if project not found
+          if (progressIntervalRef.current) {
+            clearInterval(progressIntervalRef.current);
+          }
           setIsLoading(false);
         }
       } catch (error) {
         console.error("Error fetching project:", error);
+        // Clear any existing interval on error
+        if (progressIntervalRef.current) {
+          clearInterval(progressIntervalRef.current);
+        }
         setIsLoading(false);
       }
     };
@@ -287,7 +325,10 @@ const AlbumView = () => {
     fetchProject();
 
     return () => {
-      // Reset page height when component unmounts
+      // Clean up interval and reset page height when component unmounts
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
       document.body.style.height = "";
     };
   }, [slug]);
