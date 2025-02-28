@@ -142,7 +142,7 @@ const AlbumView = () => {
   // Function to get appropriate class based on index for responsive height
   const getImageHeightClass = (index: number) => {
     if (index === 0) {
-      return "h-80 sm:h-96 md:h-[500px] lg:h-[800px]";
+      return "h-80 sm:h-96 md:h-[500px] lg:h-[600px]";
     } else if (index === 3) {
       return "h-48 sm:h-64 md:h-80 lg:h-[400px]";
     } else {
@@ -151,8 +151,9 @@ const AlbumView = () => {
   };
 
   return (
-    <div className="relative min-h-[200vh] font-clash dark:bg-black bg-white dark:text-white text-black overflow-hidden">
-      <div className="sticky pt-20 pb-5 px-4 sm:px-8 md:px-14 top-0 z-10 w-full h-full flex items-center justify-center">
+    <div className="relative h-full font-clash dark:bg-black bg-white dark:text-white text-black overflow-hidden">
+      {/* Hero section with sticky header and parallax effect */}
+      <div className="sticky pt-20 pb-5 px-4 sm:px-8 md:px-14 top-0 z-10 w-full h-full">
         <motion.div
           className="w-full h-[40vh] sm:h-[50vh] md:h-[65vh] overflow-hidden"
           style={{ y: imageY }}
@@ -168,18 +169,20 @@ const AlbumView = () => {
           )}
         </motion.div>
       </div>
+
+      {/* Project info section */}
       <motion.div
         style={{ y: contentY }}
-        className="sticky flex flex-col mb-8 items-center -mt-28 top-0 z-40 w-full min-h-screen transform transition-transform duration-300 ease-out"
+        className="relative flex flex-col items-center -mt-20 z-40 w-full transform transition-transform duration-300 ease-out"
       >
         <div className="h-full mb-3 px-2 sm:px-0">
           <h1 className="dark:text-white text-black font-clash text-6xl sm:text-6xl md:text-8xl lg:text-[140px] -tracking-[2px] sm:-tracking-[4px] md:-tracking-[6px] lg:-tracking-[8px] bg-transparent font-light text-center">
             {project.name}
           </h1>
         </div>
-        <div className="dark:bg-black bg-white flex-col h-screen backdrop-blur-sm flex items-center w-screen">
-          <div className="mt-10 sm:mt-20 md:mt-28 max-w-3xl w-full px-4 sm:px-6">
-            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl dark:text-white text-black font-clash tracking-tight text-center leading-tight sm:leading-normal md:leading-12 font-light mb-10 sm:mb-16 md:mb-20">
+        <div className="dark:bg-black bg-white flex-col h-auto backdrop-blur-sm flex items-center w-screen">
+          <div className="mt-10 sm:mt-20 md:mt-28 max-w-3xl w-full px-4 sm:px-6 mb-20">
+            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl dark:text-white text-black font-clash tracking-tight text-center leading-tight sm:leading-normal md:leading-12 font-light">
               {project.description}
             </p>
           </div>
@@ -270,7 +273,7 @@ const AlbumView = () => {
                 style={{ isolation: "isolate" }}
               >
                 <span className="relative z-10 group-hover:text-black transition-colors duration-200 flex items-center gap-2 text-sm sm:text-base">
-                  Buy Prints <ArrowRight size={16} className="sm:size-18" />
+                  Buy Prints <ArrowRight size={16} />
                 </span>
                 <div className="absolute inset-0 bg-[#ff6017] -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out group-hover:ease-in" />
               </div>
@@ -278,14 +281,16 @@ const AlbumView = () => {
           </div>
         </div>
       </motion.div>
-      <div className="w-full min-h-screen dark:bg-black bg-white px-4 sm:px-8 md:px-14 py-16 sm:py-20 md:py-28">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-[1800px] mx-auto">
+
+      {/* Images gallery section - completely separate from the above sections */}
+      <div className="w-full -mt-28 dark:bg-black bg-white px-4 sm:px-8 md:px-14 py-2 mb-18">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1800px] mx-auto">
           {project?.images.map((image, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "100px" }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className={`relative overflow-hidden group ${
                 index === 0
@@ -310,6 +315,8 @@ const AlbumView = () => {
           ))}
         </div>
       </div>
+
+      {/* Other projects section */}
       <div className="w-full dark:bg-black bg-white mb-10 sm:mb-16 md:mb-20">
         <div className="max-w-[1800px] mx-auto px-4 sm:px-8 md:px-14">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl italic text-[#ff6017] tracking-tighter mb-6 sm:mb-8 md:mb-10 text-center">
@@ -317,7 +324,7 @@ const AlbumView = () => {
           </h2>
           <div
             ref={scrollContainerRef}
-            className="flex gap-0 sm:gap-6 overflow-x-hidden"
+            className="flex gap-4 sm:gap-6 overflow-x-auto pb-6 scrollbar-hide"
             onMouseEnter={() => setIsAutoScrolling(false)}
             onMouseLeave={() => setIsAutoScrolling(true)}
           >
