@@ -11,10 +11,13 @@ const SkeletonLoader = ({
   imageHeight = "h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px]",
   showDetails = true,
 }: SkeletonLoaderProps) => {
+  // Extract width from imageHeight if present, otherwise default to w-full
+  const hasExplicitWidth = imageHeight.includes("w-");
+  
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`${hasExplicitWidth ? '' : 'w-full'} ${className}`}>
       <motion.div
-        className={`w-full ${imageHeight} rounded-sm p-2 mb-2 relative overflow-hidden dark:bg-white/5 bg-black/5`}
+        className={`${hasExplicitWidth ? '' : 'w-full'} ${imageHeight} rounded-sm p-2 mb-2 relative overflow-hidden dark:bg-white/5 bg-black/5`}
       >
         <motion.div
           className="absolute inset-0 dark:bg-gradient-to-r dark:from-white/5 dark:via-white/10 dark:to-white/5 bg-gradient-to-r from-black/5 via-black/10 to-black/5"
@@ -97,6 +100,12 @@ const SkeletonLoader = ({
           </div>
         </div>
       )}
+      
+      {/* Corner decorations to match the actual project cards */}
+      <motion.div className="absolute -top-1 -left-1 w-3 h-3 sm:w-4 sm:h-4 border-l-1 border-t-1 dark:border-white/30 border-black/30 opacity-30" />
+      <motion.div className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 border-r-1 border-t-1 dark:border-white/30 border-black/30 opacity-30" />
+      <motion.div className="absolute -bottom-1 -left-1 w-3 h-3 sm:w-4 sm:h-4 border-l-1 border-b-1 dark:border-white/30 border-black/30 opacity-30" />
+      <motion.div className="absolute -bottom-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 border-r-1 border-b-1 dark:border-white/30 border-black/30 opacity-30" />
     </div>
   );
 };

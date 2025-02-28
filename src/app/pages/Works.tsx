@@ -142,7 +142,23 @@ const Works = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
           {isLoading
             ? Array.from({ length: 6 }).map((_, index) => (
-                <SkeletonLoader key={index} />
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: index * 0.1,
+                    ease: "easeOut",
+                  }}
+                >
+                  <div className="group relative">
+                    <SkeletonLoader 
+                      imageHeight="h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] w-full"
+                      className="w-full"
+                    />
+                  </div>
+                </motion.div>
               ))
             : projects.map((project, index) => {
                 const primaryImage =
