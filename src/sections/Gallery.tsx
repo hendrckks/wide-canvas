@@ -171,24 +171,26 @@ const Gallery = () => {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.95, y: 30 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3, margin: "-50px" }}
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.3 }}
                 transition={{
-                  duration: 0.8,
-                  delay: index * 0.1,
-                  ease: [0.21, 0.47, 0.32, 0.98],
+                  duration: 0.6,
+                  delay: index * 0.05,
+                  ease: "easeOut",
                 }}
                 style={{ y: transforms[index] }}
-                className={`sm:absolute ${index === 0
-                  ? "sm:left-1/2 sm:-translate-x-1/2 sm:top-[10%]"
-                  : index === 1
-                  ? "sm:left-[8%] sm:top-[32%]"
-                  : index === 2
-                  ? "sm:right-[8%] sm:top-[38%]"
-                  : index === 3
-                  ? "sm:left-[20%] sm:top-[59%]"
-                  : "sm:left-1/2 sm:-translate-x-1/2 sm:top-[80%]"
+                className={`sm:absolute ${
+                  index === 0
+                    ? "sm:left-1/2 sm:-translate-x-1/2 sm:top-[10%]"
+                    : index === 1
+                    ? "sm:left-[8%] sm:top-[32%]"
+                    : index === 2
+                    ? "sm:right-[8%] sm:top-[38%]"
+                    : index === 3
+                    ? "sm:left-[20%] sm:top-[59%]"
+                    : "sm:left-1/2 sm:-translate-x-1/2 sm:top-[80%]"
                 } mb-16`}
               >
                 <motion.div
