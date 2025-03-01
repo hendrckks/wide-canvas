@@ -533,7 +533,7 @@ const AlbumView = () => {
                 className="p-3 sm:p-4 text-center items-center justify-center gap-3 sm:gap-6 border dark:border-white/20 border-black/20 flex relative overflow-hidden group transition-all duration-200 hover:border-transparent cursor-pointer backdrop-blur-md dark:bg-white/5 bg-black/5 rounded-md hover:bg-[#ff6017]/10"
                 style={{ isolation: "isolate" }}
               >
-                <span className="relative z-10 group-hover:text-black text-black dark:text-white transition-colors duration-200 flex items-center gap-2 text-sm sm:text-base">
+                <span className="relative z-10 group-hover:text-black text-white dark:text-black transition-colors duration-200 flex items-center gap-2 text-sm sm:text-base">
                   Buy Prints <ArrowRight size={16} />
                 </span>
                 <div className="absolute inset-0 bg-[#ff6017] -z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out group-hover:ease-in" />
@@ -581,7 +581,7 @@ const AlbumView = () => {
         </div>
       </motion.div>
       {/* Other projects section */}
-      <div className="w-full -mt-80 dark:bg-black bg-white mb-10 sm:mb-16 md:mb-20">
+      <div className="w-full hidden -mt-80 dark:bg-black bg-white mb-10 sm:mb-16 md:mb-20">
         <div className="max-w-[1800px] mx-auto px-4 sm:px-8 md:px-14">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl italic text-[#ff6017] tracking-tighter mb-6 sm:mb-8 md:mb-10 text-center">
             Other Selected Works
