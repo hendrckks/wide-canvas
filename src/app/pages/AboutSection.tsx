@@ -265,7 +265,7 @@ export default function AboutSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[200px,1fr] gap-6 sm:gap-10 md:gap-16 mb-16 sm:mb-24"
         >
           <h2 className="text-sm font-medium">CONTACT</h2>
@@ -273,7 +273,7 @@ export default function AboutSection() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.8 }}
+            transition={{ duration: 0.8, delay: 1.3 }}
             className="flex justify-between items-end text-xs sm:text-sm"
           >
             <div className="text-xs sm:text-sm font-semibold">
@@ -281,7 +281,7 @@ export default function AboutSection() {
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.9 }}
+                transition={{ duration: 0.5, delay: 1.4 }}
               >
                 WIDECANVASSTUDIO@GMAIL.COM
               </motion.p>
@@ -289,7 +289,7 @@ export default function AboutSection() {
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 1.0 }}
+                transition={{ duration: 0.5, delay: 1.5 }}
               >
                 0110702907 / 0710850143
               </motion.p>
