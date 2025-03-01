@@ -32,9 +32,12 @@ const Gallery = () => {
 
                 // Check if cached response is stale (older than 24 hours)
                 if (cachedResponse) {
-                  const cachedDate = new Date(cachedResponse.headers.get('date') || '');
+                  const cachedDate = new Date(
+                    cachedResponse.headers.get("date") || ""
+                  );
                   const now = new Date();
-                  const isCacheStale = (now.getTime() - cachedDate.getTime()) > (24 * 60 * 60 * 1000);
+                  const isCacheStale =
+                    now.getTime() - cachedDate.getTime() > 24 * 60 * 60 * 1000;
                   if (isCacheStale) {
                     await cache.delete(primaryImage.url);
                     cachedResponse = undefined;
@@ -47,7 +50,7 @@ const Gallery = () => {
                     cache: "force-cache",
                     headers: {
                       "Cache-Control": "max-age=86400", // 24 hours
-                      "Pragma": "no-cache",
+                      Pragma: "no-cache",
                     },
                   });
 
@@ -55,7 +58,7 @@ const Gallery = () => {
                     // Store in cache with timestamp
                     const responseToCache = response.clone();
                     await cache.put(primaryImage.url, responseToCache);
-                    
+
                     // Preload image
                     await new Promise((resolve, reject) => {
                       const img = new Image();
@@ -64,11 +67,16 @@ const Gallery = () => {
                       img.src = primaryImage.url;
                     });
                   } else {
-                    throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`);
+                    throw new Error(
+                      `Failed to fetch image: ${response.status} ${response.statusText}`
+                    );
                   }
                 }
               } catch (error) {
-                console.error(`Error caching image for ${project.name}:`, error);
+                console.error(
+                  `Error caching image for ${project.name}:`,
+                  error
+                );
                 // Attempt to load from cache even if fetch fails
                 try {
                   const cache = await caches.open("project-images");
@@ -79,7 +87,10 @@ const Gallery = () => {
                     img.src = primaryImage.url;
                   }
                 } catch (fallbackError) {
-                  console.error("Fallback cache retrieval failed:", fallbackError);
+                  console.error(
+                    "Fallback cache retrieval failed:",
+                    fallbackError
+                  );
                 }
               }
             }
@@ -171,14 +182,13 @@ const Gallery = () => {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.3 }}
+                initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3, margin: "-50px" }}
                 transition={{
-                  duration: 0.6,
-                  delay: index * 0.05,
-                  ease: "easeOut",
+                  duration: 0.8,
+                  delay: index * 0.1,
+                  ease: [0.21, 0.47, 0.32, 0.98],
                 }}
                 style={{ y: transforms[index] }}
                 className={`sm:absolute ${
