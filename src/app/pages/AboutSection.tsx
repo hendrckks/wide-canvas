@@ -20,7 +20,7 @@ export default function AboutSection() {
               stories that have defined the Widecanvas aesthetic of authenticity and raw emotion.
             </p>
           </div>
-          <p className="dark:text-white/80 text-black/80 text-xs font-medium flex items-center absolute bottom-0 md:bottom-5 tracking-normal">
+          <p className="dark:text-white/80 text-black/80 text-xs font-medium flex items-center absolute bottom-0 tracking-normal">
             [
             <motion.span
               animate={{
