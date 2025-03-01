@@ -542,7 +542,7 @@ const AlbumView = () => {
           </div>
         </div>
         {/* Images gallery section - improved to fill space properly */}
-        <div className="w-full dark:bg-black bg-white px-4 sm:px-8 md:px-14 py-2 mb-18">
+        <div className="w-full dark:bg-black bg-white px-4 sm:px-8 md:px-14 py-2 -mb-72">
           <div className="relative z-40 pt-40">
             {/* Modified grid layout to avoid gaps */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 w-full mx-auto">
