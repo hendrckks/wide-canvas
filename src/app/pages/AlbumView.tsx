@@ -32,112 +32,80 @@ const AlbumView = () => {
   const { slug } = useParams();
   const [project, setProject] = useState<ExtendedProject | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [allImagesLoaded, setAllImagesLoaded] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const [pageHeight, setPageHeight] = useState(0);
   const { scrollY } = useScroll();
-
-  // Create transform values directly at the component level, not inside callbacks
+  const [otherProjects, setOtherProjects] = useState<Project[]>([]);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  
+  // Create transform values for parallax effects
   const imageY = useTransform(scrollY, [0, 500], [0, 5]);
   const contentY = useTransform(scrollY, [0, 1000], [0, -500]);
 
-  const [otherProjects, setOtherProjects] = useState<Project[]>([]);
-  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-  const pageRef = useRef<HTMLDivElement>(null);
-  // We'll remove the unused variable warning by adding a use case for it
-  const loadedImages = useRef<Set<string>>(new Set());
-  const totalImagesToLoad = useRef<number>(0);
+  // Image cache
+  const imageCache = useRef<Map<string, HTMLImageElement>>(new Map());
+  
+  // Function to preload an image and return its dimensions
+  const preloadImage = (url: string): Promise<{ url: string; width: number; height: number }> => {
+    return new Promise((resolve) => {
+      // Check if image is already cached
+      if (imageCache.current.has(url)) {
+        const cachedImg = imageCache.current.get(url)!;
+        resolve({
+          url,
+          width: cachedImg.naturalWidth,
+          height: cachedImg.naturalHeight
+        });
+        return;
+      }
+      
+      // Otherwise load the image
+      const img = new Image();
+      img.onload = () => {
+        imageCache.current.set(url, img);
+        resolve({
+          url,
+          width: img.naturalWidth,
+          height: img.naturalHeight
+        });
+      };
+      img.onerror = () => resolve({ url, width: 0, height: 0 });
+      img.src = url;
+    });
+  };
 
-  // Track loading progress for the loading screen
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Calculate page height only once after all images load
+  // Cache management for page height
   const getCachedHeight = (slug: string) => {
-    const cached = localStorage.getItem(`pageHeight-${slug}`);
-    if (!cached) return null;
-    const { height, timestamp } = JSON.parse(cached);
-    // Cache valid for 24 hours (86400000 ms)
-    if (Date.now() - timestamp < 86400000) return height;
-    return null;
+    try {
+      const cached = localStorage.getItem(`pageHeight-${slug}`);
+      if (!cached) return null;
+      
+      const { height, timestamp } = JSON.parse(cached);
+      // Cache valid for 24 hours
+      if (Date.now() - timestamp < 86400000) return height;
+      return null;
+    } catch (error) {
+      console.error("Error retrieving cached height:", error);
+      return null;
+    }
   };
 
   const setCachedHeight = (slug: string, height: number) => {
-    localStorage.setItem(
-      `pageHeight-${slug}`,
-      JSON.stringify({ height, timestamp: Date.now() })
-    );
+    try {
+      localStorage.setItem(
+        `pageHeight-${slug}`,
+        JSON.stringify({ height, timestamp: Date.now() })
+      );
+    } catch (error) {
+      console.error("Error setting cached height:", error);
+    }
   };
 
-  useEffect(() => {
-    const cachedHeight = slug ? getCachedHeight(slug) : null;
-
-    if (cachedHeight) {
-      setPageHeight(cachedHeight);
-      document.body.style.height = `${cachedHeight}px`;
-    }
-
-    if (allImagesLoaded && pageRef.current && !cachedHeight) {
-      const height = pageRef.current.scrollHeight;
-      setPageHeight(height);
-      document.body.style.height = `${height}px`;
-      if (slug) setCachedHeight(slug, height);
-    }
-  }, [allImagesLoaded, slug]);
-
-  useEffect(() => {
-    const fetchOtherProjects = async () => {
-      try {
-        const projectsMap = await getProjects();
-        const projectsArray = Array.from(projectsMap.values());
-        const filteredProjects = projectsArray.filter((p) => p.slug !== slug);
-        setOtherProjects(filteredProjects);
-      } catch (error) {
-        console.error("Error fetching other projects:", error);
-      }
-    };
-
-    fetchOtherProjects();
-  }, [slug]);
-
-  useEffect(() => {
-    let animationFrameId: number;
-    const scrollContainer = scrollContainerRef.current;
-
-    const autoScroll = () => {
-      if (scrollContainer && isAutoScrolling) {
-        scrollContainer.scrollLeft += 0.5;
-
-        if (
-          scrollContainer.scrollLeft >=
-          scrollContainer.scrollWidth - scrollContainer.clientWidth
-        ) {
-          let resetPosition = scrollContainer.scrollLeft;
-          const resetScroll = () => {
-            if (resetPosition > 0) {
-              resetPosition -= 10;
-              scrollContainer.scrollLeft = Math.max(0, resetPosition);
-              requestAnimationFrame(resetScroll);
-            } else {
-              scrollContainer.scrollLeft = 0;
-              animationFrameId = requestAnimationFrame(autoScroll);
-            }
-          };
-          resetScroll();
-          return;
-        }
-      }
-      animationFrameId = requestAnimationFrame(autoScroll);
-    };
-
-    animationFrameId = requestAnimationFrame(autoScroll);
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [isAutoScrolling]);
-
+  // Smooth scroll to top function
   const smoothScrollToTop = () => {
     const startPosition = window.scrollY;
     const startTime = performance.now();
@@ -158,224 +126,261 @@ const AlbumView = () => {
     requestAnimationFrame(animateScroll);
   };
 
+  // Load project data and images
+  useEffect(() => {
+    const fetchProject = async () => {
+      if (!slug) return;
+      
+      try {
+        setIsLoading(true);
+        
+        // Start simulating loading progress
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+          progress += Math.random() * 5;
+          if (progress > 90) {
+            clearInterval(progressInterval);
+            progress = 90;
+          }
+          setLoadingProgress(Math.min(progress, 90));
+        }, 150);
+        
+        // Attempt to get project data
+        const projects = await getProjects();
+        const foundProject = Array.from(projects.values()).find(p => p.slug === slug);
+        
+        if (foundProject) {
+          // Set initial project data
+          setProject(foundProject as ExtendedProject);
+          
+          // Preload images in parallel
+          const imageUrls = foundProject.images
+            .filter(img => img.url)
+            .map(img => img.url as string);
+          
+          const imageLoadPromises = imageUrls.map(preloadImage);
+          
+          // Process images as they load
+          const imagesWithDimensions = await Promise.all(imageLoadPromises);
+          
+          // Update project images with dimensions
+          const enhancedImages = foundProject.images.map(originalImg => {
+            const dimensions = imagesWithDimensions.find(
+              img => img.url === originalImg.url
+            );
+            
+            return {
+              ...originalImg,
+              width: dimensions?.width || 0,
+              height: dimensions?.height || 0,
+            };
+          });
+          
+          // Update project with enhanced images
+          setProject(prev => prev ? { ...prev, images: enhancedImages } : null);
+          
+          // Complete loading
+          clearInterval(progressInterval);
+          setLoadingProgress(100);
+          
+          // Short delay before removing loading screen
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
+        } else {
+          clearInterval(progressInterval);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching project:", error);
+        setIsLoading(false);
+      }
+    };
+    
+    fetchProject();
+    
+    return () => {
+      // Reset body height when component unmounts
+      document.body.style.height = "";
+    };
+  }, [slug]);
+  
+  // Load other projects
+  useEffect(() => {
+    const fetchOtherProjects = async () => {
+      try {
+        const projectsMap = await getProjects();
+        const projectsArray = Array.from(projectsMap.values());
+        const filteredProjects = projectsArray.filter(p => p.slug !== slug);
+        
+        // Preload primary images for other projects
+        filteredProjects.forEach(project => {
+          const primaryImage = project.images.find(img => img.isPrimary) || project.images[0];
+          if (primaryImage?.url) {
+            preloadImage(primaryImage.url);
+          }
+        });
+        
+        setOtherProjects(filteredProjects);
+      } catch (error) {
+        console.error("Error fetching other projects:", error);
+      }
+    };
+    
+    fetchOtherProjects();
+  }, [slug]);
+  
+  // Set up auto-scrolling for other projects section
+  useEffect(() => {
+    let animationFrameId: number;
+    const scrollContainer = scrollContainerRef.current;
+    
+    const autoScroll = () => {
+      if (scrollContainer && isAutoScrolling) {
+        scrollContainer.scrollLeft += 0.5;
+        
+        if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth - scrollContainer.clientWidth) {
+          scrollContainer.scrollLeft = 0;
+        }
+      }
+      animationFrameId = requestAnimationFrame(autoScroll);
+    };
+    
+    animationFrameId = requestAnimationFrame(autoScroll);
+    
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [isAutoScrolling]);
+  
+  // Calculate and set page height
+  useEffect(() => {
+    const calculatePageHeight = () => {
+      if (!project || !pageRef.current) return;
+      
+      // Try to get cached height first
+      const cachedHeight = slug ? getCachedHeight(slug) : null;
+      
+      if (cachedHeight) {
+        setPageHeight(cachedHeight);
+        document.body.style.height = `${cachedHeight}px`;
+        return;
+      }
+      
+      // Calculate height based on content
+      let totalHeight = 0;
+      
+      // Base height for header, description, and info sections
+      totalHeight += 800;
+      
+      // Image grid height estimation
+      const containerWidth = pageRef.current.offsetWidth;
+      const columnWidth = containerWidth / 3;
+      
+      project.images.forEach((img, index) => {
+        const gridClass = getGridClass(index, project.images.length);
+        const cols = gridClass.includes("col-span-2") ? 2 : 1;
+        const rows = gridClass.includes("row-span-2") ? 2 : 1;
+        
+        // Use aspect ratio to calculate height
+        const width = img.width || columnWidth;
+        const height = img.height || columnWidth;
+        const aspectRatio = width / height;
+        
+        const imageHeight = ((columnWidth * cols) / aspectRatio) * rows;
+        totalHeight += imageHeight / 3; // Adjust for grid layout
+      });
+      
+      // Set calculated height
+      setPageHeight(totalHeight);
+      document.body.style.height = `${totalHeight}px`;
+      
+      // Cache the calculated height
+      if (slug) {
+        setCachedHeight(slug, totalHeight);
+      }
+    };
+    
+    calculatePageHeight();
+    
+    // Recalculate on window resize
+    const handleResize = () => {
+      calculatePageHeight();
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [project, slug]);
+  
+  // Reset scroll position and set up scroll performance optimizations
   useEffect(() => {
     smoothScrollToTop();
-
-    // Set will-change only on elements that need it, and remove it after scrolling
-    const addWillChangeHint = () => {
+    
+    // Add will-change hint to elements that will animate
+    const addPerformanceHints = () => {
       if (pageRef.current) {
         const elements = pageRef.current.querySelectorAll(".motion-element");
-        elements.forEach((el) => {
+        elements.forEach(el => {
           (el as HTMLElement).style.willChange = "transform";
         });
       }
     };
-
-    addWillChangeHint();
-
-    // Set up passive scroll listeners
+    
+    addPerformanceHints();
+    
+    // Use passive scroll listeners for better performance
     const scrollOptions = { passive: true };
-
-    // Remove will-change after scrolling stops to free up resources
+    
+    // Remove performance hints when scrolling stops
     let scrollTimeout: NodeJS.Timeout;
     const handleScroll = () => {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         if (pageRef.current) {
           const elements = pageRef.current.querySelectorAll(".motion-element");
-          elements.forEach((el) => {
+          elements.forEach(el => {
             (el as HTMLElement).style.willChange = "auto";
           });
         }
       }, 200);
     };
-
+    
     window.addEventListener("scroll", handleScroll, scrollOptions);
-
+    
     return () => {
       window.removeEventListener("scroll", handleScroll);
       clearTimeout(scrollTimeout);
-      // Don't reset body height immediately - let the new page set it
-      setTimeout(() => {
-        if (!document.body.getAttribute("data-keep-height")) {
-          document.body.style.height = "";
-        }
-      }, 100);
     };
   }, [slug]);
-
-  // Preload all images before showing content
-  useEffect(() => {
-    const preloadImage = async (url: string) => {
-      return new Promise<{ url: string; width: number; height: number }>(
-        (resolve) => {
-          const img = new Image();
-          img.onload = () =>
-            resolve({
-              url,
-              width: img.naturalWidth,
-              height: img.naturalHeight,
-            });
-          img.onerror = () => resolve({ url, width: 0, height: 0 });
-          img.src = url;
-        }
-      );
-    };
-
-    // Start simulating loading progress immediately
-    const startProgressSimulation = () => {
-      // Clear any existing interval
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-      }
-
-      // Reset progress
-      setLoadingProgress(0);
-
-      // Simulate progress up to 90% (the last 10% will be set when images are actually loaded)
-      let simulatedProgress = 0;
-      progressIntervalRef.current = setInterval(() => {
-        simulatedProgress += Math.random() * 3; // Random increment for more realistic effect
-        if (simulatedProgress > 90) {
-          clearInterval(progressIntervalRef.current!);
-          simulatedProgress = 90;
-        }
-        setLoadingProgress(Math.min(simulatedProgress, 90));
-      }, 150);
-    };
-
-    const fetchProject = async () => {
-      if (!slug) return;
-      try {
-        setIsLoading(true);
-        startProgressSimulation(); // Start progress simulation
-
-        const projects = await getProjects();
-        const foundProject = Array.from(projects.values()).find(
-          (p) => p.slug === slug
-        );
-
-        if (foundProject) {
-          // Initialize with the original project data
-          setProject(foundProject as ExtendedProject);
-
-          // Count total images to load (project + other projects)
-          const imageUrls = foundProject.images
-            .filter((img) => img.url)
-            .map((img) => img.url as string);
-
-          totalImagesToLoad.current = imageUrls.length;
-
-          // Preload all project images in parallel
-          const imageData = await Promise.all(imageUrls.map(preloadImage));
-
-          // Add dimensions to the existing image objects
-          const imagesWithDimensions = foundProject.images.map(
-            (originalImg) => {
-              const dimensions = imageData.find(
-                (img) => img.url === originalImg.url
-              );
-              return {
-                ...originalImg,
-                width: dimensions?.width || 0,
-                height: dimensions?.height || 0,
-              };
-            }
-          );
-
-          // Track loaded images
-          imageData.forEach((img) => {
-            loadedImages.current.add(img.url);
-          });
-
-          // Update project with enhanced images
-          setProject((prev) =>
-            prev ? { ...prev, images: imagesWithDimensions } : null
-          );
-
-          setAllImagesLoaded(true);
-
-          // Clear any existing interval and set progress to 100%
-          if (progressIntervalRef.current) {
-            clearInterval(progressIntervalRef.current);
-          }
-          setLoadingProgress(100);
-
-          // Short delay before removing loading screen
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 600);
-        } else {
-          // Clear any existing interval if project not found
-          if (progressIntervalRef.current) {
-            clearInterval(progressIntervalRef.current);
-          }
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error("Error fetching project:", error);
-        // Clear any existing interval on error
-        if (progressIntervalRef.current) {
-          clearInterval(progressIntervalRef.current);
-        }
-        setIsLoading(false);
-      }
-    };
-
-    fetchProject();
-
-    return () => {
-      // Clean up interval and reset page height when component unmounts
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-      }
-      document.body.style.height = "";
-    };
-  }, [slug]);
-
-  // Add this useEffect to calculate page height using image dimensions
-  useEffect(() => {
-    if (!project || !pageRef.current) return;
-
-    // Calculate image grid height
-    let gridHeight = 0;
-    const columnWidth = pageRef.current.offsetWidth / 3; // Approximate column width
-    project.images.forEach((img, index) => {
-      const gridClass = getGridClass(index, project.images.length);
-      const cols = gridClass.includes("col-span-2") ? 2 : 1;
-      const rows = gridClass.includes("row-span-2") ? 2 : 1;
-
-      // Use width and height if available, fallback to aspect ratio 1 if not
-      const width = img.width || 1;
-      const height = img.height || 1;
-      const aspectRatio = width / height;
-      const calculatedHeight = ((columnWidth * cols) / aspectRatio) * rows;
-      gridHeight += calculatedHeight;
-    });
-
-    // Add other section heights (header, info, etc.)
-    const totalHeight = gridHeight + 800; // Adjust based on your layout
-    setPageHeight(totalHeight);
-    document.body.style.height = `${totalHeight}px`;
-  }, [project]);
-
+  
   // Create an optimized grid layout based on image count
   const getGridClass = (index: number, totalImages: number) => {
     if (totalImages <= 3) {
       return "col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-1";
     }
-
+    
     if (index === 0 || index % 5 === 0) {
       return "col-span-1 sm:col-span-2 lg:col-span-2 row-span-2";
     }
-
+    
     if (index % 3 === 0) {
       return "col-span-1 lg:col-span-2";
     }
-
+    
     return "col-span-1";
   };
-
+  
+  // Handle navigation to another project
+  const handleNavigateToProject = (newSlug: string) => {
+    smoothScrollToTop();
+    setTimeout(() => {
+      navigate(`/project/${newSlug}`);
+    }, 250);
+  };
+  
+  // Show loading screen while content is loading
   if (isLoading) {
     return (
       <LoadingScreen
@@ -389,7 +394,8 @@ const AlbumView = () => {
       />
     );
   }
-
+  
+  // Show error message if project not found
   if (!project) {
     return (
       <div className="dark:text-white text-black text-center py-20">
@@ -397,16 +403,7 @@ const AlbumView = () => {
       </div>
     );
   }
-
-  const handleNavigateToProject = (newSlug: string) => {
-    document.body.setAttribute("data-keep-height", "true");
-    smoothScrollToTop();
-    setTimeout(() => {
-      document.body.removeAttribute("data-keep-height");
-      navigate(`/project/${newSlug}`);
-    }, 250);
-  };
-
+  
   return (
     <div
       ref={pageRef}
@@ -544,10 +541,10 @@ const AlbumView = () => {
             </div>
           </div>
         </div>
-        {/* Images gallery section - improved to fill space properly */}
+        
+        {/* Images gallery section */}
         <div className="w-full dark:bg-black bg-white px-4 sm:px-8 md:px-14 py-2 -mb-20">
           <div className="relative z-40 pt-40">
-            {/* Modified grid layout to avoid gaps */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 w-full mx-auto">
               {project?.images.length > 0 &&
                 project.images.map((image, index) => {
@@ -565,17 +562,16 @@ const AlbumView = () => {
                         src={image.url}
                         alt={`Album image ${index + 1}`}
                         className="w-full object-contain transition-transform duration-500 ease-out"
+                        loading="lazy"
                         initial={{ scale: 1.1 }}
                         animate={{ scale: 1 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
                       />
-                      {/* Optional overlay on hover for a more refined look */}
                       <div className="absolute inset-0 bg-black/0 hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-300"></div>
                     </motion.div>
                   );
                 })}
 
-              {/* If there are too few images, add placeholder elements to maintain grid structure */}
               {project?.images.length > 0 && project.images.length < 3 && (
                 <div className="col-span-1 sm:col-span-1 lg:col-span-1"></div>
               )}
@@ -583,6 +579,7 @@ const AlbumView = () => {
           </div>
         </div>
       </motion.div>
+      
       {/* Other projects section */}
       <div className="w-full hidden -mt-80 dark:bg-black bg-white mb-10 sm:mb-16 md:mb-20">
         <div className="max-w-[1800px] mx-auto px-4 sm:px-8 md:px-14">
@@ -622,6 +619,7 @@ const AlbumView = () => {
                     <motion.img
                       src={primaryImage.url}
                       alt={project.name}
+                      loading="lazy"
                       className="w-full sm:w-72 md:w-80 lg:w-96 h-44 sm:h-64 md:h-80 object-cover rounded-sm p-2 mb-2"
                     />
                     <div className="px-2 mb-2">
