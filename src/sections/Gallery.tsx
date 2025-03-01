@@ -20,36 +20,67 @@ const Gallery = () => {
         const projectsArray = Array.from(projectsMap.values());
         const projects = projectsArray.slice(0, 5);
 
-        // Enhanced image loading with caching
+        // Enhanced image loading with robust caching strategy
         await Promise.all(
           projects.map(async (project) => {
             const primaryImage =
               project.images.find((img) => img.isPrimary) || project.images[0];
             if (primaryImage?.url) {
               try {
-                const cache = await caches.open('project-images');
-                const cachedResponse = await cache.match(primaryImage.url);
+                const cache = await caches.open("project-images");
+                let cachedResponse = await cache.match(primaryImage.url);
+
+                // Check if cached response is stale (older than 24 hours)
+                if (cachedResponse) {
+                  const cachedDate = new Date(cachedResponse.headers.get('date') || '');
+                  const now = new Date();
+                  const isCacheStale = (now.getTime() - cachedDate.getTime()) > (24 * 60 * 60 * 1000);
+                  if (isCacheStale) {
+                    await cache.delete(primaryImage.url);
+                    cachedResponse = undefined;
+                  }
+                }
 
                 if (!cachedResponse) {
                   const response = await fetch(primaryImage.url, {
-                    method: 'GET',
-                    cache: 'force-cache',
+                    method: "GET",
+                    cache: "force-cache",
                     headers: {
-                      'Cache-Control': 'max-age=31536000',
+                      "Cache-Control": "max-age=86400", // 24 hours
+                      "Pragma": "no-cache",
                     },
                   });
 
                   if (response.ok) {
-                    await cache.put(primaryImage.url, response.clone());
-                    const img = new Image();
-                    img.src = primaryImage.url;
+                    // Store in cache with timestamp
+                    const responseToCache = response.clone();
+                    await cache.put(primaryImage.url, responseToCache);
+                    
+                    // Preload image
+                    await new Promise((resolve, reject) => {
+                      const img = new Image();
+                      img.onload = resolve;
+                      img.onerror = reject;
+                      img.src = primaryImage.url;
+                    });
+                  } else {
+                    throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`);
                   }
                 }
               } catch (error) {
-                console.error('Error caching image:', error);
-                // Fallback to basic preloading
-                const img = new Image();
-                img.src = primaryImage.url;
+                console.error(`Error caching image for ${project.name}:`, error);
+                // Attempt to load from cache even if fetch fails
+                try {
+                  const cache = await caches.open("project-images");
+                  const cachedResponse = await cache.match(primaryImage.url);
+                  if (!cachedResponse) {
+                    // If no cached version exists, preload directly
+                    const img = new Image();
+                    img.src = primaryImage.url;
+                  }
+                } catch (fallbackError) {
+                  console.error("Fallback cache retrieval failed:", fallbackError);
+                }
               }
             }
           })
@@ -121,7 +152,15 @@ const Gallery = () => {
             >
               <SkeletonLoader
                 imageHeight={
-                  index === 0 ? "h-[450px] w-[500px]" : index === 1 ? "h-[400px] w-[500px]" : index === 2 ? "h-[450px] w-[450px]" : index === 3 ? "h-[400px] w-[500px]" : "h-[450px] w-[500px]"
+                  index === 0
+                    ? "h-[450px] w-[500px]"
+                    : index === 1
+                    ? "h-[400px] w-[500px]"
+                    : index === 2
+                    ? "h-[450px] w-[450px]"
+                    : index === 3
+                    ? "h-[400px] w-[500px]"
+                    : "h-[450px] w-[500px]"
                 }
               />
             </motion.div>
@@ -132,25 +171,24 @@ const Gallery = () => {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.3 }}
+                initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3, margin: "-50px" }}
                 transition={{
-                  duration: 0.3,
-                  delay: index * 0.05,
-                  ease: "easeOut",
+                  duration: 0.8,
+                  delay: index * 0.1,
+                  ease: [0.21, 0.47, 0.32, 0.98],
                 }}
                 style={{ y: transforms[index] }}
-                className={`sm:absolute ${
-                  index === 0
-                    ? "sm:left-1/2 sm:-translate-x-1/2 sm:top-[10%]"
-                    : index === 1
-                    ? "sm:left-[8%] sm:top-[32%]"
-                    : index === 2
-                    ? "sm:right-[8%] sm:top-[38%]"
-                    : index === 3
-                    ? "sm:left-[20%] sm:top-[59%]"
-                    : "sm:left-1/2 sm:-translate-x-1/2 sm:top-[80%]"
+                className={`sm:absolute ${index === 0
+                  ? "sm:left-1/2 sm:-translate-x-1/2 sm:top-[10%]"
+                  : index === 1
+                  ? "sm:left-[8%] sm:top-[32%]"
+                  : index === 2
+                  ? "sm:right-[8%] sm:top-[38%]"
+                  : index === 3
+                  ? "sm:left-[20%] sm:top-[59%]"
+                  : "sm:left-1/2 sm:-translate-x-1/2 sm:top-[80%]"
                 } mb-16`}
               >
                 <motion.div
@@ -187,8 +225,8 @@ const Gallery = () => {
                         index === 1 ? "400px" : index === 3 ? "400px" : "450px",
                     }}
                     loading={index < 3 ? "eager" : "lazy"}
-                    initial={{ opacity: 0, filter: 'blur(10px)' }}
-                    animate={{ opacity: 1, filter: 'blur(0px)' }}
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
                     transition={{ duration: 0.5 }}
                   />
                   <div className="px-2 mb-2">
