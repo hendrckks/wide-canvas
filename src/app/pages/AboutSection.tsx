@@ -7,7 +7,7 @@ export default function AboutSection() {
   return (
     <main className="min-h-screen dark:bg-black bg-white dark:text-white text-black">      {/* Hero Section with Marvin */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-12 sm:py-16 md:py-24 px-4 md:px-8">
-        <div className="flex flex-col justify-between relative pb-16 md:pb-0">
+        <div className="flex flex-col justify-center relative pb-16 md:pb-0">
           <div>
             <h1 className="text-3xl sm:text-4xl md:text-8xl leading-tight md:leading-20 tracking-tighter mb-4 opacity-80 dark:text-white text-black">
               Meet Marvin, Founder of Widecanvas
