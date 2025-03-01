@@ -182,13 +182,13 @@ const Gallery = () => {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.95, y: 30 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3, margin: "-50px" }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.3 }}
                 transition={{
-                  duration: 0.8,
-                  delay: index * 0.1,
-                  ease: [0.21, 0.47, 0.32, 0.98],
+                  duration: 0.3,
+                  delay: index * 0.05,
+                  ease: "easeOut",
                 }}
                 style={{ y: transforms[index] }}
                 className={`sm:absolute ${
@@ -231,9 +231,11 @@ const Gallery = () => {
                     alt={project.name}
                     className="w-[300px] sm:w-[350px] lg:w-[400px] h-[250px] sm:h-[300px] lg:h-[350px] object-cover rounded-sm p-2 mb-2"
                     style={{
-                      width: index === 0 ? "500px" : index === 2 ? "450px" : "500px",
-                      height: index === 1 ? "400px" : index === 3 ? "400px" : "450px",
-                      objectPosition: "center 30%"
+                      width:
+                        index === 0 ? "500px" : index === 2 ? "450px" : "500px",
+                      height:
+                        index === 1 ? "400px" : index === 3 ? "400px" : "450px",
+                      objectPosition: "center 30%",
                     }}
                     loading={index < 3 ? "eager" : "lazy"}
                     initial={{ opacity: 0, filter: "blur(10px)" }}
