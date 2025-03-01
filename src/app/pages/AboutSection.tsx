@@ -42,15 +42,20 @@ export default function AboutSection() {
             >
               Marvin, 21, is the visionary founder of Widecanvas, capturing
               life&apos;s fleeting moments with an eye beyond his years. His
-              pioneering approach blends documentaries and cinematography with his own unique style, creating visual
-              stories that have defined the Widecanvas aesthetic of authenticity and raw emotion.
+              pioneering approach blends documentaries and cinematography with
+              his own unique style, creating visual stories that have defined
+              the Widecanvas aesthetic of authenticity and raw emotion.
             </motion.p>
           </div>
-          <p className="dark:text-white/80 text-black/80 text-xs font-medium flex items-center absolute bottom-0 tracking-normal">
+          <p className="dark:text-white/80 text-black/80 text-xs font-medium flex items-center absolute bottom-0 md:bottom-5 tracking-normal">
             [
             <motion.span
               animate={{ y: [-2, 4, -2] }}
-              transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+              transition={{
+                duration: 1.5,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+              }}
             >
               <ArrowDown size={16} />
             </motion.span>
@@ -61,13 +66,13 @@ export default function AboutSection() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="relative h-[400px] sm:h-[500px] md:h-[610px] flex items-center mt-6 md:mt-0"
+          className="relative h-[450px] sm:h-[550px] md:h-[700px] flex items-center mt-6 md:mt-0"
         >
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="absolute -left-2 sm:-left-4 md:-left-[75px] h-full flex items-center"
+            className="absolute -left-2 sm:-left-4 md:-left-0 h-full flex items-center"
           >
             <h2
               className="vertical-text transform -rotate-180 text-5xl sm:text-7xl md:text-[170px] font-light tracking-tighter opacity-80 dark:text-white text-black"
@@ -85,8 +90,9 @@ export default function AboutSection() {
             <img
               src="/marvo.webp"
               alt="Marvin with his camera"
-              className="object-cover w-full h-full"
+              className="object-contain w-full h-full"
               sizes="(max-width: 768px) 100vw, 50vw"
+              style={{ objectPosition: "center 20%" }}
             />
           </motion.div>
         </motion.div>
@@ -153,7 +159,13 @@ export default function AboutSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="space-y-2 text-xs sm:text-sm font-semibold"
           >
-            {["PORTRAIT PHOTOGRAPHY", "DOCUMENTARY FILMMAKING", "CINEMATOGRAPHY", "EVENT COVERAGE", "PHOTO & VIDEO EDITING"].map((service, index) => (
+            {[
+              "PORTRAIT PHOTOGRAPHY",
+              "DOCUMENTARY FILMMAKING",
+              "CINEMATOGRAPHY",
+              "EVENT COVERAGE",
+              "PHOTO & VIDEO EDITING",
+            ].map((service, index) => (
               <motion.p
                 key={service}
                 initial={{ opacity: 0, x: -20 }}
@@ -185,7 +197,13 @@ export default function AboutSection() {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="space-y-2 text-xs sm:text-sm font-semibold"
           >
-            {["LOCAL GALLERY", "STUDENT MAGAZINE", "INDIE MUSIC FESTIVAL", "CAMPUS EVENTS", "URBAN OUTFITTERS"].map((company, index) => (
+            {[
+              "JHR AFRICA",
+              "SPRITE KENYA",
+              "GOGLA",
+              "SHAMELESS PODCAST",
+              "RIDGEWAYS BAPTIST",
+            ].map((company, index) => (
               <motion.p
                 key={company}
                 initial={{ opacity: 0, x: -20 }}
@@ -204,7 +222,7 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[200px,1fr] gap-6 sm:gap-10 md:gap-16 items-end"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[200px,1fr] gap-6 sm:gap-10 md:gap-16 mb-16 sm:mb-24"
         >
           <h2 className="text-sm font-medium">EXPERIENCE</h2>
           <motion.div
@@ -237,7 +255,43 @@ export default function AboutSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 1.1 }}
               >
-                2021-PRESENT
+                2020-PRESENT
+              </motion.p>
+            </div>
+          </motion.div>
+        </motion.section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[200px,1fr] gap-6 sm:gap-10 md:gap-16 mb-16 sm:mb-24"
+        >
+          <h2 className="text-sm font-medium">CONTACT</h2>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="flex justify-between items-end text-xs sm:text-sm"
+          >
+            <div className="text-xs sm:text-sm font-semibold">
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.9 }}
+              >
+                WIDECANVASSTUDIO@GMAIL.COM
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 1.0 }}
+              >
+                0110702907 / 0710850143
               </motion.p>
             </div>
           </motion.div>

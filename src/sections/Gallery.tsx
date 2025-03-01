@@ -231,10 +231,9 @@ const Gallery = () => {
                     alt={project.name}
                     className="w-[300px] sm:w-[350px] lg:w-[400px] h-[250px] sm:h-[300px] lg:h-[350px] object-cover rounded-sm p-2 mb-2"
                     style={{
-                      width:
-                        index === 0 ? "500px" : index === 2 ? "450px" : "500px",
-                      height:
-                        index === 1 ? "400px" : index === 3 ? "400px" : "450px",
+                      width: index === 0 ? "500px" : index === 2 ? "450px" : "500px",
+                      height: index === 1 ? "400px" : index === 3 ? "400px" : "450px",
+                      objectPosition: "center 30%"
                     }}
                     loading={index < 3 ? "eager" : "lazy"}
                     initial={{ opacity: 0, filter: "blur(10px)" }}
