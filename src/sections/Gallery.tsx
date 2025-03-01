@@ -182,13 +182,13 @@ const Gallery = () => {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, scale: 0.95, y: 50 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{
-                  duration: 0.3,
-                  delay: index * 0.05,
-                  ease: "easeOut",
+                  duration: 0.8,
+                  delay: index * 0.1,
+                  ease: [0.22, 1, 0.36, 1],
                 }}
                 style={{ y: transforms[index] }}
                 className={`sm:absolute ${
