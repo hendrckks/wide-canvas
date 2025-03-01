@@ -144,7 +144,7 @@ const Gallery = () => {
   };
 
   return (
-    <div className="relative min-h-[400vh] h-full transparent dark:text-white text-black">
+    <div className="relative scroll-smooth min-h-[400vh] h-full transparent dark:text-white text-black">
       {isLoading
         ? Array.from({ length: 5 }).map((_, index) => (
             <motion.div
