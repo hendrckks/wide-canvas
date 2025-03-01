@@ -20,82 +20,19 @@ const Gallery = () => {
         const projectsArray = Array.from(projectsMap.values());
         const projects = projectsArray.slice(0, 5);
 
-        // Enhanced image loading with robust caching strategy
-        await Promise.all(
-          projects.map(async (project) => {
-            const primaryImage =
-              project.images.find((img) => img.isPrimary) || project.images[0];
-            if (primaryImage?.url) {
-              try {
-                const cache = await caches.open("project-images");
-                let cachedResponse = await cache.match(primaryImage.url);
-
-                // Check if cached response is stale (older than 24 hours)
-                if (cachedResponse) {
-                  const cachedDate = new Date(
-                    cachedResponse.headers.get("date") || ""
-                  );
-                  const now = new Date();
-                  const isCacheStale =
-                    now.getTime() - cachedDate.getTime() > 24 * 60 * 60 * 1000;
-                  if (isCacheStale) {
-                    await cache.delete(primaryImage.url);
-                    cachedResponse = undefined;
-                  }
-                }
-
-                if (!cachedResponse) {
-                  const response = await fetch(primaryImage.url, {
-                    method: "GET",
-                    cache: "force-cache",
-                    headers: {
-                      "Cache-Control": "max-age=86400", // 24 hours
-                      Pragma: "no-cache",
-                    },
-                  });
-
-                  if (response.ok) {
-                    // Store in cache with timestamp
-                    const responseToCache = response.clone();
-                    await cache.put(primaryImage.url, responseToCache);
-
-                    // Preload image
-                    await new Promise((resolve, reject) => {
-                      const img = new Image();
-                      img.onload = resolve;
-                      img.onerror = reject;
-                      img.src = primaryImage.url;
-                    });
-                  } else {
-                    throw new Error(
-                      `Failed to fetch image: ${response.status} ${response.statusText}`
-                    );
-                  }
-                }
-              } catch (error) {
-                console.error(
-                  `Error caching image for ${project.name}:`,
-                  error
-                );
-                // Attempt to load from cache even if fetch fails
-                try {
-                  const cache = await caches.open("project-images");
-                  const cachedResponse = await cache.match(primaryImage.url);
-                  if (!cachedResponse) {
-                    // If no cached version exists, preload directly
-                    const img = new Image();
-                    img.src = primaryImage.url;
-                  }
-                } catch (fallbackError) {
-                  console.error(
-                    "Fallback cache retrieval failed:",
-                    fallbackError
-                  );
-                }
-              }
-            }
-          })
-        );
+        // Simple preloading for primary images
+        projects.forEach((project) => {
+          const primaryImage =
+            project.images.find((img) => img.isPrimary) || project.images[0];
+          if (primaryImage?.url) {
+            const img = new Image();
+            // Add event listeners to track loading success/failure
+            img.onload = () => console.log(`Image loaded: ${project.name}`);
+            img.onerror = () =>
+              console.error(`Failed to load image: ${project.name}`);
+            img.src = primaryImage.url;
+          }
+        });
 
         setProjects(projects);
       } catch (error) {
@@ -208,22 +145,12 @@ const Gallery = () => {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
                   onClick={() => handleNavigateToProject(project.slug)}
-                  onMouseEnter={async () => {
-                    try {
-                      const projectsMap = await getProjects();
-                      const hoveredProject = Array.from(
-                        projectsMap.values()
-                      ).find((p) => p.slug === project.slug);
-                      if (hoveredProject) {
-                        // Prefetch all project images
-                        hoveredProject.images.forEach((image) => {
-                          const img = new Image();
-                          img.src = image.url;
-                        });
-                      }
-                    } catch (error) {
-                      console.error("Error prefetching project:", error);
-                    }
+                  onMouseEnter={() => {
+                    // Simple prefetching on hover - prefetch all project images
+                    project.images.forEach((image) => {
+                      const img = new Image();
+                      img.src = image.url;
+                    });
                   }}
                 >
                   <motion.img

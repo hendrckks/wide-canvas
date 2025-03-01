@@ -21,41 +21,15 @@ const Works = () => {
         const projectsMap = await getProjects();
         const projectsArray = Array.from(projectsMap.values());
 
-        // Enhanced image loading with caching
-        await Promise.all(
-          projectsArray.map(async (project) => {
-            const primaryImage =
-              project.images.find((img) => img.isPrimary) || project.images[0];
-            if (primaryImage?.url) {
-              try {
-                const cache = await caches.open("project-images");
-                const cachedResponse = await cache.match(primaryImage.url);
-
-                if (!cachedResponse) {
-                  const response = await fetch(primaryImage.url, {
-                    method: "GET",
-                    cache: "force-cache",
-                    headers: {
-                      "Cache-Control": "max-age=31536000",
-                    },
-                  });
-
-                  if (response.ok) {
-                    await cache.put(primaryImage.url, response.clone());
-                    // Also preload the image
-                    const img = new Image();
-                    img.src = primaryImage.url;
-                  }
-                }
-              } catch (error) {
-                console.error("Error caching image:", error);
-                // Fallback to basic preloading if caching fails
-                const img = new Image();
-                img.src = primaryImage.url;
-              }
-            }
-          })
-        );
+        // Simple image preloading for primary images
+        projectsArray.forEach((project) => {
+          const primaryImage =
+            project.images.find((img) => img.isPrimary) || project.images[0];
+          if (primaryImage?.url) {
+            const img = new Image();
+            img.src = primaryImage.url;
+          }
+        });
 
         setProjects(projectsArray);
       } catch (error) {
@@ -181,22 +155,12 @@ const Works = () => {
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.3 }}
                       onClick={() => handleNavigateToProject(project.slug)}
-                      onMouseEnter={async () => {
-                        try {
-                          const projectsMap = await getProjects();
-                          const hoveredProject = Array.from(
-                            projectsMap.values()
-                          ).find((p) => p.slug === project.slug);
-                          if (hoveredProject) {
-                            // Prefetch all project images
-                            hoveredProject.images.forEach((image) => {
-                              const img = new Image();
-                              img.src = image.url;
-                            });
-                          }
-                        } catch (error) {
-                          console.error("Error prefetching project:", error);
-                        }
+                      onMouseEnter={() => {
+                        // Simple prefetching on hover
+                        project.images.forEach((image) => {
+                          const img = new Image();
+                          img.src = image.url;
+                        });
                       }}
                     >
                       <motion.div className="relative w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] overflow-hidden rounded-sm p-2 mb-2">

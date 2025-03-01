@@ -7,7 +7,10 @@ interface LoadingScreenProps {
   loadingProgress?: number; // Make this prop optional
 }
 
-const LoadingScreen = ({ onLoadingComplete, loadingProgress }: LoadingScreenProps) => {
+const LoadingScreen = ({
+  onLoadingComplete,
+  loadingProgress,
+}: LoadingScreenProps) => {
   const [progress, setProgress] = useState(0);
   const { theme } = useTheme();
 
@@ -15,7 +18,7 @@ const LoadingScreen = ({ onLoadingComplete, loadingProgress }: LoadingScreenProp
     // If loadingProgress is provided, use it instead of calculating internally
     if (loadingProgress !== undefined) {
       setProgress(loadingProgress);
-      
+
       // When loadingProgress reaches 100, call onLoadingComplete after a short delay
       if (loadingProgress >= 100) {
         setTimeout(() => {
@@ -24,7 +27,7 @@ const LoadingScreen = ({ onLoadingComplete, loadingProgress }: LoadingScreenProp
       }
       return;
     }
-    
+
     // Define videos to preload - this should match all videos used in your app
     const videos = ["/shotfilm.mp4", "/trailer.mp4"];
     const videoProgress = new Map<string, number>();
@@ -125,6 +128,13 @@ const LoadingScreen = ({ onLoadingComplete, loadingProgress }: LoadingScreenProp
       });
     };
 
+    // Safe removal function to avoid "not a child" errors
+    const safeRemoveElement = (element: HTMLElement) => {
+      if (document.body.contains(element)) {
+        document.body.removeChild(element);
+      }
+    };
+
     // Load all videos in parallel
     Promise.all(videos.map((src) => preloadVideo(src))).then(() => {
       // Check if all videos are playable
@@ -138,7 +148,7 @@ const LoadingScreen = ({ onLoadingComplete, loadingProgress }: LoadingScreenProp
 
           // Clean up the hidden video elements
           videoElements.forEach(({ element }) => {
-            document.body.removeChild(element);
+            safeRemoveElement(element);
           });
         }, 500);
       } else {
@@ -149,7 +159,7 @@ const LoadingScreen = ({ onLoadingComplete, loadingProgress }: LoadingScreenProp
 
           // Clean up the hidden video elements
           videoElements.forEach(({ element }) => {
-            document.body.removeChild(element);
+            safeRemoveElement(element);
           });
         }, 500);
       }
@@ -158,9 +168,7 @@ const LoadingScreen = ({ onLoadingComplete, loadingProgress }: LoadingScreenProp
     return () => {
       // Cleanup hidden video elements if component unmounts early
       videoElements.forEach(({ element }) => {
-        if (document.body.contains(element)) {
-          document.body.removeChild(element);
-        }
+        safeRemoveElement(element);
       });
     };
   }, [onLoadingComplete, loadingProgress]);
