@@ -228,10 +228,10 @@ const AlbumView = () => {
       if (progressIntervalRef.current) {
         clearInterval(progressIntervalRef.current);
       }
-      
+
       // Reset progress
       setLoadingProgress(0);
-      
+
       // Simulate progress up to 90% (the last 10% will be set when images are actually loaded)
       let simulatedProgress = 0;
       progressIntervalRef.current = setInterval(() => {
@@ -249,7 +249,7 @@ const AlbumView = () => {
       try {
         setIsLoading(true);
         startProgressSimulation(); // Start progress simulation
-        
+
         const projects = await getProjects();
         const foundProject = Array.from(projects.values()).find(
           (p) => p.slug === slug
@@ -294,7 +294,7 @@ const AlbumView = () => {
           );
 
           setAllImagesLoaded(true);
-          
+
           // Clear any existing interval and set progress to 100%
           if (progressIntervalRef.current) {
             clearInterval(progressIntervalRef.current);
@@ -426,6 +426,9 @@ const AlbumView = () => {
               initial={{ scale: 1.1 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+              style={{
+                objectPosition: "center 30%",
+              }}
             />
           )}
         </motion.div>

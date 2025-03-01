@@ -28,15 +28,15 @@ const Works = () => {
               project.images.find((img) => img.isPrimary) || project.images[0];
             if (primaryImage?.url) {
               try {
-                const cache = await caches.open('project-images');
+                const cache = await caches.open("project-images");
                 const cachedResponse = await cache.match(primaryImage.url);
 
                 if (!cachedResponse) {
                   const response = await fetch(primaryImage.url, {
-                    method: 'GET',
-                    cache: 'force-cache',
+                    method: "GET",
+                    cache: "force-cache",
                     headers: {
-                      'Cache-Control': 'max-age=31536000',
+                      "Cache-Control": "max-age=31536000",
                     },
                   });
 
@@ -48,7 +48,7 @@ const Works = () => {
                   }
                 }
               } catch (error) {
-                console.error('Error caching image:', error);
+                console.error("Error caching image:", error);
                 // Fallback to basic preloading if caching fails
                 const img = new Image();
                 img.src = primaryImage.url;
@@ -153,7 +153,7 @@ const Works = () => {
                   }}
                 >
                   <div className="group relative">
-                    <SkeletonLoader 
+                    <SkeletonLoader
                       imageHeight="h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] w-full"
                       className="w-full"
                     />
@@ -205,9 +205,12 @@ const Works = () => {
                           alt={project.name}
                           loading="lazy"
                           className="w-full h-full object-cover transition-opacity duration-500 ease-in-out"
-                          initial={{ opacity: 0, filter: 'blur(10px)' }}
-                          animate={{ opacity: 1, filter: 'blur(0px)' }}
+                          initial={{ opacity: 0, filter: "blur(10px)" }}
+                          animate={{ opacity: 1, filter: "blur(0px)" }}
                           transition={{ duration: 0.5 }}
+                          style={{
+                            objectPosition: "center 30%",
+                          }}
                         />
                       </motion.div>
                       <div className="px-2 mb-2">
