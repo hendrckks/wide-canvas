@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 
 const Contact = () => {
-
   return (
     <div className="min-h-screen dark:bg-black bg-white text-black dark:text-white flex flex-col items-center justify-center py-20 px-4">
       <motion.div
@@ -37,7 +36,7 @@ const Contact = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="text-4xl sm:text-6xl lg:text-7xl font-medium tracking-tighter underline underline-offset-4 dark:text-white/50 text-black/50 dark:hover:text-[#ff7738] hover:text-[#ff7738] transition-colors duration-300 inline-block"
           >
-            info@emailfilm.com
+            widecanvas@gmail.com
           </motion.a>
         </div>
       </motion.div>
