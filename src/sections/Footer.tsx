@@ -94,7 +94,7 @@ const Footer = () => {
         something, just ask—filmmakers appreciate a good collaboration more than
         a good lawsuit.
       </p>
-      <img src="/WIDELARGE2.png" className="max-h-48 h-full md:mb-12 mb-8" />
+      <img src="/WIDELARGE2.webp" className="max-h-48 h-full md:mb-12 mb-8" />
       <div className="text-[#808080] text-xs tracking-tight font-medium text-center">
         © 2025 Wide Canvas | Live to Put Memories
         <br /> in a Wide Canvas. | All rights reserved.
