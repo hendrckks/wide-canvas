@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { getProjects } from "../lib/firebase/firestore";
 import { Project } from "../lib/types/project";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,18 @@ const Gallery = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Single transform for all items
+  const yTransform = useTransform(scrollY, [0, 3000], [0, -250], {
+    clamp: true,
+  });
+
+  // Visibility state
+  const [visibleItems, setVisibleItems] = useState<Set<number>>(
+    new Set([0, 1, 2])
+  );
+  const observerRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -18,23 +30,7 @@ const Gallery = () => {
         setIsLoading(true);
         const projectsMap = await getProjects();
         const projectsArray = Array.from(projectsMap.values());
-        const projects = projectsArray.slice(0, 5);
-
-        // Simple preloading for primary images
-        projects.forEach((project) => {
-          const primaryImage =
-            project.images.find((img) => img.isPrimary) || project.images[0];
-          if (primaryImage?.url) {
-            const img = new Image();
-            // Add event listeners to track loading success/failure
-            img.onload = () => console.log(`Image loaded: ${project.name}`);
-            img.onerror = () =>
-              console.error(`Failed to load image: ${project.name}`);
-            img.src = primaryImage.url;
-          }
-        });
-
-        setProjects(projects);
+        setProjects(projectsArray.slice(0, 5));
       } catch (error) {
         console.error("Error fetching projects:", error);
       } finally {
@@ -45,163 +41,133 @@ const Gallery = () => {
     fetchProjects();
   }, []);
 
-  // Pre-calculate transform values for each image
-  const transform1 = useTransform(scrollY, [0, 1000], [0, -50], {
-    clamp: false,
-  });
-  const transform2 = useTransform(scrollY, [500, 1500], [0, -50], {
-    clamp: false,
-  });
-  const transform3 = useTransform(scrollY, [1000, 2000], [0, -50], {
-    clamp: false,
-  });
-  const transform4 = useTransform(scrollY, [1500, 2500], [0, -50], {
-    clamp: false,
-  });
-  const transform5 = useTransform(scrollY, [2000, 3000], [0, -50], {
-    clamp: false,
-  });
+  // Optimized intersection observer
+  useEffect(() => {
+    if (isLoading || !containerRef.current) return;
 
-  const transforms = [
-    transform1,
-    transform2,
-    transform3,
-    transform4,
-    transform5,
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const index = parseInt(
+            entry.target.getAttribute("data-index") || "0"
+          );
+          setVisibleItems((prev) => {
+            const next = new Set(prev);
+            if (entry.isIntersecting) {
+              next.add(index);
+            } else {
+              next.delete(index);
+            }
+            return next;
+          });
+        });
+      },
+      {
+        root: containerRef.current,
+        rootMargin: "1000px 0px",
+        threshold: 0.01,
+      }
+    );
+
+    observerRefs.current.forEach((ref) => ref && observer.observe(ref));
+    return () => observer.disconnect();
+  }, [isLoading, projects.length]);
+
+  const handleNavigateToProject = useCallback(
+    (slug: string) => {
+      window.scrollTo({ top: 0, behavior: "auto" });
+      setTimeout(() => navigate(`/project/${slug}`), 50);
+    },
+    [navigate]
+  );
+
+  const positionClasses = [
+    "sm:left-1/2 sm:-translate-x-1/2 sm:top-[10%]",
+    "sm:left-[8%] sm:top-[32%]",
+    "sm:right-[8%] sm:top-[38%]",
+    "sm:left-[20%] sm:top-[59%]",
+    "sm:left-1/2 sm:-translate-x-1/2 sm:top-[80%]",
   ];
 
-  // Handle navigation with scroll reset
-  const handleNavigateToProject = (slug: string) => {
-    // Force scroll to top before navigation
-    window.scrollTo({ top: 0, behavior: "instant" });
-    // Use setTimeout to ensure scroll happens before navigation
-    setTimeout(() => {
-      navigate(`/project/${slug}`);
-    }, 150);
-  };
-
   return (
-    <div className="relative scroll-smooth min-h-[400vh] h-full transparent dark:text-white text-black">
+    <div
+      ref={containerRef}
+      className="relative scroll-smooth min-h-[400vh] h-full transparent dark:text-white text-black"
+      style={{
+        perspective: "1000px",
+        contentVisibility: "auto",
+      }}
+    >
       {isLoading
         ? Array.from({ length: 5 }).map((_, index) => (
             <motion.div
               key={index}
-              className={`sm:absolute ${
-                index === 0
-                  ? "sm:left-1/2 sm:-translate-x-1/2 sm:top-[10%]"
-                  : index === 1
-                  ? "sm:left-[8%] sm:top-[32%]"
-                  : index === 2
-                  ? "sm:right-[8%] sm:top-[38%]"
-                  : index === 3
-                  ? "sm:left-[20%] sm:top-[59%]"
-                  : "sm:left-1/2 sm:-translate-x-1/2 sm:top-[80%]"
-              } mb-16`}
+              className={`sm:absolute ${positionClasses[index]} mb-16`}
             >
               <SkeletonLoader
-                imageHeight={
-                  index === 0
-                    ? "h-[450px] w-[500px]"
-                    : index === 1
-                    ? "h-[400px] w-[500px]"
-                    : index === 2
-                    ? "h-[450px] w-[450px]"
-                    : index === 3
-                    ? "h-[400px] w-[500px]"
-                    : "h-[450px] w-[500px]"
-                }
+                imageHeight={index === 2 ? "h-[450px]" : "h-[400px]"}
+                className={index === 2 ? "w-[450px]" : "w-[500px]"}
               />
             </motion.div>
           ))
         : projects.map((project, index) => {
             const primaryImage =
               project.images.find((img) => img.isPrimary) || project.images[0];
+
             return (
               <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.95, y: 50 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{
-                  duration: 0.8,
-                  delay: index * 0.1,
-                  ease: [0.22, 1, 0.36, 1],
+                key={project.slug}
+                ref={(el) => {
+                  if (el) {
+                    el.setAttribute("data-index", index.toString());
+                    observerRefs.current[index] = el;
+                  }
                 }}
-                style={{ y: transforms[index] }}
-                className={`sm:absolute ${
-                  index === 0
-                    ? "sm:left-1/2 sm:-translate-x-1/2 sm:top-[10%]"
-                    : index === 1
-                    ? "sm:left-[8%] sm:top-[32%]"
-                    : index === 2
-                    ? "sm:right-[8%] sm:top-[38%]"
-                    : index === 3
-                    ? "sm:left-[20%] sm:top-[59%]"
-                    : "sm:left-1/2 sm:-translate-x-1/2 sm:top-[80%]"
-                } mb-16`}
+                className={`sm:absolute ${positionClasses[index]} mb-16`}
+                style={{
+                  y: yTransform,
+                  visibility: visibleItems.has(index) ? "visible" : "hidden",
+                  transformStyle: "preserve-3d"
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
               >
-                <motion.div
-                  className="group relative cursor-pointer"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
+                <div
+                  className="group relative cursor-pointer transform-gpu"
                   onClick={() => handleNavigateToProject(project.slug)}
-                  onMouseEnter={() => {
-                    // Simple prefetching on hover - prefetch all project images
-                    project.images.forEach((image) => {
-                      const img = new Image();
-                      img.src = image.url;
-                    });
-                  }}
                 >
                   <motion.img
-                    src={primaryImage.url}
+                    src={primaryImage?.url}
                     alt={project.name}
                     className="w-[300px] sm:w-[350px] lg:w-[400px] h-[250px] sm:h-[300px] lg:h-[350px] object-cover rounded-sm p-2 mb-2"
+                    loading={index < 2 ? "eager" : "lazy"}
                     style={{
-                      width:
-                        index === 0 ? "500px" : index === 2 ? "450px" : "500px",
-                      height:
-                        index === 1 ? "400px" : index === 3 ? "400px" : "450px",
-                      objectPosition: "center 30%",
+                      width: index === 2 ? "450px" : "500px",
+                      height: index === 1 || index === 3 ? "400px" : "450px",
+                      transform: "translate3d(0,0,0)",
                     }}
-                    loading={index < 3 ? "eager" : "lazy"}
-                    initial={{ opacity: 0, filter: "blur(10px)" }}
-                    animate={{ opacity: 1, filter: "blur(0px)" }}
-                    transition={{ duration: 0.5 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.2 }}
                   />
                   <div className="px-2 mb-2">
                     <div className="flex gap-2 flex-wrap">
-                      <motion.span
-                        className="px-2 py-1 dark:bg-white/10 bg-black/10 backdrop-blur-sm rounded-xl text-sm tracking-tight mt-2"
-                        initial={{ opacity: 1 }}
-                        animate={{ opacity: 1 }}
-                      >
+                      <span className="px-2 py-1 dark:bg-white/10 bg-black/10 rounded-xl text-sm">
                         {project.category}
-                      </motion.span>
-                      <motion.span
-                        className="px-2 py-1 dark:bg-white/10 bg-black/10 backdrop-blur-lg rounded-xl text-sm tracking-tight mt-2"
-                        initial={{ opacity: 1 }}
-                        animate={{ opacity: 1 }}
-                      >
+                      </span>
+                      <span className="px-2 py-1 dark:bg-white/10 bg-black/10 rounded-xl text-sm">
                         {project.projectType}
-                      </motion.span>
+                      </span>
                     </div>
-                    <motion.div
-                      className="flex items-center justify-between "
-                      initial={{ opacity: 1 }}
-                      animate={{ opacity: 1 }}
-                    >
-                      <h3 className="text-3xl tracking-tighter mb-2 mt-2">
+                    <div className="flex items-center justify-between mt-2">
+                      <h3 className="text-3xl tracking-tighter">
                         {project.name}
                       </h3>
                       <ArrowUpRight className="w-6 h-6" />
-                    </motion.div>
+                    </div>
                   </div>
-                  <motion.div className="absolute -top-1 -left-1 w-4 h-4 border-l-1 border-t-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <motion.div className="absolute -top-1 -right-1 w-4 h-4 border-r-1 border-t-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <motion.div className="absolute -bottom-1 -left-1 w-4 h-4 border-l-1 border-b-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <motion.div className="absolute -bottom-1 -right-1 w-4 h-4 border-r-1 border-b-1 dark:border-white/90 border-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </motion.div>
+                </div>
               </motion.div>
             );
           })}
