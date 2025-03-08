@@ -37,7 +37,7 @@ const metrics = [
 
 const Metrics = () => {
   return (
-    <div className="w-full dark:bg-black bg-white px-4 lg:px-8 2xl:px-0 dark:text-white text-black py-5 sm:py-8 md:py-10">
+    <div className="w-full dark:bg-black bg-white px-4 lg:px-8 2xl:px-0 dark:text-white text-black py-5 sm:py-8 md:py-10 -mb-10">
       <motion.h2
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -46,7 +46,7 @@ const Metrics = () => {
         className="text-4xl sm:text-5xl md:text-6xl font-medium text-center tracking-tighter mb-8 sm:mb-10 md:mb-11"
       >
         Professional
-        <span className="dark:text-white/30 text-black/40 backdrop-blur-lg">
+        <span className="dark:text-white/30 text-black/40 backdrop-blur-lg ml-2">
           Milestones
         </span>
       </motion.h2>

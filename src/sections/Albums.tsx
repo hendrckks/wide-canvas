@@ -58,7 +58,7 @@ const Albums = () => {
         }}
       >
         <div className="flex flex-col items-center justify-center h-full">
-          <div className="flex-1 flex items-center tracking-tighter justify-center">
+          <div className="flex-1 h-[50vh] flex items-center tracking-tighter justify-center">
             Albums
           </div>
           <p className="text-white/80 text-xs font-medium flex items-center absolute bottom-10 tracking-normal">

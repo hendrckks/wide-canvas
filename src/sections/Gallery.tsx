@@ -92,7 +92,7 @@ const Gallery = () => {
   return (
     <div
       ref={containerRef}
-      className="relative scroll-smooth min-h-[400vh] h-full transparent dark:text-white text-black -mt-24"
+      className="relative scroll-smooth min-h-[400vh] h-full transparent dark:text-white text-black -mt-28"
       style={{
         perspective: "1000px",
         contentVisibility: "auto",
