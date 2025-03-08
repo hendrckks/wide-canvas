@@ -31,7 +31,9 @@ const Gallery = () => {
         const projectsMap = await getProjects();
         const projectsArray = Array.from(projectsMap.values());
         // Sort projects by order field in ascending order (0 first)
-        const sortedProjects = projectsArray.sort((a, b) => (a.order || 0) - (b.order || 0));
+        const sortedProjects = projectsArray.sort(
+          (a, b) => (a.order || 0) - (b.order || 0)
+        );
         setProjects(sortedProjects.slice(0, 5));
       } catch (error) {
         console.error("Error fetching projects:", error);
@@ -129,7 +131,7 @@ const Gallery = () => {
                 style={{
                   y: yTransform,
                   visibility: visibleItems.has(index) ? "visible" : "hidden",
-                  transformStyle: "preserve-3d"
+                  transformStyle: "preserve-3d",
                 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -148,6 +150,7 @@ const Gallery = () => {
                       width: index === 2 ? "450px" : "500px",
                       height: index === 1 || index === 3 ? "400px" : "450px",
                       transform: "translate3d(0,0,0)",
+                      objectPosition: "center 30%",
                     }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
