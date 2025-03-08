@@ -30,7 +30,9 @@ const Gallery = () => {
         setIsLoading(true);
         const projectsMap = await getProjects();
         const projectsArray = Array.from(projectsMap.values());
-        setProjects(projectsArray.slice(0, 5));
+        // Sort projects by order field in ascending order (0 first)
+        const sortedProjects = projectsArray.sort((a, b) => (a.order || 0) - (b.order || 0));
+        setProjects(sortedProjects.slice(0, 5));
       } catch (error) {
         console.error("Error fetching projects:", error);
       } finally {

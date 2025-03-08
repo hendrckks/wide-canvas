@@ -46,15 +46,17 @@ export const createProject = async (project: Project): Promise<string> => {
     const baseSlug = generateSlug(project.name);
     let slug = baseSlug;
 
-    // Check if slug exists
+    // Check if slug exists and find highest order value
     const querySnapshot = await getDocs(projectsCollection);
     const existingSlugs = new Set<string>();
     const slugRegex = new RegExp(`^${baseSlug}(-[0-9]+)?$`);
     let maxIncrement = 0;
+    let maxOrder = -1;
 
     querySnapshot.forEach((doc) => {
       const projectData = doc.data() as Project;
       existingSlugs.add(projectData.slug);
+      maxOrder = Math.max(maxOrder, projectData.order || 0);
 
       // Check for existing increments
       if (projectData.slug.match(slugRegex)) {
@@ -71,8 +73,9 @@ export const createProject = async (project: Project): Promise<string> => {
       slug = `${baseSlug}-${maxIncrement + 1}`;
     }
 
-    // Add slug to project data
+    // Add slug and order to project data
     project.slug = slug;
+    project.order = maxOrder + 1;
     // Upload images first
     const imageUploadPromises = project.images.map(async (image, index) => {
       if (image.url.startsWith("data:") || image.url.startsWith("blob:")) {
