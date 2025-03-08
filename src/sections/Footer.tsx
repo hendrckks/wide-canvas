@@ -69,7 +69,7 @@ const Footer = () => {
 
       <p className="font-semibold text-sm text-white/80 max-w-xl text-center md:mx-0 mx-2 md:mb-16 mb-6">
         Any resemblance between the media showcased here and real life is purely
-        coincidental… unless reality got a little too inspired.{" "}
+        coincidental… unless reality got a little too inspired.
         <br className="my-6" />
         All content is protected by copyright laws, but if you'd like to use
         something, just ask—filmmakers appreciate a good collaboration more than
