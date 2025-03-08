@@ -121,7 +121,7 @@ const Menu = ({ isOpen, onClose }: MenuProps) => {
               </button>
               <div className="text-[#808080] sm:text-xs tracking-tight font-medium text-start">
                 © 2025 Wide Canvas | Live to Put Memories
-                <br /> in a Wide Canvas. | All rights reserved.
+                <br /> on a Widecanvas. | All rights reserved.
               </div>
             </div>
           </div>
