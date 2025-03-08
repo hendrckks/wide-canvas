@@ -10,7 +10,7 @@ const Contact = () => {
         className="text-center"
       >
         <h1 className="text-sm sm:text-xl text-[#ff7738] tracking-tight mb-8">
-          CONTACT ME
+          CONTACT US
         </h1>
         <div className="space-y-4">
           <motion.h2
