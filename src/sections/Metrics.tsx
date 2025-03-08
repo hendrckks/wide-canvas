@@ -11,7 +11,7 @@ const metrics = [
   },
   {
     title: "Years of Experience",
-    value: 15,
+    value: 6,
     suffix: "+",
     colSpan: 1,
     delay: 0.3,
@@ -19,7 +19,7 @@ const metrics = [
   },
   {
     title: "Awards and Recognitions",
-    value: 13,
+    value: 2,
     suffix: "+",
     colSpan: 1,
     delay: 0.3,
@@ -27,7 +27,7 @@ const metrics = [
   },
   {
     title: "Happy Clients Served",
-    value: 200,
+    value: 100,
     suffix: "+",
     colSpan: 2,
     delay: 0.4,

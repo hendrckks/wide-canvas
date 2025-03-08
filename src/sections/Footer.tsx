@@ -9,10 +9,10 @@ const Footer = () => {
           HAVE A PROJECT IN MIND? CONTACT ME
         </p>
         <a
-          href="mailto:info@aodfilm.com"
+          href="mailto:widecanvasstudio@gmail.com"
           className="text-black p-3 bg-white hover:bg-[#ff6017] transition-colors duration-200 font-semibold"
         >
-          widecanvas@gmail.com
+          widecanvasstudio@gmail.com
         </a>
         <div className="flex justify-center space-x-4 mt-4">
           <Link
@@ -22,19 +22,19 @@ const Footer = () => {
             TW
           </Link>
           <Link
-            to="https://instagram.com/widecanvas"
+            to="https://instagram.com/wide.canvas"
             className="text-sm leading-relaxed font-semibold hover:text-[#ff6017] transition-colors"
           >
             IG
           </Link>
           <Link
-            to="https://tiktok.com/@widecanvas"
+            to="https://tiktok.com/"
             className="text-sm leading-relaxed font-semibold hover:text-[#ff6017] transition-colors"
           >
             TT
           </Link>
           <Link
-            to="https://facebook.com/widecanvas"
+            to="https://facebook.com/"
             className="text-sm leading-relaxed font-semibold hover:text-[#ff6017] transition-colors"
           >
             FB
