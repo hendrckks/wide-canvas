@@ -25,6 +25,7 @@ export interface VideoData {
   url: string;
   storagePath: string;
   type: "intro" | "trailer" | "overlay" | "other";
+  contentType?: "video" | "image";
   overlayPosition?: number; // Position for overlay videos (1, 2, 3, 4)
   createdAt: number;
   updatedAt: number;

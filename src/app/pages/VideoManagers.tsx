@@ -45,10 +45,11 @@ const VideoManager: React.FC = () => {
     if (!files || files.length === 0) return;
 
     const file = files[0];
+    const isImage = file.type.startsWith('image/');
 
     try {
       setUploading(true);
-      // Simulate upload progress (in a real app, you'd use Firebase's upload progress)
+      // Simulate upload progress
       const interval = setInterval(() => {
         setUploadProgress((prev) => {
           if (prev >= 95) {
@@ -59,19 +60,27 @@ const VideoManager: React.FC = () => {
         });
       }, 200);
 
-      // Upload the video
-      const uploadedVideo = await uploadVideo(
+      // Upload the video or image
+      const uploadedContent = await uploadVideo(
         file,
         type,
         type === "overlay" ? overlayPosition : undefined
       );
+
+      // Set the content type
+      if (type === "overlay") {
+        await updateVideoMetadata(uploadedContent.id!, {
+          contentType: isImage ? "image" : "video"
+        });
+        uploadedContent.contentType = isImage ? "image" : "video";
+      }
 
       // Clear interval and set progress to 100%
       clearInterval(interval);
       setUploadProgress(100);
 
       // Update the videos list
-      setVideos((prev) => [uploadedVideo, ...prev]);
+      setVideos((prev) => [uploadedContent, ...prev]);
 
       // Reset after a second
       setTimeout(() => {
@@ -79,7 +88,7 @@ const VideoManager: React.FC = () => {
         setUploading(false);
       }, 1000);
     } catch (err) {
-      setError("Failed to upload video");
+      setError("Failed to upload content");
       console.error(err);
       setUploading(false);
       setUploadProgress(0);
@@ -204,7 +213,7 @@ const VideoManager: React.FC = () => {
             <div className="relative">
               <input
                 type="file"
-                accept="video/mp4,video/quicktime"
+                accept="video/mp4,video/quicktime,video/avi,video/x-msvideo"
                 onChange={(e) => handleFileUpload(e, "intro")}
                 disabled={uploading}
                 className="sr-only"
@@ -299,7 +308,7 @@ const VideoManager: React.FC = () => {
             <div className="relative">
               <input
                 type="file"
-                accept="video/mp4,video/quicktime"
+                accept="video/mp4,video/quicktime,video/avi,video/x-msvideo"
                 onChange={(e) => handleFileUpload(e, "overlay")}
                 disabled={uploading}
                 className="sr-only"
@@ -319,6 +328,61 @@ const VideoManager: React.FC = () => {
                 {uploading
                   ? "Uploading..."
                   : `Upload Overlay Video (Position ${overlayPosition})`}
+              </button>
+            </div>
+          </label>
+        </div>
+
+        <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+          <h2 className="text-lg font-semibold mb-4">Upload Overlay Image</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+            Upload an image for the overlay position. This will be shown in the "What You Get" section.
+          </p>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Overlay Position
+            </label>
+            <div className="flex space-x-2">
+              {[1, 2, 3, 4].map((pos) => (
+                <button
+                  key={pos}
+                  onClick={() => setOverlayPosition(pos)}
+                  className={`w-8 h-8 flex items-center justify-center rounded-md 
+                    ${
+                      overlayPosition === pos
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300"
+                    }`}
+                >
+                  {pos}
+                </button>
+              ))}
+            </div>
+          </div>
+          <label className="block w-full">
+            <div className="relative">
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/gif,image/webp"
+                onChange={(e) => handleFileUpload(e, "overlay")}
+                disabled={uploading}
+                className="sr-only"
+              />
+              <button
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center gap-2 disabled:opacity-50"
+                onClick={() =>
+                  (
+                    document.querySelectorAll(
+                      'input[type="file"]'
+                    )[3] as HTMLInputElement
+                  ).click()
+                }
+                disabled={uploading}
+              >
+                <Upload size={18} />
+                {uploading
+                  ? "Uploading..."
+                  : `Upload Overlay Image (Position ${overlayPosition})`}
               </button>
             </div>
           </label>
@@ -403,10 +467,41 @@ const VideoManager: React.FC = () => {
                     ) : (
                       <div className="flex items-center space-x-3">
                         <div className="w-16 h-9 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden flex-shrink-0">
-                          <video
-                            src={video.url}
-                            className="w-full h-full object-cover"
-                          />
+                          {video.contentType === "image" ? (
+                            <img
+                              src={video.url}
+                              alt={video.name}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                              onError={(e) => {
+                                e.currentTarget.src = '/thumbnail.png';
+                              }}
+                            />
+                          ) : (
+                            <video
+                              src={video.url}
+                              className="w-full h-full object-cover"
+                              preload="metadata"
+                              muted
+                              playsInline
+                              loop
+                              onLoadedData={(e) => {
+                                e.currentTarget.currentTime = 1;
+                                e.currentTarget.play().catch(() => {});
+                              }}
+                              onError={(e) => {
+                                const target = e.target as HTMLVideoElement;
+                                target.style.display = "none";
+                                const parent = target.parentElement;
+                                if (parent) {
+                                  const img = document.createElement('img');
+                                  img.src = '/thumbnail.png';
+                                  img.className = 'w-full h-full object-cover';
+                                  parent.appendChild(img);
+                                }
+                              }}
+                            />
+                          )}
                         </div>
                         <div>
                           <div className="font-medium text-gray-900 dark:text-white">

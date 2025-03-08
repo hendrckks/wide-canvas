@@ -189,6 +189,16 @@ const Overlay = () => {
                 <div className="w-full h-full flex items-center justify-center bg-black/10">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
                 </div>
+              ) : overlayVideos[index + 1]?.contentType === "image" ? (
+                <img
+                  src={overlayVideos[index + 1]?.url || '/shotfilm.mp4'}
+                  alt={overlayVideos[index + 1]?.name || 'Overlay content'}
+                  className="w-full h-full object-cover cursor-pointer transition-all duration-200 ease-in group-hover:scale-102"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.src = '/thumbnail.png';
+                  }}
+                />
               ) : (
                 <video
                   autoPlay
@@ -207,15 +217,25 @@ const Overlay = () => {
                     e.currentTarget.style.opacity = "1";
                   }}
                 >
-                  {/* Use Firebase video URL if available, otherwise fallback to static path */}
                   {overlayVideos[index + 1]?.url ? (
-                    <source
-                      src={overlayVideos[index + 1]?.url || ''}
-                      type="video/mp4"
-                    />
+                    <>
+                      <source
+                        src={overlayVideos[index + 1]?.url || ''}
+                        type="video/mp4"
+                      />
+                      <source
+                        src={overlayVideos[index + 1]?.url.replace('.mp4', '.avi') || ''}
+                        type="video/avi"
+                      />
+                      <source
+                        src={overlayVideos[index + 1]?.url.replace('.mp4', '.webm') || ''}
+                        type="video/webm"
+                      />
+                    </>
                   ) : (
                     <>
                       <source src="/shotfilm.mp4" type="video/mp4" />
+                      <source src="/shotfilm.avi" type="video/avi" />
                       <source src="/shotfilm.webm" type="video/webm" />
                     </>
                   )}
