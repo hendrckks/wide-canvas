@@ -52,6 +52,7 @@ export const ProjectSchema = z.object({
   client: z.string().optional(),
   time: z.date(),
   images: z.array(ImageSchema).min(1, "At least one image is required"),
+  order: z.number().default(0), // Higher numbers will appear first
 });
 
 // TypeScript type derived from the Zod schema

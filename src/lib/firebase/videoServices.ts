@@ -13,7 +13,7 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { db, storage } from "./clientApp";
+import { db, storage } from "./clientApp.ts";
 
 // Collection reference
 const videosCollection = collection(db, "videos");

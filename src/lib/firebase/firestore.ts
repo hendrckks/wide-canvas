@@ -8,9 +8,9 @@ import {
   onSnapshot,
   getDoc,
 } from "firebase/firestore";
-import { db } from "./clientApp";
 import { generateSlug, Project, ProjectSchema } from "../types/project";
 import { uploadImage, deleteImage } from "./storage";
+import { db } from "./clientApp.ts";
 
 // Collection reference
 const projectsCollection = collection(db, "projects");
@@ -122,8 +122,18 @@ export const getProjects = async (): Promise<Map<string, Project>> => {
     const snapshot = await getDocs(projectsCollection);
     projectsCache.clear();
 
-    snapshot.forEach((doc) => {
-      projectsCache.set(doc.id, doc.data() as Project);
+    const projects = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data() as Project
+    }));
+
+    // Sort projects by order field (higher numbers first)
+    projects.sort((a, b) => (b.order || 0) - (a.order || 0));
+
+    // Update cache with sorted projects
+    projects.forEach(project => {
+      const { id, ...projectData } = project;
+      projectsCache.set(id, projectData);
     });
 
     lastFetchTimestamp = Date.now();

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "../../../.components/ui/button";
 import { Input } from "../../../.components/ui/input";
 import { Textarea } from "../../../.components/ui/textarea";
+import { migrateProjectOrders } from "../../scripts/migrateProjectOrders";
 import {
   Select,
   SelectContent,
@@ -544,6 +545,25 @@ export default function CreateProject() {
           )}
         </Button>
       </form>
+
+      <Button
+        onClick={async () => {
+          try {
+            const success = await migrateProjectOrders();
+            if (success) {
+              alert('Successfully migrated project orders');
+            } else {
+              alert('Failed to migrate project orders');
+            }
+          } catch (error) {
+            console.error('Error during migration:', error);
+            alert('Error during migration');
+          }
+        }}
+        className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-4 rounded-lg transition-colors mt-4"
+      >
+        Migrate Project Orders
+      </Button>
     </div>
   );
 }
