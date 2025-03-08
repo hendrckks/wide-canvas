@@ -16,28 +16,10 @@ const Footer = () => {
         </a>
         <div className="flex justify-center space-x-4 mt-4">
           <Link
-            to="https://twitter.com/widecanvas"
-            className="text-sm leading-relaxed font-semibold hover:text-[#ff6017] transition-colors"
-          >
-            TW
-          </Link>
-          <Link
             to="https://instagram.com/wide.canvas"
-            className="text-sm leading-relaxed font-semibold hover:text-[#ff6017] transition-colors"
+            className="text-sm leading-relaxed underline underline-offset-2 font-semibold hover:text-[#ff6017] transition-colors"
           >
-            IG
-          </Link>
-          <Link
-            to="https://tiktok.com/"
-            className="text-sm leading-relaxed font-semibold hover:text-[#ff6017] transition-colors"
-          >
-            TT
-          </Link>
-          <Link
-            to="https://facebook.com/"
-            className="text-sm leading-relaxed font-semibold hover:text-[#ff6017] transition-colors"
-          >
-            FB
+            Instagram 
           </Link>
         </div>
       </div>
@@ -85,8 +67,7 @@ const Footer = () => {
         </div>
       </section>
 
-      <img src="/end.png" className="h-[40vh] mb-8" />
-      <p className="font-semibold text-sm text-white/80 max-w-xl text-center md:mx-0 mx-2 -mt-10 md:mb-16 mb-6">
+      <p className="font-semibold text-sm text-white/80 max-w-xl text-center md:mx-0 mx-2 md:mb-16 mb-6">
         Any resemblance between the media showcased here and real life is purely
         coincidental… unless reality got a little too inspired.{" "}
         <br className="my-6" />
@@ -97,7 +78,7 @@ const Footer = () => {
       <img src="/WIDELARGE2.webp" className="max-h-48 h-full md:mb-12 mb-8" />
       <div className="text-[#808080] text-xs tracking-tight font-medium text-center">
         © 2025 Wide Canvas | Live to Put Memories
-        <br /> in a Wide Canvas. | All rights reserved.
+        <br /> on a Widecanvas. | All rights reserved.
       </div>
     </div>
   );

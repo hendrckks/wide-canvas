@@ -14,11 +14,7 @@ const faqData: FAQItem[] = [
   },
   {
     question: "What is your typical project timeline?",
-    answer: "Project timelines vary depending on scope and complexity. A typical documentary project takes 4-8 weeks from initial concept to final delivery. Commercial projects usually take 2-4 weeks. We'll provide a detailed timeline during our initial consultation and keep you updated throughout the process."
-  },
-  {
-    question: "What equipment do you use?",
-    answer: "We use professional-grade equipment including RED and Blackmagic cinema cameras, premium lenses, DJI drones, professional lighting kits, and state-of-the-art stabilization systems. For audio, we use industry-standard microphones and recorders to ensure the highest quality sound capture."
+    answer: "Project timelines vary depending on scope and complexity. A typical documentary project takes 2-4 months from initial concept to final delivery. Commercial projects usually take 2-6 weeks. We'll provide a detailed timeline during our initial consultation and keep you updated throughout the process."
   },
   {
     question: "Do you travel for projects?",

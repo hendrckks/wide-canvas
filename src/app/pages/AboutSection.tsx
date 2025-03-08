@@ -40,7 +40,7 @@ export default function AboutSection() {
               transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
               className="mt-4 sm:mt-6 max-w-md text-sm sm:text-base font-medium opacity-90"
             >
-              Marvin, 21, is the visionary founder of Widecanvas, capturing
+              Marvin, is the visionary founder of Widecanvas, capturing
               life&apos;s fleeting moments with an eye beyond his years. His
               pioneering approach blends documentaries and cinematography with
               his own unique style, creating visual stories that have defined
@@ -247,7 +247,7 @@ export default function AboutSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 1.0 }}
               >
-                WIDECANVAS STUDIO
+                WIDECANVAS
               </motion.p>
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
