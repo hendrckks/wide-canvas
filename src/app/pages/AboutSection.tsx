@@ -10,7 +10,7 @@ export default function AboutSection() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4 py-12 sm:py-16 md:py-24 px-4 md:px-8"
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 py-12 sm:py-16 md:py-16 px-4 md:px-8"
       >
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -47,7 +47,7 @@ export default function AboutSection() {
               the Widecanvas aesthetic of authenticity and raw emotion.
             </motion.p>
           </div>
-          <p className="dark:text-white/80 text-black/80 text-xs font-medium flex items-center absolute bottom-0 md:bottom-5 tracking-normal">
+          <p className="dark:text-white/80 text-black/80 text-xs font-medium flex items-center absolute bottom-0 md:bottom-10 tracking-normal">
             [
             <motion.span
               animate={{ y: [-2, 4, -2] }}
