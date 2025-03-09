@@ -8,6 +8,7 @@ import {
   onSnapshot,
   getDoc,
 } from "firebase/firestore";
+import imageCompression from "browser-image-compression";
 import { generateSlug, Project, ProjectSchema } from "../types/project";
 import { uploadImage, deleteImage } from "./storage";
 import { db } from "./clientApp.ts";
@@ -76,20 +77,40 @@ export const createProject = async (project: Project): Promise<string> => {
     // Add slug and order to project data
     project.slug = slug;
     project.order = maxOrder + 1;
-    // Upload images first
+    // Compress and convert images to AVIF before uploading
     const imageUploadPromises = project.images.map(async (image, index) => {
       if (image.url.startsWith("data:") || image.url.startsWith("blob:")) {
         // Convert base64/blob URL to File object
         const response = await fetch(image.url);
         const blob = await response.blob();
-        const file = new File([blob], `project-image-${index}.jpg`, {
-          type: "image/jpeg",
+        const fileExtension = blob.type.includes('webp') ? 'webp' : 'jpg';
+        const originalFile = new File([blob], `project-image-${index}.${fileExtension}`, {
+          type: blob.type,
         });
 
-        // Upload to Firebase Storage
-        const path = `projects/${Date.now()}-${file.name}`;
-        const url = await uploadImage(file, path);
-        return { ...image, url, path };
+        // Compression options
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+          fileType: "image/avif"
+        };
+
+        try {
+          // Compress the image
+          const compressedFile = await imageCompression(originalFile, options);
+          
+          // Upload to Firebase Storage with .avif extension
+          const path = `projects/${Date.now()}-${index}.avif`;
+          const url = await uploadImage(compressedFile, path);
+          return { ...image, url, path };
+        } catch (error) {
+          console.error("Error compressing image:", error);
+          // Fallback to original file if compression fails
+          const path = `projects/${Date.now()}-${originalFile.name}`;
+          const url = await uploadImage(originalFile, path);
+          return { ...image, url, path };
+        }
       }
       return image;
     });

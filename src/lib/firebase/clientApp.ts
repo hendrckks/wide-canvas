@@ -1,5 +1,5 @@
 import { initializeApp, getApps } from "firebase/app";
-import { firebaseConfig } from "./config";
+import { firebaseConfig } from "./config.ts";
 import { getAuth } from "firebase/auth";
 import {
   initializeFirestore,
