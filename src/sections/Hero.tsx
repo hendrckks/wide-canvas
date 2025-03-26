@@ -62,7 +62,7 @@ const Hero = () => {
   return (
     <div
       id="hero"
-      className="h-full py-20 sm:py-24 md:py-28 lg:py-32 flex flex-col justify-center items-center text-center dark:text-white text-black text-4xl sm:text-5xl md:text-5xl lg:text-[74px] dark:bg-black bg-white"
+      className="h-full py-24 sm:py-24 md:py-28 lg:py-32 flex flex-col justify-center items-center text-center dark:text-white text-black text-4xl sm:text-5xl md:text-5xl lg:text-[74px] dark:bg-black bg-white"
     >
       <motion.div
         initial={{ opacity: 0 }}
@@ -95,9 +95,9 @@ const Hero = () => {
               delay: 0.4,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="font-sentient italic text-[42px] sm:text-[60px] md:text-[70px] lg:text-[82px] tracking-tighter font-light"
+            className="font-sentient italic text-[52px] sm:text-[60px] md:text-[70px] lg:text-[82px] tracking-tighter font-light"
           >
-            <span className="font-display text-[38px] sm:text-5xl md:text-[64px] lg:text-[74px] font-normal mr-2 sm:mr-4 not-italic">
+            <span className="font-display text-[40px] sm:text-5xl md:text-[64px] lg:text-[74px] font-normal mr-2 sm:mr-4 not-italic">
               make
             </span>
             memories
@@ -132,13 +132,13 @@ const Hero = () => {
               delay: 1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="text-[#ff6017] font-clash text-[40px] sm:text-[60px] md:text-[70px] lg:text-[80px] leading-10 lg:leading-16 tracking-tighter italic"
+            className="text-[#ff6017] font-clash text-[50px] sm:text-[60px] md:text-[70px] lg:text-[80px] leading-10 lg:leading-16 tracking-tighter italic"
           >
             ~ Widecanvas ~
           </motion.div>
         </motion.div>
         <motion.p
-          className="text-sm sm:text-base md:text-lg mb-2 dark:text-white/80 text-black/80 font-medium mt-3 sm:mt-4 md:mt-8 h-fit px-3 sm:px-4 md:px-0"
+          className="text-[15px] md:text-lg mb-2 dark:text-white/80 text-black/80 font-medium mt-8 sm:mt-4 md:mt-8 h-fit px-3 sm:px-4 md:px-0"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{

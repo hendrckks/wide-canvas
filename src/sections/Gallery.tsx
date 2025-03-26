@@ -144,11 +144,11 @@ const Gallery = () => {
                   <motion.img
                     src={primaryImage?.url}
                     alt={project.name}
-                    className="w-[300px] sm:w-[350px] lg:w-[400px] h-[250px] sm:h-[300px] lg:h-[350px] object-cover rounded-sm p-2 mb-2"
+                    className="w-[300px] sm:w-[350px] lg:w-[400px] h-[400px] sm:h-[400px] lg:h-[350px] object-cover rounded-sm p-2 mb-2"
                     loading={index < 2 ? "eager" : "lazy"}
                     style={{
                       width: index === 2 ? "450px" : "500px",
-                      height: index === 1 || index === 3 ? "400px" : "450px",
+                      height: index === 1 || index === 3 ? "450px" : "500px",
                       transform: "translate3d(0,0,0)",
                       objectPosition: "center 30%",
                     }}
