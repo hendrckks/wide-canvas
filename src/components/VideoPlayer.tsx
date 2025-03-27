@@ -327,7 +327,7 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
                   disabled={!(isPlayable && isLoaded)}
                 >
                   <div
-                    className={`absolute inset-0 rounded-full border-2 border-white/30 border-t-white/90 ${
+                    className={`absolute inset-0 rounded-full border-2 dark:border-white/30 border-black/40 border-t-white/90 ${
                       !isPlayable || !isLoaded || isTrailerLoading
                         ? "animate-spin"
                         : "hidden"
@@ -335,7 +335,7 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
                   />
                   <PlayCircleIcon
                     size={32}
-                    className="text-white relative z-10"
+                    className="dark:text-white text-black relative z-10"
                   />
                 </motion.button>
               </div>

@@ -59,10 +59,10 @@ const Footer = () => {
         <h2 className="text-sm font-semibold">Designed and developed by</h2>
         <div className="space-y-4">
           <Link
-            to="https://x.com/atomic_ke"
+            to="https://devscook.com"
             className="text-sm leading-relaxed font-semibold underline underline-offset-4"
           >
-            TETENGA / HENDRCKKS
+            DEVSCOOK
           </Link>
         </div>
       </section>
