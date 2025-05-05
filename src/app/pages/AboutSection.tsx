@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function AboutSection() {
   return (
-    <main className="min-h-screen dark:bg-black bg-white dark:text-white text-black">
+    <main className="min-h-screen md:py-0 py-10 dark:bg-black bg-white dark:text-white text-black">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -23,9 +23,9 @@ export default function AboutSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              className="text-3xl sm:text-4xl md:text-8xl leading-tight md:leading-20 tracking-tighter mb-4 opacity-80 dark:text-white text-black"
+              className="text-4xl sm:text-4xl md:text-8xl leading-tight md:leading-20 tracking-tighter mb-4 opacity-80 dark:text-white text-black"
             >
-              Meet Marvin, Founder of Widecanvas
+              Meet <span className="text-black/50 italic dark:text-white">Marvin</span>, Founder of Widecanvas
             </motion.h1>
             <motion.div
               initial={{ scaleX: 0 }}
@@ -75,7 +75,7 @@ export default function AboutSection() {
             className="absolute -left-2 sm:-left-4 md:-left-0 h-full flex items-center"
           >
             <h2
-              className="vertical-text transform -rotate-180 text-5xl sm:text-7xl md:text-[170px] font-light tracking-tighter opacity-80 dark:text-white text-black"
+              className="vertical-text transform -rotate-180 text-6xl sm:text-7xl md:text-[170px] font-light tracking-tighter opacity-80 dark:text-white text-black"
               style={{ writingMode: "vertical-rl" }}
             >
               Marvin
@@ -85,7 +85,7 @@ export default function AboutSection() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-            className="w-full h-full rounded-sm relative ml-8 sm:ml-12 md:ml-20"
+            className="w-full h-full rounded-sm relative ml-3 sm:ml-12 md:ml-20"
           >
             <img
               src="/marvo.webp"

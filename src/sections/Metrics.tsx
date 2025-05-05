@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ArrowDown } from "lucide-react";
 
 const metrics = [
   {
@@ -18,7 +19,7 @@ const metrics = [
     duration: 0.8,
   },
   {
-    title: "Awards and Recognitions",
+    title: "Awards/Recognitions",
     value: 2,
     suffix: "+",
     colSpan: 1,
@@ -37,7 +38,7 @@ const metrics = [
 
 const Metrics = () => {
   return (
-    <div className="w-full dark:bg-black bg-white px-4 lg:px-8 2xl:px-0 dark:text-white text-black py-5 sm:py-8 md:py-10 -md:mb-10">
+    <div className="w-full dark:bg-black bg-white px-3 lg:px-8 2xl:px-0 dark:text-white text-black py-5 sm:py-8 md:py-10 -md:mb-10">
       <motion.h2
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -50,7 +51,7 @@ const Metrics = () => {
           Milestones
         </span>
       </motion.h2>
-      <div className="container mx-auto grid grid-cols-2 shadow-sm sm:grid-cols-2 md:grid-cols-3 gap-2 border dark:border-white/10 border-black/20 rounded-lg p-2">
+      <div className="container mx-auto grid grid-cols-2 shadow-sm sm:grid-cols-2 md:grid-cols-3 md:gap-2 gap-1 border dark:border-white/10 border-black/20 rounded-lg md:p-2 p-1">
         {" "}
         {metrics.map((metric, index) => (
           <motion.div
@@ -67,13 +68,13 @@ const Metrics = () => {
               metric.colSpan === 2 ? "col-span-2" : "col-span-1"
             } dark:bg-white/4 bg-black/4 backdrop-blur-xl shadow-lg`}
           >
-            <h3 className="dark:text-white/70 text-black/80 text-sm sm:text-base mb-2 border-b dark:border-b-white/20 border-b-black/20 py-2 sm:py-3 font-medium">
+            <h3 className="dark:text-white/70 text-black/80 text-base mb-2 border-b dark:border-b-white/20 border-b-black/20 py-2 sm:py-3 font-medium">
               {metric.title}
             </h3>
-            <div className="text-3xl sm:text-4xl md:text-5xl lg:text-8xl tracking-tighter dark:text-white text-black/90 font-medium italic">
+            <div className="text-5xl py-3 md:py-0 sm:text-4xl md:text-5xl lg:text-8xl tracking-tighter dark:text-white text-black/90 font-medium italic">
               <motion.div layout layoutRoot style={{ willChange: "transform" }}>
                 {metric.value}
-                <span className="dark:text-[#ff6017] text-[#ff6017]/85 font-normal">
+                <span className="dark:text-[#ff6017] text-[#ff6017]/85 md:ml-2 ml-1 font-normal">
                   {metric.suffix}
                 </span>
               </motion.div>
@@ -81,6 +82,22 @@ const Metrics = () => {
           </motion.div>
         ))}
       </div>
+      <p className="dark:text-white/80 text-xs mt-24 font-medium flex justify-center items-center">
+        [
+        <motion.span
+          animate={{
+            y: [-2, 4, -2],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <ArrowDown size={16} />
+        </motion.span>
+        SCROLL TO EXPLORE ]
+      </p>
     </div>
   );
 };

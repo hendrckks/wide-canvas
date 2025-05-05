@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import VideoPlayer from "../components/VideoPlayer";
 import { useRef, MouseEvent, useEffect, useState } from "react";
@@ -62,7 +62,7 @@ const Hero = () => {
   return (
     <div
       id="hero"
-      className="h-full py-24 sm:py-24 md:py-28 lg:py-32 flex flex-col justify-center items-center text-center dark:text-white text-black text-4xl sm:text-5xl md:text-5xl lg:text-[74px] dark:bg-black bg-white"
+      className="h-full py-32 sm:py-24 md:py-28 lg:py-32 flex flex-col justify-center items-center text-center dark:text-white text-black text-[40px] sm:text-5xl md:text-5xl lg:text-[74px] dark:bg-black bg-white"
     >
       <motion.div
         initial={{ opacity: 0 }}
@@ -132,7 +132,7 @@ const Hero = () => {
               delay: 1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="text-[#ff6017] font-clash text-[50px] sm:text-[60px] md:text-[70px] lg:text-[80px] leading-10 lg:leading-16 tracking-tighter italic"
+            className="text-[#ff6017] font-clash text-[45px] sm:text-[60px] md:text-[70px] lg:text-[80px] leading-10 lg:leading-16 tracking-tighter italic"
           >
             ~ Widecanvas ~
           </motion.div>
@@ -158,7 +158,7 @@ const Hero = () => {
           delay: 1.4,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="mt-6 md:mt-9 flex gap-2 sm:gap-8 leading-3.5 px-4 md:px-0"
+        className="mt-10 md:mt-9 flex gap-2 sm:gap-8 leading-3.5 px-4 md:px-0"
       >
         <Link
           to="/contact"
@@ -195,7 +195,7 @@ const Hero = () => {
           delay: 1.6,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="my-6 sm:my-8 md:my-12 w-full max-w-[95vw] sm:max-w-[90vw] md:max-w-[900px] aspect-[16/9] max-h-[675px]"
+        className="my- mt-24 sm:my-8 md:my-12 w-full max-w-[95vw] sm:max-w-[90vw] md:max-w-[900px] aspect-[16/9] max-h-[675px]"
       >
         {isLoading ? (
           <div className="w-full h-full flex items-center justify-center bg-black/5 dark:bg-white/5 rounded-lg">
@@ -211,7 +211,7 @@ const Hero = () => {
         )}
         {error && <p className="text-xs text-red-500 mt-2">{error}</p>}
       </motion.div>
-      <p className="text-white/80 text-xs mt-10 font-medium flex items-center">
+      {/* <p className="text-white/80 text-xs mt-10 font-medium flex items-center">
         [
         <motion.span
           animate={{
@@ -226,7 +226,7 @@ const Hero = () => {
           <ArrowDown size={16} />
         </motion.span>
         SCROLL TO EXPLORE ]
-      </p>
+      </p> */}
     </div>
   );
 };
