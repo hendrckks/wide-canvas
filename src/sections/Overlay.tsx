@@ -90,7 +90,7 @@ const Overlay = () => {
         position: "relative",
         zIndex: 30,
       }}
-      className="w-full h-full bg-[#ff7738] py-10 sm:py-16 md:py-20 px-4 sm:px-6 md:px-10"
+      className="w-full h-full bg-[#ff7738] py-4 sm:py-16 md:py-20 px-4 sm:px-6 md:px-10"
     >
       <motion.h2
         initial={{ opacity: 0, y: 30 }}
@@ -139,7 +139,7 @@ const Overlay = () => {
               className="w-full md:w-1/2 sm:p-6 md:p-8 flex flex-col justify-between"
             >
               <div className="py-2 sm:py-3 md:py-4">
-                <div className="mb-2">
+                <div className="mb-2 mt-2">
                   <motion.img
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -178,7 +178,7 @@ const Overlay = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 + 0.3 }}
-              className="w-full md:w-1/2 h-[200px] sm:h-[250px] md:h-[300px] lg:h-[400px] relative overflow-hidden sm:p-6 md:p-8 group md:mb-0 mb-4"
+              className="w-full md:w-1/2 h-[240px] sm:h-[250px] md:h-[300px] lg:h-[400px] relative overflow-hidden p-1 sm:p-6 md:p-8 group md:mb-0 mb-4"
             >
               <motion.div className="absolute top-5 left-5 w-4 h-4 border-l-2 border-t-2 border-black/90" />
               <motion.div className="absolute top-5 right-5 w-4 h-4 border-r-2 border-t-2 border-black/90" />
